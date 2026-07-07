@@ -1,47 +1,34 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { getSupabaseClient } from './supabaseClient'
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
-
-let client: SupabaseClient | null = null
-
-export function isSupabaseConfigured(): boolean {
-  return !!(url && anonKey)
-}
-
-function getClient(): SupabaseClient {
-  if (!url || !anonKey) throw new Error('Supabase is not configured')
-  if (!client) client = createClient(url, anonKey)
-  return client
-}
+export { isSupabaseConfigured } from './supabaseClient'
 
 export async function supabasePushSync(
-  roomId: string,
+  userId: string,
   payload: string,
   syncUpdatedAt: number
 ): Promise<void> {
-  const sb = getClient()
+  const sb = getSupabaseClient()
   const { error } = await sb.from('pourfolio_sync').upsert(
     {
-      room_id: roomId,
+      user_id: userId,
       payload,
       sync_updated_at: syncUpdatedAt,
       updated_at: new Date().toISOString(),
     },
-    { onConflict: 'room_id' }
+    { onConflict: 'user_id' }
   )
   if (error) throw new Error(error.message)
 }
 
-export async function supabasePullSync(roomId: string): Promise<{
+export async function supabasePullSync(userId: string): Promise<{
   payload: string
   syncUpdatedAt: number
 } | null> {
-  const sb = getClient()
+  const sb = getSupabaseClient()
   const { data, error } = await sb
     .from('pourfolio_sync')
     .select('payload, sync_updated_at')
-    .eq('room_id', roomId)
+    .eq('user_id', userId)
     .maybeSingle()
 
   if (error) throw new Error(error.message)

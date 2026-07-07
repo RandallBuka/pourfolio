@@ -18,8 +18,16 @@ import {
   pushSyncState,
   saveSyncConfig,
   setupSyncPassphrase,
+  isSupabaseConfigured,
   type SyncConfig,
 } from '../lib/cloudSync'
+import {
+  initSupabaseAuth,
+  onAuthStateChange,
+  signInWithGoogle as signInWithGoogleAuth,
+  signOutGoogle as signOutGoogleAuth,
+} from '../lib/supabaseAuth'
+import type { User } from '@supabase/supabase-js'
 import { getLowStockIngredients } from '../lib/lowStock'
 import { pickRandomMakeableDrink } from '../lib/randomDrink'
 import {
@@ -117,8 +125,12 @@ interface AppContextValue {
   getShareLink: () => string
   syncConfig: import('../lib/cloudSync').SyncConfig
   saveSyncConfig: (config: import('../lib/cloudSync').SyncConfig) => void
-  pushCloudSync: (passphrase: string) => Promise<void>
-  pullCloudSync: (passphrase: string) => Promise<'updated' | 'unchanged' | 'empty'>
+  authUser: User | null
+  authReady: boolean
+  signInWithGoogle: () => Promise<void>
+  signOutGoogle: () => Promise<void>
+  pushCloudSync: (passphrase?: string) => Promise<void>
+  pullCloudSync: (passphrase?: string) => Promise<'updated' | 'unchanged' | 'empty'>
   getDrinkSummary: (drink: Drink) => string
   getMissingForDrink: (drink: Drink) => RecipeIngredient[]
   canMake: (drink: Drink) => boolean
@@ -133,6 +145,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>(() => loadState())
   const [syncConfig, setSyncConfig] = useState<SyncConfig>(() => loadSyncConfig())
   const [undoSnapshot, setUndoSnapshot] = useState<UndoSnapshot | null>(() => loadUndoSnapshot())
+  const [authUser, setAuthUser] = useState<User | null>(null)
+  const [authReady, setAuthReady] = useState(() => !isSupabaseConfigured())
+
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return
+
+    let unsubscribe: (() => void) | undefined
+
+    void initSupabaseAuth()
+      .then((session) => {
+        setAuthUser(session?.user ?? null)
+        setAuthReady(true)
+      })
+      .catch(() => setAuthReady(true))
+
+    unsubscribe = onAuthStateChange((user) => setAuthUser(user))
+
+    return () => unsubscribe?.()
+  }, [])
 
   useEffect(() => {
     saveState(state)
@@ -143,11 +174,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [syncConfig])
 
   useEffect(() => {
-    if (!syncConfig.enabled || !syncConfig.passphrase || !syncConfig.roomId) return
+    if (!syncConfig.enabled) return
+    if (isSupabaseConfigured()) {
+      if (!authUser?.id) return
+    } else if (!syncConfig.passphrase || !syncConfig.roomId) {
+      return
+    }
 
     const runPull = async () => {
       try {
-        const remote = await pullSyncState(syncConfig, syncConfig.passphrase!)
+        const remote = isSupabaseConfigured() && authUser
+          ? await pullSyncState(syncConfig, { mode: 'auth', userId: authUser.id })
+          : await pullSyncState(syncConfig, { mode: 'passphrase', passphrase: syncConfig.passphrase! })
         if (!remote) return
         setState((local) => {
           const merged = mergeSyncState(local, remote)
@@ -176,12 +214,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
       document.removeEventListener('visibilitychange', onVisible)
       window.clearInterval(interval)
     }
-  }, [syncConfig.enabled, syncConfig.passphrase, syncConfig.roomId, syncConfig.serverUrl])
+  }, [
+    syncConfig.enabled,
+    syncConfig.passphrase,
+    syncConfig.roomId,
+    syncConfig.serverUrl,
+    authUser?.id,
+  ])
 
   useEffect(() => {
-    if (!syncConfig.enabled || !syncConfig.passphrase || !syncConfig.roomId) return
+    if (!syncConfig.enabled) return
+    if (isSupabaseConfigured()) {
+      if (!authUser?.id) return
+    } else if (!syncConfig.passphrase || !syncConfig.roomId) {
+      return
+    }
+
     const timer = window.setTimeout(() => {
-      void pushSyncState(syncConfig, state, syncConfig.passphrase!)
+      const credentials = isSupabaseConfigured() && authUser
+        ? { mode: 'auth' as const, userId: authUser.id }
+        : { mode: 'passphrase' as const, passphrase: syncConfig.passphrase! }
+
+      void pushSyncState(syncConfig, state, credentials)
         .then((next) => setSyncConfig(next))
         .catch((err) => {
           setSyncConfig((c) => ({
@@ -191,7 +245,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }, 4000)
     return () => window.clearTimeout(timer)
-  }, [state, syncConfig.enabled, syncConfig.passphrase, syncConfig.roomId, syncConfig.serverUrl])
+  }, [state, syncConfig.enabled, syncConfig.passphrase, syncConfig.roomId, syncConfig.serverUrl, authUser?.id])
 
   const touchState = (next: AppState): AppState => ({
     ...next,
@@ -663,24 +717,49 @@ export function AppProvider({ children }: { children: ReactNode }) {
     },
     syncConfig,
     saveSyncConfig: (config) => setSyncConfig(config),
+    authUser,
+    authReady,
+    signInWithGoogle: async () => {
+      await signInWithGoogleAuth()
+    },
+    signOutGoogle: async () => {
+      await signOutGoogleAuth()
+      setSyncConfig((c) => ({ ...c, lastSyncError: undefined }))
+    },
     pushCloudSync: async (passphrase) => {
       let config = syncConfig
-      if (!config.roomId) {
-        config = await setupSyncPassphrase(config, passphrase)
+      const credentials = isSupabaseConfigured() && authUser
+        ? { mode: 'auth' as const, userId: authUser.id }
+        : (() => {
+            if (!passphrase?.trim()) throw new Error('Enter your sync passphrase first')
+            return { mode: 'passphrase' as const, passphrase }
+          })()
+
+      if (credentials.mode === 'passphrase' && !config.roomId) {
+        config = await setupSyncPassphrase(config, credentials.passphrase)
         setSyncConfig(config)
       }
+
       const stamped = touchState(state)
       setState(stamped)
-      const next = await pushSyncState(config, stamped, passphrase)
+      const next = await pushSyncState(config, stamped, credentials)
       setSyncConfig(next)
     },
     pullCloudSync: async (passphrase) => {
       let config = syncConfig
-      if (!config.roomId) {
-        config = await setupSyncPassphrase(config, passphrase)
+      const credentials = isSupabaseConfigured() && authUser
+        ? { mode: 'auth' as const, userId: authUser.id }
+        : (() => {
+            if (!passphrase?.trim()) throw new Error('Enter your sync passphrase first')
+            return { mode: 'passphrase' as const, passphrase }
+          })()
+
+      if (credentials.mode === 'passphrase' && !config.roomId) {
+        config = await setupSyncPassphrase(config, credentials.passphrase)
         setSyncConfig(config)
       }
-      const remote = await pullSyncState(config, passphrase)
+
+      const remote = await pullSyncState(config, credentials)
       if (!remote) {
         setSyncConfig((c) => ({ ...c, lastSyncedAt: new Date().toISOString(), lastSyncError: undefined }))
         return 'empty'
@@ -701,7 +780,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         lastSyncedAt: new Date().toISOString(),
         lastSyncError: undefined,
         roomId: config.roomId,
-        passphrase: config.rememberPassphrase ? passphrase : c.passphrase,
+        passphrase:
+          credentials.mode === 'passphrase' && config.rememberPassphrase
+            ? credentials.passphrase
+            : c.passphrase,
       }))
       return changed ? 'updated' : 'unchanged'
     },

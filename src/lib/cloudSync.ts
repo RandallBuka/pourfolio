@@ -27,6 +27,10 @@ export interface RemoteSyncRecord {
   updatedAt: string
 }
 
+export type SyncCredentials =
+  | { mode: 'auth'; userId: string }
+  | { mode: 'passphrase'; passphrase: string }
+
 const DEFAULT_SYNC_URL = import.meta.env.VITE_SYNC_URL as string | undefined
 
 export function loadSyncConfig(): SyncConfig {
@@ -92,15 +96,33 @@ function buildPayload(state: AppState): SyncPayload {
   }
 }
 
-export async function pushSyncState(config: SyncConfig, state: AppState, passphrase: string): Promise<SyncConfig> {
-  if (!config.roomId) throw new Error('Sync is not set up — enter your passphrase first')
+async function readPayload(raw: string, encrypted: boolean, passphrase?: string): Promise<SyncPayload> {
+  const plaintext = encrypted
+    ? await decryptPayload(passphrase!, raw)
+    : raw
+  const parsed = JSON.parse(plaintext) as SyncPayload
+  if (!parsed.state?.bars?.length) throw new Error('Remote sync data is invalid')
+  return parsed
+}
 
+export async function pushSyncState(
+  config: SyncConfig,
+  state: AppState,
+  credentials: SyncCredentials
+): Promise<SyncConfig> {
   const payload = buildPayload({ ...state, syncUpdatedAt: Date.now() })
-  const encrypted = await encryptPayload(passphrase, JSON.stringify(payload))
 
-  if (isSupabaseConfigured()) {
-    await supabasePushSync(config.roomId, encrypted, payload.syncUpdatedAt)
+  if (credentials.mode === 'auth') {
+    if (!isSupabaseConfigured()) throw new Error('Cloud sync is not configured')
+    await supabasePushSync(credentials.userId, JSON.stringify(payload), payload.syncUpdatedAt)
   } else {
+    if (!config.roomId) throw new Error('Sync is not set up — enter your passphrase first')
+    const encrypted = await encryptPayload(credentials.passphrase, JSON.stringify(payload))
+
+    if (isSupabaseConfigured()) {
+      throw new Error('Sign in with Google to sync — passphrase sync is for self-hosted servers only')
+    }
+
     const baseUrl = getSyncServerUrl(config)
     if (!baseUrl) throw new Error('Sync server URL is not configured')
     const res = await fetch(`${baseUrl}/sync/${config.roomId}`, {
@@ -122,20 +144,28 @@ export async function pushSyncState(config: SyncConfig, state: AppState, passphr
     ...config,
     lastSyncedAt: now,
     lastSyncError: undefined,
-    passphrase: config.rememberPassphrase ? passphrase : config.passphrase,
+    passphrase:
+      credentials.mode === 'passphrase' && config.rememberPassphrase
+        ? credentials.passphrase
+        : config.passphrase,
   }
 }
 
-export async function pullSyncState(config: SyncConfig, passphrase: string): Promise<SyncPayload | null> {
+export async function pullSyncState(
+  config: SyncConfig,
+  credentials: SyncCredentials
+): Promise<SyncPayload | null> {
+  if (credentials.mode === 'auth') {
+    if (!isSupabaseConfigured()) throw new Error('Cloud sync is not configured')
+    const remote = await supabasePullSync(credentials.userId)
+    if (!remote) return null
+    return readPayload(remote.payload, false)
+  }
+
   if (!config.roomId) throw new Error('Sync is not set up — enter your passphrase first')
 
   if (isSupabaseConfigured()) {
-    const remote = await supabasePullSync(config.roomId)
-    if (!remote) return null
-    const decrypted = await decryptPayload(passphrase, remote.payload)
-    const parsed = JSON.parse(decrypted) as SyncPayload
-    if (!parsed.state?.bars?.length) throw new Error('Remote sync data is invalid')
-    return parsed
+    throw new Error('Sign in with Google to sync — passphrase sync is for self-hosted servers only')
   }
 
   const baseUrl = getSyncServerUrl(config)
@@ -148,10 +178,7 @@ export async function pullSyncState(config: SyncConfig, passphrase: string): Pro
   }
 
   const remote = (await res.json()) as RemoteSyncRecord
-  const decrypted = await decryptPayload(passphrase, remote.payload)
-  const parsed = JSON.parse(decrypted) as SyncPayload
-  if (!parsed.state?.bars?.length) throw new Error('Remote sync data is invalid')
-  return parsed
+  return readPayload(remote.payload, true, credentials.passphrase)
 }
 
 export function mergeSyncState(local: AppState, remote: SyncPayload): AppState {
@@ -174,8 +201,9 @@ export function applyPulledState(raw: SyncPayload): AppState {
   }
 }
 
-export function isSyncConfigured(config: SyncConfig): boolean {
-  return !!config.roomId && (isSupabaseConfigured() || !!getSyncServerUrl(config))
+export function isSyncConfigured(config: SyncConfig, userId?: string | null): boolean {
+  if (isSupabaseConfigured()) return !!userId
+  return !!config.roomId && !!getSyncServerUrl(config)
 }
 
 export { isSupabaseConfigured } from './supabaseSync'

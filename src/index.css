@@ -2329,6 +2329,43 @@ html.native-app .filter-panel {
   border-radius: 4px;
 }
 
+.cloud-sync-account {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cloud-sync-signed-in {
+  margin: 0;
+  font-size: 14px;
+  color: var(--pf-text-muted);
+}
+
+.btn-google {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--pf-border);
+  border-radius: var(--pf-radius-sm);
+  background: var(--pf-bg);
+  color: var(--pf-text);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn-google:hover:not(:disabled) {
+  background: var(--pf-surface-hover, var(--pf-surface));
+}
+
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .field-note {
   margin-top: 8px;
   font-size: 12px;
