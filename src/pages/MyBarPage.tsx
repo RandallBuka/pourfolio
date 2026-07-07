@@ -220,24 +220,6 @@ export function MyBarPage() {
 
       {lowStockMsg && <p className="hub-photo-error">{lowStockMsg}</p>}
 
-
-
-      {barCount === 0 && !showOnboarding && (
-
-        <div className="hub-empty-banner">
-
-          <p>Add new ingredients to your bar — scan a barcode or label photo to get started.</p>
-
-          <button type="button" className="btn btn-sm btn-primary" onClick={() => setShowScan(true)}>
-            Add new ingredient
-          </button>
-
-        </div>
-
-      )}
-
-
-
       <div className="hub-grid">
 
         <div className="hub-tile hub-tile--bar">
