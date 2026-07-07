@@ -16,7 +16,21 @@ if (import.meta.env.PROD && import.meta.env.BASE_URL !== '/' && !window.location
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     const swUrl = `${import.meta.env.BASE_URL}sw.js`
-    void navigator.serviceWorker.register(swUrl).catch(() => undefined)
+    void navigator.serviceWorker
+      .register(swUrl)
+      .then((registration) => {
+        registration.addEventListener('updatefound', () => {
+          const worker = registration.installing
+          if (!worker) return
+          worker.addEventListener('statechange', () => {
+            if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+              worker.postMessage({ type: 'SKIP_WAITING' })
+              window.location.reload()
+            }
+          })
+        })
+      })
+      .catch(() => undefined)
   })
 }
 

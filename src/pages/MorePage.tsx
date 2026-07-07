@@ -13,7 +13,7 @@ import { downloadBackup } from '../lib/backup'
 import { formatSnapshotTime, undoActionLabel } from '../lib/dataSnapshot'
 import { getShareQrUrl } from '../lib/shelfShare'
 import { saveState } from '../lib/storage'
-import { clearAppCache, isAppCacheSupported } from '../lib/appCache'
+import { clearAppCache } from '../lib/appCache'
 
 type ConfirmAction = 'reset' | 'delete-ingredients' | 'delete-recipes' | 'restore' | 'discard-undo' | 'reset-cache'
 
@@ -211,26 +211,22 @@ export function MorePage() {
       <div className="section-header">Cloud sync</div>
       <CloudSyncPanel />
 
-      {isAppCacheSupported() && (
-        <>
-          <div className="section-header">App</div>
-          <div className="card">
-            <div className="card-body">
-              <p className="modal-hint" style={{ margin: '0 0 12px' }}>
-                If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
-              </p>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                disabled={cacheBusy}
-                onClick={() => setConfirmAction('reset-cache')}
-              >
-                Reset cache
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+      <div className="section-header">App</div>
+      <div className="card">
+        <div className="card-body">
+          <p className="modal-hint" style={{ margin: '0 0 12px' }}>
+            If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
+          </p>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            disabled={cacheBusy}
+            onClick={() => setConfirmAction('reset-cache')}
+          >
+            Reset cache
+          </button>
+        </div>
+      </div>
 
       <div className="section-header">Data</div>
 

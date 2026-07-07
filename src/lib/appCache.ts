@@ -28,7 +28,3 @@ export async function clearAppCache(): Promise<ClearAppCacheResult> {
 
   return { clearedCaches, unregisteredWorkers }
 }
-
-export function isAppCacheSupported(): boolean {
-  return 'caches' in window || 'serviceWorker' in navigator
-}
