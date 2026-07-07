@@ -41,6 +41,7 @@ export function MorePage() {
   const [deletedOpen, setDeletedOpen] = useState(false)
   const [importMsg, setImportMsg] = useState<string | null>(null)
   const [cacheBusy, setCacheBusy] = useState(false)
+  const [advancedOpen, setAdvancedOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const shelfBottleCount = state.bars.reduce((n, b) => n + b.ingredientIds.length, 0)
@@ -208,77 +209,96 @@ export function MorePage() {
 
       {importMsg && <p className="shopping-flash">{importMsg}</p>}
 
-      <div className="section-header">Cloud sync</div>
-      <CloudSyncPanel />
-
-      <div className="section-header">App</div>
-      <div className="card">
-        <div className="card-body">
-          <p className="modal-hint" style={{ margin: '0 0 12px' }}>
-            If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
-          </p>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            disabled={cacheBusy}
-            onClick={() => setConfirmAction('reset-cache')}
-          >
-            Reset cache
-          </button>
+      <button
+        type="button"
+        className="list-item settings-cta"
+        onClick={() => setAdvancedOpen((open) => !open)}
+        aria-expanded={advancedOpen}
+      >
+        <div className="item-info">
+          <div className="item-name">Advanced settings</div>
+          <div className="item-subtitle">Cloud sync, app cache, and data tools</div>
         </div>
-      </div>
+        <span className={`settings-cta-chevron ${advancedOpen ? 'settings-cta-chevron--open' : ''}`} aria-hidden>
+          ›
+        </span>
+      </button>
 
-      <div className="section-header">Data</div>
+      {advancedOpen && (
+        <div className="settings-advanced-panel">
+          <div className="section-header">Cloud sync</div>
+          <CloudSyncPanel />
 
-      {undoSnapshot && (
-        <div className="card undo-restore-card">
-          <div className="card-body">
-            <p className="undo-restore-title">Restore available</p>
-            <p className="modal-hint" style={{ margin: 0 }}>
-              Snapshot from {formatSnapshotTime(undoSnapshot.savedAt)} before deleting{' '}
-              {undoActionLabel(undoSnapshot.action)}.
-            </p>
-            <div className="detail-actions" style={{ marginTop: 12 }}>
-              <button type="button" className="btn btn-primary" onClick={() => setConfirmAction('restore')}>
-                Restore previous data
-              </button>
-              <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction('discard-undo')}>
-                Discard restore point
+          <div className="section-header">App</div>
+          <div className="card">
+            <div className="card-body">
+              <p className="modal-hint" style={{ margin: '0 0 12px' }}>
+                If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
+              </p>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                disabled={cacheBusy}
+                onClick={() => setConfirmAction('reset-cache')}
+              >
+                Reset cache
               </button>
             </div>
           </div>
+
+          <div className="section-header">Data</div>
+
+          {undoSnapshot && (
+            <div className="card undo-restore-card">
+              <div className="card-body">
+                <p className="undo-restore-title">Restore available</p>
+                <p className="modal-hint" style={{ margin: 0 }}>
+                  Snapshot from {formatSnapshotTime(undoSnapshot.savedAt)} before deleting{' '}
+                  {undoActionLabel(undoSnapshot.action)}.
+                </p>
+                <div className="detail-actions" style={{ marginTop: 12 }}>
+                  <button type="button" className="btn btn-primary" onClick={() => setConfirmAction('restore')}>
+                    Restore previous data
+                  </button>
+                  <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction('discard-undo')}>
+                    Discard restore point
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="detail-actions">
+            <button type="button" className="btn btn-primary" onClick={loadDemoBar}>
+              Load demo shelf (all ingredients)
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setConfirmAction('delete-ingredients')}
+              disabled={shelfBottleCount === 0 && customIngredientCount === 0 && overrideCount === 0}
+            >
+              Delete all ingredients
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setConfirmAction('delete-recipes')}
+              disabled={customRecipeCount === 0}
+            >
+              Delete all custom recipes
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction('reset')}>
+              Reset all data
+            </button>
+          </div>
+          <p className="modal-hint data-section-hint">
+            {shelfBottleCount} bottle{shelfBottleCount !== 1 ? 's' : ''} on shelves ·{' '}
+            {customIngredientCount} custom ingredient{customIngredientCount !== 1 ? 's' : ''} ·{' '}
+            {customRecipeCount} custom recipe{customRecipeCount !== 1 ? 's' : ''}
+          </p>
         </div>
       )}
-
-      <div className="detail-actions">
-        <button type="button" className="btn btn-primary" onClick={loadDemoBar}>
-          Load demo shelf (all ingredients)
-        </button>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={() => setConfirmAction('delete-ingredients')}
-          disabled={shelfBottleCount === 0 && customIngredientCount === 0 && overrideCount === 0}
-        >
-          Delete all ingredients
-        </button>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={() => setConfirmAction('delete-recipes')}
-          disabled={customRecipeCount === 0}
-        >
-          Delete all custom recipes
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction('reset')}>
-          Reset all data
-        </button>
-      </div>
-      <p className="modal-hint data-section-hint">
-        {shelfBottleCount} bottle{shelfBottleCount !== 1 ? 's' : ''} on shelves ·{' '}
-        {customIngredientCount} custom ingredient{customIngredientCount !== 1 ? 's' : ''} ·{' '}
-        {customRecipeCount} custom recipe{customRecipeCount !== 1 ? 's' : ''}
-      </p>
 
       {barsOpen && <BarManagementModal onClose={() => setBarsOpen(false)} />}
 

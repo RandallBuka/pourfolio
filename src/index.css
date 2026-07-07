@@ -2389,6 +2389,15 @@ html.native-app .filter-panel {
   color: var(--pf-text-muted);
   margin-left: auto;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.settings-cta-chevron--open {
+  transform: rotate(90deg);
+}
+
+.settings-advanced-panel .section-header:first-child {
+  padding-top: 4px;
 }
 
 .bar-management-modal-body {
