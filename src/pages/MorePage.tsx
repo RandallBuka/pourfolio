@@ -13,8 +13,9 @@ import { downloadBackup } from '../lib/backup'
 import { formatSnapshotTime, undoActionLabel } from '../lib/dataSnapshot'
 import { getShareQrUrl } from '../lib/shelfShare'
 import { saveState } from '../lib/storage'
+import { clearAppCache, isAppCacheSupported } from '../lib/appCache'
 
-type ConfirmAction = 'reset' | 'delete-ingredients' | 'delete-recipes' | 'restore' | 'discard-undo'
+type ConfirmAction = 'reset' | 'delete-ingredients' | 'delete-recipes' | 'restore' | 'discard-undo' | 'reset-cache'
 
 export function MorePage() {
   const location = useLocation()
@@ -39,6 +40,7 @@ export function MorePage() {
   const [recipesOpen, setRecipesOpen] = useState(false)
   const [deletedOpen, setDeletedOpen] = useState(false)
   const [importMsg, setImportMsg] = useState<string | null>(null)
+  const [cacheBusy, setCacheBusy] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const shelfBottleCount = state.bars.reduce((n, b) => n + b.ingredientIds.length, 0)
@@ -122,6 +124,19 @@ export function MorePage() {
     }
   }
 
+  const confirmResetCache = async () => {
+    setCacheBusy(true)
+    try {
+      await clearAppCache()
+      setConfirmAction(null)
+      window.location.reload()
+    } catch {
+      setCacheBusy(false)
+      setConfirmAction(null)
+      setImportMsg('Could not reset cache — try again or reinstall the app')
+    }
+  }
+
   return (
     <div className="page">
       <NavBar title="Settings" />
@@ -195,6 +210,27 @@ export function MorePage() {
 
       <div className="section-header">Cloud sync</div>
       <CloudSyncPanel />
+
+      {isAppCacheSupported() && (
+        <>
+          <div className="section-header">App</div>
+          <div className="card">
+            <div className="card-body">
+              <p className="modal-hint" style={{ margin: '0 0 12px' }}>
+                If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
+              </p>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                disabled={cacheBusy}
+                onClick={() => setConfirmAction('reset-cache')}
+              >
+                Reset cache
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="section-header">Data</div>
 
@@ -341,6 +377,20 @@ export function MorePage() {
                 <div className="modal-actions">
                   <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction(null)}>Cancel</button>
                   <button type="button" className="btn btn-primary" onClick={confirmDiscardUndo}>Discard</button>
+                </div>
+              </>
+            )}
+            {confirmAction === 'reset-cache' && (
+              <>
+                <h3>Reset app cache?</h3>
+                <p style={{ marginBottom: 16, fontSize: 14, color: 'var(--pf-text-muted)' }}>
+                  Clears offline files and reloads the latest version from the server. Your ingredients, recipes, and settings stay on this device.
+                </p>
+                <div className="modal-actions">
+                  <button type="button" className="btn btn-secondary" disabled={cacheBusy} onClick={() => setConfirmAction(null)}>Cancel</button>
+                  <button type="button" className="btn btn-primary" disabled={cacheBusy} onClick={() => { void confirmResetCache() }}>
+                    {cacheBusy ? 'Resetting…' : 'Reset cache'}
+                  </button>
                 </div>
               </>
             )}
