@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { BarManagementModal } from '../components/BarManagementModal'
 import { RecipeManagementModal } from '../components/RecipeManagementModal'
 import { DeletedItemsModal } from '../components/DeletedItemsModal'
-import { CloudSyncPanel } from '../components/CloudSyncPanel'
+import { AdvancedSettingsModal } from '../components/AdvancedSettingsModal'
 import { ThemeSelector } from '../components/ThemeSelector'
 import { NavBar } from '../components/NavBar'
 import { APP_NAME, APP_TAGLINE } from '../lib/brand'
@@ -187,6 +187,14 @@ export function MorePage() {
         <span className="settings-cta-chevron" aria-hidden>›</span>
       </button>
 
+      <button type="button" className="list-item settings-cta" onClick={() => setAdvancedOpen(true)}>
+        <div className="item-info">
+          <div className="item-name">Advanced settings</div>
+          <div className="item-subtitle">Cloud sync, app cache, and data tools</div>
+        </div>
+        <span className="settings-cta-chevron" aria-hidden>›</span>
+      </button>
+
       <div className="section-header">Share & backup</div>
       <div className="detail-actions">
         <button type="button" className="btn btn-primary" onClick={() => setShareOpen(true)}>
@@ -209,102 +217,30 @@ export function MorePage() {
 
       {importMsg && <p className="shopping-flash">{importMsg}</p>}
 
-      <button
-        type="button"
-        className="list-item settings-cta"
-        onClick={() => setAdvancedOpen((open) => !open)}
-        aria-expanded={advancedOpen}
-      >
-        <div className="item-info">
-          <div className="item-name">Advanced settings</div>
-          <div className="item-subtitle">Cloud sync, app cache, and data tools</div>
-        </div>
-        <span className={`settings-cta-chevron ${advancedOpen ? 'settings-cta-chevron--open' : ''}`} aria-hidden>
-          ›
-        </span>
-      </button>
-
-      {advancedOpen && (
-        <div className="settings-advanced-panel">
-          <div className="section-header">Cloud sync</div>
-          <CloudSyncPanel />
-
-          <div className="section-header">App</div>
-          <div className="card">
-            <div className="card-body">
-              <p className="modal-hint" style={{ margin: '0 0 12px' }}>
-                If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
-              </p>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                disabled={cacheBusy}
-                onClick={() => setConfirmAction('reset-cache')}
-              >
-                Reset cache
-              </button>
-            </div>
-          </div>
-
-          <div className="section-header">Data</div>
-
-          {undoSnapshot && (
-            <div className="card undo-restore-card">
-              <div className="card-body">
-                <p className="undo-restore-title">Restore available</p>
-                <p className="modal-hint" style={{ margin: 0 }}>
-                  Snapshot from {formatSnapshotTime(undoSnapshot.savedAt)} before deleting{' '}
-                  {undoActionLabel(undoSnapshot.action)}.
-                </p>
-                <div className="detail-actions" style={{ marginTop: 12 }}>
-                  <button type="button" className="btn btn-primary" onClick={() => setConfirmAction('restore')}>
-                    Restore previous data
-                  </button>
-                  <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction('discard-undo')}>
-                    Discard restore point
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="detail-actions">
-            <button type="button" className="btn btn-primary" onClick={loadDemoBar}>
-              Load demo shelf (all ingredients)
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => setConfirmAction('delete-ingredients')}
-              disabled={shelfBottleCount === 0 && customIngredientCount === 0 && overrideCount === 0}
-            >
-              Delete all ingredients
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => setConfirmAction('delete-recipes')}
-              disabled={customRecipeCount === 0}
-            >
-              Delete all custom recipes
-            </button>
-            <button type="button" className="btn btn-secondary" onClick={() => setConfirmAction('reset')}>
-              Reset all data
-            </button>
-          </div>
-          <p className="modal-hint data-section-hint">
-            {shelfBottleCount} bottle{shelfBottleCount !== 1 ? 's' : ''} on shelves ·{' '}
-            {customIngredientCount} custom ingredient{customIngredientCount !== 1 ? 's' : ''} ·{' '}
-            {customRecipeCount} custom recipe{customRecipeCount !== 1 ? 's' : ''}
-          </p>
-        </div>
-      )}
-
       {barsOpen && <BarManagementModal onClose={() => setBarsOpen(false)} />}
 
       {recipesOpen && <RecipeManagementModal onClose={() => setRecipesOpen(false)} />}
 
       {deletedOpen && <DeletedItemsModal onClose={() => setDeletedOpen(false)} />}
+
+      {advancedOpen && (
+        <AdvancedSettingsModal
+          onClose={() => setAdvancedOpen(false)}
+          shelfBottleCount={shelfBottleCount}
+          customIngredientCount={customIngredientCount}
+          customRecipeCount={customRecipeCount}
+          overrideCount={overrideCount}
+          undoSnapshot={undoSnapshot}
+          cacheBusy={cacheBusy}
+          onLoadDemoBar={loadDemoBar}
+          onRequestDeleteIngredients={() => setConfirmAction('delete-ingredients')}
+          onRequestDeleteRecipes={() => setConfirmAction('delete-recipes')}
+          onRequestResetAll={() => setConfirmAction('reset')}
+          onRequestRestore={() => setConfirmAction('restore')}
+          onRequestDiscardUndo={() => setConfirmAction('discard-undo')}
+          onRequestResetCache={() => setConfirmAction('reset-cache')}
+        />
+      )}
 
       {shareOpen && (
         <div className="modal-overlay" onClick={() => setShareOpen(false)}>
