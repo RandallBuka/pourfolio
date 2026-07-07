@@ -7,6 +7,7 @@ import {
   isSyncConfigured,
   setupSyncPassphrase,
 } from '../lib/cloudSync'
+import { getSupabaseProjectUrl } from '../lib/supabaseClient'
 
 export function CloudSyncPanel() {
   const {
@@ -26,6 +27,7 @@ export function CloudSyncPanel() {
   const [authBusy, setAuthBusy] = useState(false)
 
   const hosted = isSupabaseConfigured()
+  const supabaseUrl = getSupabaseProjectUrl()
   const configured = isSyncConfigured({ ...syncConfig, serverUrl }, authUser?.id)
 
   const applySettings = async () => {
@@ -128,6 +130,12 @@ export function CloudSyncPanel() {
           <p className="modal-hint">
             <strong>Cloud sync is on.</strong> Sign in with Google on each device to keep your bar in sync automatically.
           </p>
+          {!supabaseUrl && (
+            <p className="field-error">
+              Supabase URL looks invalid. GitHub secret <code>VITE_SUPABASE_URL</code> must be{' '}
+              <code>https://YOUR_REF.supabase.co</code> — not the publishable key, database URL, or Google secret.
+            </p>
+          )}
 
           {!authReady ? (
             <p className="modal-hint">Checking sign-in…</p>

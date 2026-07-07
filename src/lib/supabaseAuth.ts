@@ -38,11 +38,16 @@ export function cleanAuthParamsFromUrl(): void {
 
 export async function signInWithGoogle(): Promise<void> {
   const sb = getSupabaseClient()
-  const { error } = await sb.auth.signInWithOAuth({
+  const redirectTo = getAuthRedirectUrl()
+  const { data, error } = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: getAuthRedirectUrl() },
+    options: { redirectTo },
   })
   if (error) throw error
+  if (!data.url) {
+    throw new Error('Google sign-in could not start. Check your Supabase URL secret and Google provider settings.')
+  }
+  window.location.assign(data.url)
 }
 
 export async function signOutGoogle(): Promise<void> {
