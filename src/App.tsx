@@ -16,6 +16,10 @@ import { FavoritesPage } from './pages/FavoritesPage'
 import { ShoppingListPage } from './pages/ShoppingListPage'
 import { SharedShelfPage } from './pages/SharedShelfPage'
 import { MorePage } from './pages/MorePage'
+import { ManageBarsPage } from './pages/settings/ManageBarsPage'
+import { ManageRecipesPage } from './pages/settings/ManageRecipesPage'
+import { DeletedItemsPage } from './pages/settings/DeletedItemsPage'
+import { AdvancedSettingsPage } from './pages/settings/AdvancedSettingsPage'
 import { getRouterBasename, useHashRouter } from './lib/routerBase'
 
 function AppShell() {
@@ -36,6 +40,10 @@ function AppShell() {
           <Route path="/drinks" element={<DrinksPage />} />
           <Route path="/drinks/:id" element={<DrinkDetailPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/more/bars" element={<ManageBarsPage />} />
+          <Route path="/more/recipes" element={<ManageRecipesPage />} />
+          <Route path="/more/deleted" element={<DeletedItemsPage />} />
+          <Route path="/more/advanced" element={<AdvancedSettingsPage />} />
           <Route path="/more" element={<MorePage />} />
         </Routes>
       </main>

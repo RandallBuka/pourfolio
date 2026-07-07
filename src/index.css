@@ -2418,6 +2418,38 @@ html.native-app .filter-panel {
   cursor: pointer;
   font-family: inherit;
   text-align: left;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.settings-subpage {
+  animation: settings-slide-in 0.28s ease-out;
+}
+
+.settings-subpage-sub {
+  margin: -4px 16px 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--pf-text-muted);
+}
+
+@keyframes settings-slide-in {
+  from {
+    transform: translateX(16px);
+    opacity: 0.35;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-subpage {
+    animation: none;
+  }
 }
 
 .settings-cta-chevron {

@@ -48,8 +48,7 @@ export function BarPickerModal({
 
         <div className="modal-actions modal-actions--stack">
           <Link
-            to="/more"
-            state={{ openBars: true }}
+            to="/more/bars"
             className="btn btn-primary"
             style={{ textDecoration: 'none', textAlign: 'center' }}
             onClick={onClose}
