@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node node_modules/vite/bin/vite.js",
-    "prebuild": "node scripts/generate-pwa-icons.mjs",
-    "build": "node node_modules/vite/bin/vite.js build && node scripts/postbuild.mjs",
+    "dev": "vite",
+    "build": "vite build && node scripts/postbuild.mjs",
+    "generate-icons": "node scripts/generate-pwa-icons.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
     "preview": "node node_modules/vite/bin/vite.js preview",
     "seed": "node scripts/seed-data.mjs",
@@ -47,7 +47,4 @@
   "optionalDependencies": {
     "@rollup/rollup-win32-arm64-msvc": "^4.62.2"
   },
-  "allowScripts": {
-    "esbuild@0.25.12": true
-  }
 }
