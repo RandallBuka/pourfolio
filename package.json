@@ -1,0 +1,53 @@
+{
+  "name": "pourfolio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node node_modules/vite/bin/vite.js",
+    "prebuild": "node scripts/generate-pwa-icons.mjs",
+    "build": "node node_modules/vite/bin/vite.js build && node scripts/postbuild.mjs",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
+    "preview": "node node_modules/vite/bin/vite.js preview",
+    "seed": "node scripts/seed-data.mjs",
+    "fetch-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-ingredient-images.ts",
+    "fetch-drink-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-drink-images.ts",
+    "fetch-all-images": "npm run fetch-images && npm run fetch-drink-images",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:ios": "npm run cap:sync && npx cap open ios",
+    "cap:android": "npm run cap:sync && npx cap open android",
+    "cap:add:ios": "npx cap add ios",
+    "cap:add:android": "npx cap add android",
+    "sync:server": "node scripts/sync-server.mjs"
+  },
+  "dependencies": {
+    "@capacitor-mlkit/barcode-scanning": "^7.5.0",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
+    "@supabase/supabase-js": "^2.110.1",
+    "html5-qrcode": "^2.3.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.0",
+    "tesseract.js": "^6.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "sharp": "^0.35.3",
+    "tsx": "^4.23.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.4.3"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-arm64-msvc": "^4.62.2"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}
