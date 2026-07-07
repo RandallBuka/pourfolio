@@ -1,38 +1,38 @@
-{
-  "name": "Pourfolio",
-  "short_name": "Pourfolio",
-  "description": "Track your home bar and discover cocktails you can make",
-  "start_url": ".",
-  "scope": ".",
-  "display": "standalone",
-  "background_color": "#1e293b",
-  "theme_color": "#0d9488",
-  "orientation": "portrait",
-  "icons": [
-    {
-      "src": "icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
-  ]
-}
-
+{
+  "name": "Pourfolio",
+  "short_name": "Pourfolio",
+  "description": "Track your home bar and discover cocktails you can make",
+  "id": "/pourfolio/",
+  "start_url": "/pourfolio/",
+  "scope": "/pourfolio/",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#0d9488",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
