@@ -8,22 +8,42 @@ interface Props {
   onError?: (message: string) => void
 }
 
+async function stopScanner(scanner: Html5Qrcode): Promise<void> {
+  try {
+    await scanner.stop()
+  } catch {
+    // Already stopped or never started
+  }
+  try {
+    scanner.clear()
+  } catch {
+    // Container may already be gone
+  }
+}
+
 export function WebBarcodeScanner({ active, onDetected, onError }: Props) {
   const containerId = useRef(`barcode-scanner-${Math.random().toString(36).slice(2)}`)
   const scannerRef = useRef<Html5Qrcode | null>(null)
+  const detectedRef = useRef(false)
+  const onDetectedRef = useRef(onDetected)
+  const onErrorRef = useRef(onError)
   const [starting, setStarting] = useState(false)
+
+  onDetectedRef.current = onDetected
+  onErrorRef.current = onError
 
   useEffect(() => {
     if (!active) {
       const scanner = scannerRef.current
       scannerRef.current = null
       if (scanner) {
-        void scanner.stop().then(() => scanner.clear()).catch(() => undefined)
+        void stopScanner(scanner)
       }
       return
     }
 
     let cancelled = false
+    detectedRef.current = false
     const scanner = new Html5Qrcode(containerId.current)
     scannerRef.current = scanner
     setStarting(true)
@@ -33,12 +53,17 @@ export function WebBarcodeScanner({ active, onDetected, onError }: Props) {
         { facingMode: 'environment' },
         { fps: 10, qrbox: { width: 260, height: 160 }, aspectRatio: 1.5 },
         (decoded) => {
+          if (cancelled || detectedRef.current) return
           const code = normalizeBarcode(decoded)
-          if (code.length >= 8) {
-            void scanner.stop().then(() => {
-              onDetected(code)
-            }).catch(() => onDetected(code))
-          }
+          if (code.length < 8) return
+
+          detectedRef.current = true
+          void stopScanner(scanner).finally(() => {
+            if (cancelled) return
+            requestAnimationFrame(() => {
+              onDetectedRef.current(code)
+            })
+          })
         },
         () => undefined
       )
@@ -48,16 +73,16 @@ export function WebBarcodeScanner({ active, onDetected, onError }: Props) {
       .catch((err: unknown) => {
         if (!cancelled) {
           setStarting(false)
-          onError?.(err instanceof Error ? err.message : 'Could not access camera')
+          onErrorRef.current?.(err instanceof Error ? err.message : 'Could not access camera')
         }
       })
 
     return () => {
       cancelled = true
-      void scanner.stop().then(() => scanner.clear()).catch(() => undefined)
+      void stopScanner(scanner)
       if (scannerRef.current === scanner) scannerRef.current = null
     }
-  }, [active, onDetected, onError])
+  }, [active])
 
   return (
     <div className="barcode-scanner-wrap">

@@ -15,7 +15,7 @@ import { isWineIngredient } from '../lib/ingredientAbv'
 import { isUsCountry } from '../data/usStates'
 import type { IngredientCategory } from '../types'
 
-type Step = 'choose' | 'scan' | 'manual' | 'photo' | 'ocr' | 'lookup' | 'review' | 'done'
+type Step = 'choose' | 'scan' | 'manual' | 'photo' | 'ocr' | 'lookup' | 'review'
 
 interface Props {
   onClose: () => void
@@ -67,56 +67,64 @@ export function BarcodeScanModal({ onClose, onScanned }: Props) {
   const isNative = Capacitor.isNativePlatform()
 
   const finishWithIngredient = useCallback((ingredientId: string) => {
-    setStep('done')
     onClose()
-    navigate(`/ingredients/${ingredientId}`)
+    requestAnimationFrame(() => {
+      navigate(`/ingredients/${encodeURIComponent(ingredientId)}`)
+    })
   }, [navigate, onClose])
 
   const handleExisting = useCallback((ingredientId: string) => {
     if (addToShelf && !isInBar(ingredientId)) {
       addToBar(ingredientId)
     }
+    setStep('lookup')
     finishWithIngredient(ingredientId)
   }, [addToBar, addToShelf, finishWithIngredient, isInBar])
 
   const processBarcode = useCallback(async (raw: string) => {
-    const code = normalizeBarcode(raw)
-    if (code.length < 8) {
-      setError('Enter a valid barcode (8+ digits)')
-      return
+    try {
+      const code = normalizeBarcode(raw)
+      if (code.length < 8) {
+        setError('Enter a valid barcode (8+ digits)')
+        return
+      }
+
+      if (onScanned?.(code)) {
+        onClose()
+        return
+      }
+
+      setError(null)
+
+      const existing = findIngredientByBarcode(allIngredients, code)
+      if (existing) {
+        handleExisting(existing.id)
+        return
+      }
+
+      setBarcode(code)
+      setStep('lookup')
+
+      const product = await lookupBarcode(code)
+      if (!product) {
+        setError('Product not found online. Take a label photo or enter details manually.')
+        setManualCode(code)
+        setStep('manual')
+        return
+      }
+
+      const nameMatch = findIngredientByNameHint(allIngredients, product.name, product.company)
+      if (nameMatch) {
+        handleExisting(nameMatch.id)
+        return
+      }
+
+      setForm(productToForm(product))
+      setStep('review')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not process barcode')
+      setStep(onScanned ? 'scan' : 'choose')
     }
-
-    if (onScanned?.(code)) {
-      onClose()
-      return
-    }
-
-    setBarcode(code)
-    setError(null)
-    setStep('lookup')
-
-    const existing = findIngredientByBarcode(allIngredients, code)
-    if (existing) {
-      handleExisting(existing.id)
-      return
-    }
-
-    const product = await lookupBarcode(code)
-    if (!product) {
-      setError('Product not found online. Take a label photo or enter details manually.')
-      setManualCode(code)
-      setStep('manual')
-      return
-    }
-
-    const nameMatch = findIngredientByNameHint(allIngredients, product.name, product.company)
-    if (nameMatch) {
-      handleExisting(nameMatch.id)
-      return
-    }
-
-    setForm(productToForm(product))
-    setStep('review')
   }, [allIngredients, handleExisting, onClose, onScanned])
 
   const startNativeScan = async () => {
