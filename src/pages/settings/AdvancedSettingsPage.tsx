@@ -86,7 +86,7 @@ export function AdvancedSettingsPage() {
   }
 
   return (
-    <SettingsSubPage title="Advanced settings" subtitle="Cloud sync, app cache, and data tools">
+    <SettingsSubPage title="Advanced settings" subtitle="Share, backup, cloud sync, app cache, and data tools">
       <AdvancedSettingsSection
         shelfBottleCount={shelfBottleCount}
         customIngredientCount={customIngredientCount}

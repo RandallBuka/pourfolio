@@ -1,4 +1,5 @@
 import { CloudSyncPanel } from './CloudSyncPanel'
+import { ShareBackupPanel } from './ShareBackupPanel'
 import { formatSnapshotTime, undoActionLabel, type UndoSnapshot } from '../lib/dataSnapshot'
 
 interface Props {
@@ -34,6 +35,9 @@ export function AdvancedSettingsSection({
 }: Props) {
   return (
     <>
+      <div className="section-header">Share & backup</div>
+      <ShareBackupPanel />
+
       <div className="section-header">Cloud sync</div>
       <CloudSyncPanel />
 

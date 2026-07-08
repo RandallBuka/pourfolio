@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { NavBar } from '../components/NavBar'
 import { IngredientFilterPanel } from '../components/IngredientFilterPanel'
 import { BarcodeScanModal } from '../components/BarcodeScanModal'
 import { FilterPills, ListFilterToolbar } from '../components/ListFilterToolbar'
-import { IngredientThumb, getAlphaIndex, filterByAlpha } from '../lib/ui'
+import { AlphaIndexScrubber } from '../components/AlphaIndexScrubber'
+import { IngredientThumb, ALPHA_INDEX_LETTERS, getActiveAlphaLetters, getItemAlphaLetter } from '../lib/ui'
 import { useApp } from '../context/AppContext'
 import {
   EMPTY_INGREDIENT_FILTERS,
@@ -33,7 +34,6 @@ export function AllIngredientsPage() {
   }))
   const [onShelfOnly, setOnShelfOnly] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
-  const [alpha, setAlpha] = useState<string | null>(null)
   const [showAdd, setShowAdd] = useState(false)
   const [showScan, setShowScan] = useState(false)
   const [randomMsg, setRandomMsg] = useState<string | null>(null)
@@ -69,11 +69,17 @@ export function AllIngredientsPage() {
     let items = [...allIngredients].sort((a, b) => a.name.localeCompare(b.name))
     items = applyIngredientFilters(items, filters, { onShelfOnly }, onShelfIds)
     items = applyIngredientSearch(items, search)
-    if (alpha) items = filterByAlpha(items, alpha)
     return items
-  }, [allIngredients, search, filters, onShelfOnly, onShelfIds, alpha])
+  }, [allIngredients, search, filters, onShelfOnly, onShelfIds])
 
-  const alphaLetters = useMemo(() => getAlphaIndex(filtered), [filtered])
+  const activeLetters = useMemo(() => getActiveAlphaLetters(filtered), [filtered])
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
+
+  const scrollToLetter = useCallback((letter: string, scrubbing = false) => {
+    const el = sectionRefs.current[letter]
+    if (!el) return
+    el.scrollIntoView({ behavior: scrubbing ? 'auto' : 'smooth', block: 'start' })
+  }, [])
   const activePills = formatActiveFilters(filters, onShelfOnly)
   const filterCount = getActiveFilterCount(filters, onShelfOnly)
 
@@ -139,29 +145,42 @@ export function AllIngredientsPage() {
       <div className="section-header">{filtered.length} ingredients</div>
 
       <div className="list-container">
-        {filtered.map((ing) => (
-          <Link key={ing.id} to={`/ingredients/${ing.id}`} className="list-item">
-            <IngredientThumb ingredient={ing} />
-            <div className="item-info">
-              <div className="item-name">{ing.name}</div>
-              <div className="item-subtitle">{ing.company ?? ing.genericName}</div>
-              <div className="item-meta">
-                {ing.genericName}
-                {ing.country && ` · ${ing.country}`}
-                {isUsCountry(ing.country) && ing.state && `, ${ing.state}`}
+        {ALPHA_INDEX_LETTERS.map((letter) => {
+          const items = filtered.filter((ing) => getItemAlphaLetter(ing.name) === letter)
+          if (items.length === 0) return null
+          return (
+            <div key={letter}>
+              <div
+                ref={(el) => { sectionRefs.current[letter] = el }}
+                className="section-header alpha-section-marker"
+              >
+                {letter}
               </div>
+              {items.map((ing) => (
+                <Link key={ing.id} to={`/ingredients/${ing.id}`} className="list-item">
+                  <IngredientThumb ingredient={ing} />
+                  <div className="item-info">
+                    <div className="item-name">{ing.name}</div>
+                    <div className="item-subtitle">{ing.company ?? ing.genericName}</div>
+                    <div className="item-meta">
+                      {ing.genericName}
+                      {ing.country && ` · ${ing.country}`}
+                      {isUsCountry(ing.country) && ing.state && `, ${ing.state}`}
+                    </div>
+                  </div>
+                  {isInBar(ing.id) && <span className="item-badge">On shelf</span>}
+                </Link>
+              ))}
             </div>
-            {isInBar(ing.id) && <span className="item-badge">On shelf</span>}
-          </Link>
-        ))}
+          )
+        })}
       </div>
 
-      {alphaLetters.length > 0 && (
-        <div className="alpha-index">
-          {alphaLetters.map((l) => (
-            <button key={l} type="button" onClick={() => setAlpha(alpha === l ? null : l)}>{l}</button>
-          ))}
-        </div>
+      {activeLetters.size > 0 && (
+        <AlphaIndexScrubber
+          activeLetters={activeLetters}
+          onLetter={scrollToLetter}
+        />
       )}
 
       {showFilters && (

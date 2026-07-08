@@ -88,19 +88,25 @@ export function DrinkThumb({
   )
 }
 
+export const ALPHA_INDEX_LETTERS = [
+  ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+  '0-9',
+  '#',
+] as const
+
+export function getItemAlphaLetter(name: string): string {
+  const first = name.charAt(0).toUpperCase()
+  if (/[A-Z]/.test(first)) return first
+  if (/[0-9]/.test(first)) return '0-9'
+  return '#'
+}
+
 export function getAlphaIndex(items: { name: string }[]): string[] {
   const letters = new Set<string>()
-  items.forEach((item) => {
-    const first = item.name.charAt(0).toUpperCase()
-    if (/[A-Z]/.test(first)) letters.add(first)
-    else if (/[0-9]/.test(first)) letters.add('0-9')
-    else letters.add('#')
-  })
+  items.forEach((item) => letters.add(getItemAlphaLetter(item.name)))
   return [...letters].sort()
 }
 
-export function filterByAlpha<T extends { name: string }>(items: T[], letter: string): T[] {
-  if (letter === '0-9') return items.filter((i) => /^[0-9]/.test(i.name))
-  if (letter === '#') return items.filter((i) => !/^[A-Za-z0-9]/.test(i.name))
-  return items.filter((i) => i.name.toUpperCase().startsWith(letter))
+export function getActiveAlphaLetters(items: { name: string }[]): Set<string> {
+  return new Set(getAlphaIndex(items))
 }

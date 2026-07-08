@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { NavBar } from '../components/NavBar'
 import { DrinkFilterPanel } from '../components/DrinkFilterPanel'
 import { FilterPills, ListFilterToolbar } from '../components/ListFilterToolbar'
 import { RecipeImportModal } from '../components/RecipeImportModal'
-import { DrinkThumb, getAlphaIndex, filterByAlpha } from '../lib/ui'
+import { AlphaIndexScrubber } from '../components/AlphaIndexScrubber'
+import { DrinkThumb, ALPHA_INDEX_LETTERS, getActiveAlphaLetters, getItemAlphaLetter } from '../lib/ui'
 import { useApp } from '../context/AppContext'
 import { pickRandomMakeableDrink } from '../lib/randomDrink'
 import {
@@ -28,7 +29,6 @@ export function DrinksPage() {
   const [favoritesOnly, setFavoritesOnly] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [showImport, setShowImport] = useState(false)
-  const [alpha, setAlpha] = useState<string | null>(null)
 
   useEffect(() => {
     if (ingredientFilter) {
@@ -56,11 +56,17 @@ export function DrinksPage() {
       filterContext
     )
     items = applyDrinkSearch(items, search)
-    if (alpha) items = filterByAlpha(items, alpha)
     return items
-  }, [allDrinks, search, filters, readyToPourOnly, favoritesOnly, filterContext, alpha])
+  }, [allDrinks, search, filters, readyToPourOnly, favoritesOnly, filterContext])
 
-  const alphaLetters = useMemo(() => getAlphaIndex(filtered), [filtered])
+  const activeLetters = useMemo(() => getActiveAlphaLetters(filtered), [filtered])
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
+
+  const scrollToLetter = useCallback((letter: string, scrubbing = false) => {
+    const el = sectionRefs.current[letter]
+    if (!el) return
+    el.scrollIntoView({ behavior: scrubbing ? 'auto' : 'smooth', block: 'start' })
+  }, [])
   const activePills = formatActiveDrinkFilters(filters, readyToPourOnly, favoritesOnly)
   const filterCount = getActiveDrinkFilterCount(filters, readyToPourOnly, favoritesOnly)
 
@@ -127,28 +133,41 @@ export function DrinksPage() {
       <div className="section-header">{filtered.length} drinks</div>
 
       <div className="list-container">
-        {filtered.map((drink) => (
-          <Link key={drink.id} to={`/drinks/${drink.id}`} className="list-item">
-            <DrinkThumb drink={drink} />
-            <div className="item-info">
-              <div className="item-name">{drink.name}</div>
-              <div className="item-subtitle">{getDrinkSummary(drink)}</div>
-              {canMake(drink) && (
-                <div className="item-meta item-meta--success">
-                  ✓ Ready to pour
-                </div>
-              )}
+        {ALPHA_INDEX_LETTERS.map((letter) => {
+          const items = filtered.filter((drink) => getItemAlphaLetter(drink.name) === letter)
+          if (items.length === 0) return null
+          return (
+            <div key={letter}>
+              <div
+                ref={(el) => { sectionRefs.current[letter] = el }}
+                className="section-header alpha-section-marker"
+              >
+                {letter}
+              </div>
+              {items.map((drink) => (
+                <Link key={drink.id} to={`/drinks/${drink.id}`} className="list-item">
+                  <DrinkThumb drink={drink} />
+                  <div className="item-info">
+                    <div className="item-name">{drink.name}</div>
+                    <div className="item-subtitle">{getDrinkSummary(drink)}</div>
+                    {canMake(drink) && (
+                      <div className="item-meta item-meta--success">
+                        ✓ Ready to pour
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
-          </Link>
-        ))}
+          )
+        })}
       </div>
 
-      {alphaLetters.length > 0 && (
-        <div className="alpha-index">
-          {alphaLetters.map((l) => (
-            <button key={l} type="button" onClick={() => setAlpha(alpha === l ? null : l)}>{l}</button>
-          ))}
-        </div>
+      {activeLetters.size > 0 && (
+        <AlphaIndexScrubber
+          activeLetters={activeLetters}
+          onLetter={scrollToLetter}
+        />
       )}
 
       {showFilters && (

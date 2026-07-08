@@ -5,11 +5,12 @@
 import { writeFileSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { SEED_DRINKS } from '../src/data/drinks.ts'
+import { loadAllDrinksForImages } from '../src/data/drinkImageSeed.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const OUT = join(__dirname, '../src/data/drink-images.json')
 const CDB = 'https://www.thecocktaildb.com/api/json/v1/1'
+const ALL_DRINKS = loadAllDrinksForImages()
 
 async function headOk(url: string): Promise<boolean> {
   try {
@@ -174,9 +175,9 @@ async function main() {
   const map: Record<string, string> = {}
   let found = 0
 
-  for (let i = 0; i < SEED_DRINKS.length; i++) {
-    const drink = SEED_DRINKS[i]
-    process.stdout.write(`\r[${i + 1}/${SEED_DRINKS.length}] ${drink.name.slice(0, 36).padEnd(36)}`)
+  for (let i = 0; i < ALL_DRINKS.length; i++) {
+    const drink = ALL_DRINKS[i]
+    process.stdout.write(`\r[${i + 1}/${ALL_DRINKS.length}] ${drink.name.slice(0, 36).padEnd(36)}`)
 
     const url = await resolveImage(drink)
     if (url) {
@@ -186,7 +187,7 @@ async function main() {
     await new Promise((r) => setTimeout(r, 150))
   }
 
-  console.log(`\nResolved ${found}/${SEED_DRINKS.length} drink images`)
+  console.log(`\nResolved ${found}/${ALL_DRINKS.length} drink images`)
   writeFileSync(OUT, JSON.stringify(map, null, 2))
 }
 
