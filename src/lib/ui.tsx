@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import type { Drink, Ingredient } from '../types'
+import { ImageLightbox } from '../components/ImageLightbox'
 import { getIngredientImageCandidates } from './ingredientImages'
 import { getDrinkImageCandidates } from './drinkImages'
-
 const CATEGORY_ICONS: Record<string, string> = {
   Spirits: 'thumb-spirits',
   Liqueurs: 'thumb-liqueurs',
@@ -31,69 +31,119 @@ export function getDrinkThumbClass(type: string): string {
   return DRINK_ICONS[type] ?? 'thumb-cocktail'
 }
 
-export function IngredientThumb({ ingredient, size }: { ingredient: Ingredient; size?: 'sm' | 'lg' }) {
+export function IngredientThumb({
+  ingredient,
+  size,
+  expandable,
+}: {
+  ingredient: Ingredient
+  size?: 'sm' | 'lg'
+  expandable?: boolean
+}) {
   const cls = getIngredientThumbClass(ingredient.category)
   const candidates = getIngredientImageCandidates(ingredient)
   const [index, setIndex] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const src = candidates[index]
   const showEmoji = index >= candidates.length
+  const canExpand = expandable && !showEmoji && !!src
 
   const sizeStyle = size === 'lg' ? { width: 120, height: 120 } : undefined
 
   return (
-    <div
-      className={`item-thumb ${showEmoji ? cls : 'item-thumb--photo'}`}
-      style={sizeStyle}
-    >
-      {!showEmoji && src && (
-        <img
+    <>
+      <div
+        className={`item-thumb ${showEmoji ? cls : 'item-thumb--photo'}${canExpand ? ' item-thumb--expandable' : ''}`}
+        style={sizeStyle}
+        onClick={canExpand ? () => setLightboxOpen(true) : undefined}
+        onKeyDown={canExpand ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setLightboxOpen(true)
+          }
+        } : undefined}
+        role={canExpand ? 'button' : undefined}
+        tabIndex={canExpand ? 0 : undefined}
+        aria-label={canExpand ? `View larger image of ${ingredient.name}` : undefined}
+      >
+        {!showEmoji && src && (
+          <img
+            src={src}
+            alt={ingredient.name}
+            loading="lazy"
+            onError={() => setIndex((i) => i + 1)}
+          />
+        )}
+      </div>
+      {lightboxOpen && src && (
+        <ImageLightbox
           src={src}
           alt={ingredient.name}
-          loading="lazy"
-          onError={() => setIndex((i) => i + 1)}
+          onClose={() => setLightboxOpen(false)}
         />
       )}
-    </div>
+    </>
   )
 }
 
 export function DrinkThumb({
   drink,
   size,
+  expandable,
 }: {
   drink: Pick<Drink, 'id' | 'name' | 'type' | 'image'>
   size?: 'sm' | 'lg'
+  expandable?: boolean
 }) {
   const cls = getDrinkThumbClass(drink.type)
   const candidates = getDrinkImageCandidates(drink)
   const [index, setIndex] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const src = candidates[index]
   const showEmoji = index >= candidates.length
+  const canExpand = expandable && !showEmoji && !!src
   const sizeStyle = size === 'lg' ? { width: 120, height: 120 } : undefined
 
   return (
-    <div
-      className={`item-thumb ${showEmoji ? cls : 'item-thumb--photo'}`}
-      style={sizeStyle}
-    >
-      {!showEmoji && src && (
-        <img
+    <>
+      <div
+        className={`item-thumb ${showEmoji ? cls : 'item-thumb--photo'}${canExpand ? ' item-thumb--expandable' : ''}`}
+        style={sizeStyle}
+        onClick={canExpand ? () => setLightboxOpen(true) : undefined}
+        onKeyDown={canExpand ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setLightboxOpen(true)
+          }
+        } : undefined}
+        role={canExpand ? 'button' : undefined}
+        tabIndex={canExpand ? 0 : undefined}
+        aria-label={canExpand ? `View larger image of ${drink.name}` : undefined}
+      >
+        {!showEmoji && src && (
+          <img
+            src={src}
+            alt={drink.name}
+            loading="lazy"
+            onError={() => setIndex((i) => i + 1)}
+          />
+        )}
+      </div>
+      {lightboxOpen && src && (
+        <ImageLightbox
           src={src}
           alt={drink.name}
-          loading="lazy"
-          onError={() => setIndex((i) => i + 1)}
+          onClose={() => setLightboxOpen(false)}
         />
       )}
-    </div>
+    </>
   )
 }
-
 export const ALPHA_INDEX_LETTERS = [
-  ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
   '0-9',
+  ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
   '#',
 ] as const
-
 export function getItemAlphaLetter(name: string): string {
   const first = name.charAt(0).toUpperCase()
   if (/[A-Z]/.test(first)) return first

@@ -90,7 +90,7 @@ export function IngredientDetailPage() {
       />
 
       <div className="detail-hero">
-        <IngredientThumb ingredient={ingredient} size="lg" />
+        <IngredientThumb ingredient={ingredient} size="lg" expandable />
         <div className="item-name">{ingredient.name}</div>
         {edited && (
           <span className="item-badge" style={{ display: 'inline-block', marginTop: 8 }}>

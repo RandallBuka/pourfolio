@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { TabBar } from './components/TabBar'
 import { InstallPrompt } from './components/InstallPrompt'
 import { OfflineIndicator } from './components/OfflineIndicator'
+import { ScrollToTop } from './components/ScrollToTop'
 import { MyBarPage } from './pages/MyBarPage'
 import { CanMakePage } from './pages/CanMakePage'
 import { NeedPage } from './pages/NeedPage'
@@ -27,6 +28,7 @@ function AppShell() {
     <div className="app-shell">
       <OfflineIndicator />
       <InstallPrompt />
+      <ScrollToTop />
       <main className="page-content">
         <Routes>
           <Route path="/" element={<MyBarPage />} />

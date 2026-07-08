@@ -1,6 +1,5 @@
 import { useState } from 'react'
-
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { NavBar } from '../components/NavBar'
 import { ConfirmDeleteModal } from '../components/ConfirmDeleteModal'
@@ -139,7 +138,7 @@ export function DrinkDetailPage() {
 
       <div className="detail-hero">
 
-        <DrinkThumb drink={drink} size="lg" />
+        <DrinkThumb drink={drink} size="lg" expandable />
 
         <div className="item-name">{drink.name}</div>
 
@@ -466,87 +465,53 @@ function RecipeIngredientRow({
   const substitutes = findSubstituteOptions(req, matchContext)
 
   const displayIng = matched ?? [...ingredientMap.values()].find((i) => i.genericName === req.genericName)
-
   const matchNote = matched ? explainMatch(req, matched) : null
-
-
+  const ingredientsBrowseUrl = `/ingredients?genericName=${encodeURIComponent(req.genericName)}`
 
   return (
-
     <div
-
       className={`recipe-ingredient ${editable ? 'recipe-ingredient--editable' : ''}`}
-
-      onClick={onEdit}
-
-      onKeyDown={(e) => { if (editable && (e.key === 'Enter' || e.key === ' ')) onEdit() }}
-
+      onClick={editable ? onEdit : undefined}
+      onKeyDown={editable ? (e) => { if (e.key === 'Enter' || e.key === ' ') onEdit() } : undefined}
       role={editable ? 'button' : undefined}
-
       tabIndex={editable ? 0 : undefined}
-
     >
-
       <div className="recipe-ingredient-main">
-
-        {displayIng && <IngredientThumb ingredient={displayIng} />}
-
-        <span className="recipe-amount">{amount}</span>
-
-        <div className="recipe-name">
-
-          <div className="item-name recipe-ingredient-title">
-
-            {req.brandName ?? req.genericName}
-
+        <Link
+          to={ingredientsBrowseUrl}
+          className="recipe-ingredient-browse"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {displayIng && <IngredientThumb ingredient={displayIng} />}
+          <span className="recipe-amount">{amount}</span>
+          <div className="recipe-name">
+            <div className="item-name recipe-ingredient-title">
+              {req.brandName ?? req.genericName}
+            </div>
+            {req.brandName && (
+              <div className="recipe-brand">Generic: {req.genericName}</div>
+            )}
+            {matched && matchNote ? (
+              <span className="match-note match-note--ok">{matchNote.message}</span>
+            ) : !req.optional ? (
+              <>
+                <span className="match-note match-note--missing">Not on your bar</span>
+                {substitutes.length > 0 && (
+                  <div className="substitute-list">
+                    <span className="substitute-label">Try instead:</span>
+                    {substitutes.slice(0, 3).map((sub) => (
+                      <span key={sub.id} className="substitute-chip">
+                        {sub.name} ({sub.genericName})
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <span className="recipe-optional-label">Optional</span>
+            )}
           </div>
-
-          {req.brandName && (
-
-            <div className="recipe-brand">Generic: {req.genericName}</div>
-
-          )}
-
-          {matched && matchNote ? (
-
-            <span className="match-note match-note--ok">{matchNote.message}</span>
-
-          ) : !req.optional ? (
-
-            <>
-
-              <span className="match-note match-note--missing">Not on your bar</span>
-
-              {substitutes.length > 0 && (
-
-                <div className="substitute-list">
-
-                  <span className="substitute-label">Try instead:</span>
-
-                  {substitutes.slice(0, 3).map((sub) => (
-
-                    <span key={sub.id} className="substitute-chip">
-
-                      {sub.name} ({sub.genericName})
-
-                    </span>
-
-                  ))}
-
-                </div>
-
-              )}
-
-            </>
-
-          ) : (
-
-            <span className="recipe-optional-label">Optional</span>
-
-          )}
-
-        </div>
-
+        </Link>
       </div>
 
 
