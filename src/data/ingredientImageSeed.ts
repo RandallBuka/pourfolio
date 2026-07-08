@@ -1,7 +1,7 @@
 /** Minimal export for image fetch script */
-import { SEED_INGREDIENTS } from './ingredients'
+import { CORE_SEED_INGREDIENTS } from './ingredients'
 
-export const INGREDIENT_IMAGE_SEED = SEED_INGREDIENTS.map(({ id, name, genericName }) => ({
+export const INGREDIENT_IMAGE_SEED = CORE_SEED_INGREDIENTS.map(({ id, name, genericName }) => ({
   id,
   name,
   genericName,

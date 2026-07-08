@@ -1,5 +1,4 @@
 import type { Drink, DrinkType, RecipeIngredient } from '../types'
-import { INMYBAR_SEED_DRINKS } from './seeds/inmybarDrinks'
 
 function ing(
   genericName: string,
@@ -36,7 +35,7 @@ function cocktail(
   return { id, name, type, glass, instructions, ingredients }
 }
 
-export const SEED_DRINKS: Drink[] = [
+export const CORE_SEED_DRINKS: Drink[] = [
   // Shots
   shot('24-karat-nightmare', '24-Karat Nightmare Shot', [
     ing('Cinnamon Schnapps', '1 oz', { brandName: 'Goldschlager', mode: 'premium' }),
@@ -452,7 +451,6 @@ export const SEED_DRINKS: Drink[] = [
     ing('Bitters', '3 dashes'),
     ing('Sugar', '1 cube'),
   ], 'Rocks glass', 'Stir with ice. Strain into absinthe-rinsed glass.'),
-  ...INMYBAR_SEED_DRINKS,
 ]
 
 export const DRINK_CATEGORIES: DrinkType[] = [

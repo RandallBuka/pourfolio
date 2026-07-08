@@ -1,6 +1,5 @@
 import type { Ingredient } from '../types'
 import { enrichWithUsState } from './ingredientStates'
-import { INMYBAR_SEED_INGREDIENTS } from './seeds/inmybarIngredients'
 
 const spiritBrands: Array<Omit<Ingredient, 'id' | 'category'> & { category?: Ingredient['category'] }> = [
   // Bourbon
@@ -138,7 +137,7 @@ function normalizeIngredientName(name: string): string {
 }
 
 /** Remove generic catalog rows when branded rows already cover that genericName. */
-function pruneRedundantGenerics(ingredients: Ingredient[]): Ingredient[] {
+export function pruneRedundantGenerics(ingredients: Ingredient[]): Ingredient[] {
   const brandCountByGeneric = new Map<string, number>()
   for (const ing of ingredients) {
     if (normalizeIngredientName(ing.name) !== normalizeIngredientName(ing.genericName)) {
@@ -154,7 +153,7 @@ function pruneRedundantGenerics(ingredients: Ingredient[]): Ingredient[] {
   })
 }
 
-export const SEED_INGREDIENTS: Ingredient[] = pruneRedundantGenerics([
+export const CORE_SEED_INGREDIENTS: Ingredient[] = pruneRedundantGenerics([
   ...spiritBrands.map((b) => enrichWithUsState({
     ...b,
     id: `brand-${slugify(b.name)}`,
@@ -164,10 +163,4 @@ export const SEED_INGREDIENTS: Ingredient[] = pruneRedundantGenerics([
     ...g,
     id: `gen-${slugify(g.name)}`,
   })),
-  ...INMYBAR_SEED_INGREDIENTS,
 ])
-
-export function getIngredientByGeneric(genericName: string): Ingredient | undefined {
-  return SEED_INGREDIENTS.find((i) => i.genericName === genericName && i.name === genericName)
-    ?? SEED_INGREDIENTS.find((i) => i.genericName === genericName)
-}

@@ -4,6 +4,7 @@ Adds ingredients/drinks whose names are not already in Pourfolio seeds.
 """
 from __future__ import annotations
 
+import json
 import re
 import sqlite3
 from pathlib import Path
@@ -14,6 +15,10 @@ ING_TS = ROOT / "src" / "data" / "ingredients.ts"
 DRINKS_TS = ROOT / "src" / "data" / "drinks.ts"
 OUT_ING = ROOT / "src" / "data" / "seeds" / "inmybarIngredients.ts"
 OUT_DRINKS = ROOT / "src" / "data" / "seeds" / "inmybarDrinks.ts"
+OUT_CATALOG_DIR = ROOT / "public" / "catalog"
+OUT_CATALOG_ING = OUT_CATALOG_DIR / "ingredients.json"
+OUT_CATALOG_DRINKS = OUT_CATALOG_DIR / "drinks.json"
+OUT_CATALOG_VERSION = OUT_CATALOG_DIR / "version.json"
 
 VALID_CATEGORIES = {"Spirits", "Liqueurs", "Mixers", "Juices", "Fruits", "Garnishes", "Other"}
 DRINK_TYPES = {"Cocktail", "Shot", "Martini", "Themed", "Ordinary Drink", "Punch", "Other"}
@@ -620,6 +625,24 @@ def render_drink(d: dict) -> str:
     )
 
 
+def write_json_catalog(ingredients: list[dict], drinks: list[dict]) -> None:
+    OUT_CATALOG_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_CATALOG_ING.write_text(
+        json.dumps(ingredients, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    OUT_CATALOG_DRINKS.write_text(
+        json.dumps(drinks, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    version = {
+        "version": len(ingredients) * 10000 + len(drinks),
+        "ingredients": len(ingredients),
+        "drinks": len(drinks),
+    }
+    OUT_CATALOG_VERSION.write_text(json.dumps(version), encoding="utf-8")
+
+
 def write_ingredients_file(items: list[dict]) -> None:
     OUT_ING.parent.mkdir(parents=True, exist_ok=True)
     lines = [
@@ -696,11 +719,13 @@ def main() -> None:
     ingredients, removed, added = filter_unused_non_alcoholic(ingredients, drinks, category_map)
     write_ingredients_file(ingredients)
     write_drinks_file(drinks)
+    write_json_catalog(ingredients, drinks)
     print(
         f"Wrote {len(ingredients)} ingredients -> {OUT_ING} "
         f"(removed {removed} unused non-alcoholic brands of {before}, added {added} recipe generics)"
     )
     print(f"Wrote {len(drinks)} drinks -> {OUT_DRINKS}")
+    print(f"Wrote JSON catalog -> {OUT_CATALOG_DIR}")
 
 
 if __name__ == "__main__":

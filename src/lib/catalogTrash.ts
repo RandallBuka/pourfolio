@@ -1,4 +1,4 @@
-import { SEED_DRINKS } from '../data/drinks'
+import { SEED_DRINKS } from '../data/catalogStore'
 import { getSeedIngredient } from './ingredientEdit'
 import type { AppState, CatalogTrash, TrashDrink, TrashIngredient } from '../types'
 

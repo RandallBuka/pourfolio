@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { markOnboardingComplete } from '../lib/onboarding'
-import { SEED_INGREDIENTS } from '../data/ingredients'
+import { SEED_INGREDIENTS } from '../data/catalogStore'
 import { saveState } from '../lib/storage'
 import { useApp } from '../context/AppContext'
 

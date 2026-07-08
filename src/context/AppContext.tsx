@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { SEED_DRINKS, getDrinkIngredientSummary } from '../data/drinks'
+import { getDrinkIngredientSummary } from '../data/drinks'
 import { canMakeDrink, getMissingIngredients } from '../lib/matching'
 import { buildIngredientCatalog, getSeedIngredient } from '../lib/ingredientEdit'
-import { SEED_INGREDIENTS } from '../data/ingredients'
+import { SEED_DRINKS, SEED_INGREDIENTS } from '../data/catalogStore'
 import { createDefaultState, generateId, loadState, saveState } from '../lib/storage'
 import { parseBackup } from '../lib/backup'
 import {

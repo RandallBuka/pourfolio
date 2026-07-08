@@ -9,15 +9,15 @@ import {
   hasAuthCallbackInUrl,
   initSupabaseAuth,
 } from './lib/supabaseAuth'
+import { loadCatalog } from './data/catalogStore'
 import './index.css'
 
 initTheme()
 initNativeShell()
 
-function bootstrap() {
+async function bootstrap() {
   const authCallback = hasAuthCallbackInUrl()
 
-  // GitHub Pages: send bare /pourfolio/ to hash router without waiting on network.
   if (
     import.meta.env.PROD &&
     import.meta.env.BASE_URL !== '/' &&
@@ -28,13 +28,14 @@ function bootstrap() {
     return
   }
 
+  await loadCatalog()
+
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <App />
     </StrictMode>
   )
 
-  // Auth init runs in AppContext too; never block first paint on Supabase.
   if (authCallback && isSupabaseConfigured()) {
     void initSupabaseAuth()
       .catch(() => undefined)
@@ -63,4 +64,10 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
   })
 }
 
-bootstrap()
+bootstrap().catch(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  )
+})

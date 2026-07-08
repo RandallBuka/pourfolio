@@ -1,4 +1,4 @@
-import { SEED_INGREDIENTS } from '../data/ingredients'
+import { SEED_INGREDIENTS } from '../data/catalogStore'
 import { enrichWithUsState } from '../data/ingredientStates'
 import type { Ingredient, IngredientCategory, IngredientOverride } from '../types'
 
