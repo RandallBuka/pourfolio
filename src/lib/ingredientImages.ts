@@ -27,6 +27,12 @@ const COCKTAILDB_ALIASES: Record<string, string[]> = {
   'Egg White': ['Egg white', 'Egg'],
 }
 
+const GENERIC_CDB_SPIRITS =
+  /\/ingredients\/(Vodka|Gin|Rum|Bourbon|Whiskey|Whisky|Scotch|Tequila|Brandy|Cognac|Liqueur|Schnapps|Vermouth|Bitters|Champagne|Prosecco|Wine|Cider|Beer)-(?:Medium|Small)\.png/i
+
+const BAD_IMAGE_URL =
+  /(wine_glass|cocktail|in_glass|_glass\.|hands?|people|person|lineup|shelf|smirnoff|distillery|panoramio|geograph)/i
+
 const typedMap = imageMap as Record<string, string>
 
 function encodeCdb(name: string): string {
@@ -37,11 +43,35 @@ export function cocktailDbImageUrl(name: string, size: 'Small' | 'Medium' = 'Med
   return `https://www.thecocktaildb.com/images/ingredients/${encodeCdb(name)}-${size}.png`
 }
 
+function isBranded(ingredient: Ingredient): boolean {
+  return ingredient.name.trim().toLowerCase() !== ingredient.genericName.trim().toLowerCase()
+}
+
+function isAllowedImageUrl(ingredient: Ingredient, url: string): boolean {
+  if (!url) return false
+  if (BAD_IMAGE_URL.test(url)) return false
+  if (isBranded(ingredient) && GENERIC_CDB_SPIRITS.test(url)) return false
+  return true
+}
+
 function candidatesFor(ingredient: Ingredient): string[] {
   const out: string[] = []
 
-  if (ingredient.image) out.push(ingredient.image)
-  if (typedMap[ingredient.id]) out.push(typedMap[ingredient.id])
+  if (ingredient.image && isAllowedImageUrl(ingredient, ingredient.image)) {
+    out.push(ingredient.image)
+  }
+
+  const mapped = typedMap[ingredient.id]
+  if (mapped && isAllowedImageUrl(ingredient, mapped)) {
+    out.push(mapped)
+  }
+
+  // Branded bottles: never fall back to generic spirit icons or alias guesses.
+  if (isBranded(ingredient)) {
+    out.push(cocktailDbImageUrl(ingredient.name, 'Medium'))
+    out.push(cocktailDbImageUrl(ingredient.name, 'Small'))
+    return [...new Set(out)]
+  }
 
   const names = new Set<string>([
     ingredient.name,
@@ -50,7 +80,6 @@ function candidatesFor(ingredient: Ingredient): string[] {
     ...(COCKTAILDB_ALIASES[ingredient.name] ?? []),
   ])
 
-  // Brand: try first two words (e.g. "Jim Beam")
   const parts = ingredient.name.split(/\s+/)
   if (parts.length > 2) names.add(`${parts[0]} ${parts[1]}`)
 
