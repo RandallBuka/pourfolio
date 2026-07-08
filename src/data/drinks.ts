@@ -1,4 +1,5 @@
 import type { Drink, DrinkType, RecipeIngredient } from '../types'
+import { INMYBAR_SEED_DRINKS } from './seeds/inmybarDrinks'
 
 function ing(
   genericName: string,
@@ -451,6 +452,7 @@ export const SEED_DRINKS: Drink[] = [
     ing('Bitters', '3 dashes'),
     ing('Sugar', '1 cube'),
   ], 'Rocks glass', 'Stir with ice. Strain into absinthe-rinsed glass.'),
+  ...INMYBAR_SEED_DRINKS,
 ]
 
 export const DRINK_CATEGORIES: DrinkType[] = [

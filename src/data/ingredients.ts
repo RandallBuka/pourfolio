@@ -1,5 +1,6 @@
 import type { Ingredient } from '../types'
 import { enrichWithUsState } from './ingredientStates'
+import { INMYBAR_SEED_INGREDIENTS } from './seeds/inmybarIngredients'
 
 const spiritBrands: Array<Omit<Ingredient, 'id' | 'category'> & { category?: Ingredient['category'] }> = [
   // Bourbon
@@ -99,7 +100,6 @@ const genericIngredients: Array<Omit<Ingredient, 'id'>> = [
   { name: 'Soda Water', genericName: 'Soda Water', category: 'Mixers' },
   { name: 'Tonic Water', genericName: 'Tonic Water', category: 'Mixers' },
   { name: 'Ginger Beer', genericName: 'Ginger Beer', category: 'Mixers' },
-  { name: 'Cola', genericName: 'Cola', category: 'Mixers' },
   { name: 'Cherry Coke', genericName: 'Cola', company: 'Coca-Cola', country: 'USA', flavor: 'Cherry', category: 'Mixers' },
   { name: 'Moxie', genericName: 'Soda', company: 'Moxie', country: 'USA', category: 'Mixers' },
   { name: 'Orange Juice', genericName: 'Orange Juice', category: 'Juices' },
@@ -133,7 +133,28 @@ function slugify(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
-export const SEED_INGREDIENTS: Ingredient[] = [
+function normalizeIngredientName(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()
+}
+
+/** Remove generic catalog rows when branded rows already cover that genericName. */
+function pruneRedundantGenerics(ingredients: Ingredient[]): Ingredient[] {
+  const brandCountByGeneric = new Map<string, number>()
+  for (const ing of ingredients) {
+    if (normalizeIngredientName(ing.name) !== normalizeIngredientName(ing.genericName)) {
+      const key = normalizeIngredientName(ing.genericName)
+      brandCountByGeneric.set(key, (brandCountByGeneric.get(key) ?? 0) + 1)
+    }
+  }
+  return ingredients.filter((ing) => {
+    const nameKey = normalizeIngredientName(ing.name)
+    const genericKey = normalizeIngredientName(ing.genericName)
+    if (nameKey !== genericKey) return true
+    return (brandCountByGeneric.get(genericKey) ?? 0) === 0
+  })
+}
+
+export const SEED_INGREDIENTS: Ingredient[] = pruneRedundantGenerics([
   ...spiritBrands.map((b) => enrichWithUsState({
     ...b,
     id: `brand-${slugify(b.name)}`,
@@ -143,7 +164,8 @@ export const SEED_INGREDIENTS: Ingredient[] = [
     ...g,
     id: `gen-${slugify(g.name)}`,
   })),
-]
+  ...INMYBAR_SEED_INGREDIENTS,
+])
 
 export function getIngredientByGeneric(genericName: string): Ingredient | undefined {
   return SEED_INGREDIENTS.find((i) => i.genericName === genericName && i.name === genericName)
