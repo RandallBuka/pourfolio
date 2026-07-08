@@ -3,7 +3,7 @@
   "short_name": "Pourfolio",
   "description": "Track your home bar and discover cocktails you can make",
   "id": "/pourfolio/",
-  "start_url": "/pourfolio/",
+  "start_url": "/pourfolio/#/",
   "scope": "/pourfolio/",
   "display": "standalone",
   "background_color": "#1e293b",

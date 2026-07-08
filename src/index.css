@@ -114,6 +114,29 @@
   padding: 0;
 }
 
+.boot-splash {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--pf-text-muted, #94a3b8);
+  background: var(--pf-bg, #0f172a);
+}
+
+.boot-splash-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pf-primary, #0d9488);
+}
+
+.boot-splash-sub {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
 html, body, #root {
   height: 100%;
 }
