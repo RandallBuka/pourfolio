@@ -178,10 +178,20 @@ html.native-app .app-shell {
 .page-content:has(.hub-page) {
   overflow: hidden;
   padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .page {
   min-height: 100%;
+}
+
+.page.hub-page {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  max-height: none;
 }
 
 /* Nav bar — flat slate, no skeuomorphic gradient */
@@ -499,18 +509,23 @@ html.native-app .tab-bar {
   color: var(--pf-text-muted);
 }
 
-/* Hub — fits one screen on typical phones */
+/* Hub — one screen on typical phones; scroll inside hub only when content overflows */
 .hub-page {
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - var(--pf-nav-height) - var(--pf-tab-bar-height) - env(safe-area-inset-bottom, 0px));
-  max-height: calc(100dvh - var(--pf-nav-height) - var(--pf-tab-bar-height) - env(safe-area-inset-bottom, 0px));
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .hub-header {
   text-align: center;
   padding: 8px 16px 10px;
+  flex-shrink: 0;
+}
+
+.hub-low-stock-banner {
   flex-shrink: 0;
 }
 
@@ -586,6 +601,7 @@ html.native-app .tab-bar {
   margin: 6px 0 0;
   font-size: 11px;
   color: var(--pf-danger);
+  flex-shrink: 0;
 }
 
 .bar-photo {
@@ -796,11 +812,12 @@ html.native-app .tab-bar {
 .hub-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
   gap: 10px;
   padding: 0 16px 12px;
   flex: 1;
   min-height: 0;
-  align-content: center;
+  align-content: stretch;
 }
 
 .hub-tile {
@@ -1085,9 +1102,17 @@ html.native-app .tab-bar {
   filter: blur(0.3px);
 }
 
+.hub-luck-subtitle--wrap {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .hub-luck-footer {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   min-width: 0;
 }
@@ -1102,6 +1127,7 @@ html.native-app .tab-bar {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  padding-top: 1px;
 }
 
 .hub-luck-stepper {
@@ -1279,11 +1305,40 @@ html.native-app .tab-bar {
   .hub-grid {
     gap: 8px;
     padding: 0 12px 8px;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
   }
 
   .hub-tile {
     padding: 10px;
     gap: 8px;
+  }
+
+  .hub-luck-card {
+    padding: 10px;
+  }
+
+  .hub-luck-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hub-luck-body h3 {
+    font-size: 13px;
+  }
+
+  .hub-luck-subtitle {
+    font-size: 11px;
+  }
+
+  .hub-luck-stepper button {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+
+  .hub-luck-spin {
+    padding: 7px 10px;
+    font-size: 12px;
   }
 
   .hub-tile .hub-icon {

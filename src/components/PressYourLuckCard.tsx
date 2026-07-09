@@ -122,7 +122,10 @@ export function PressYourLuckCard() {
         <div className="hub-luck-body">
           <h3 id="hub-luck-title">Press Your Luck</h3>
           <div className="hub-luck-footer">
-            <p className={`hub-luck-subtitle${spinning ? ' hub-luck-subtitle--spinning' : ''}`} aria-live="polite">
+            <p
+              className={`hub-luck-subtitle${spinning ? ' hub-luck-subtitle--spinning' : ''}${result?.length ? ' hub-luck-subtitle--wrap' : ''}`}
+              aria-live="polite"
+            >
               {subtitle}
             </p>
             <div className="hub-luck-actions">
