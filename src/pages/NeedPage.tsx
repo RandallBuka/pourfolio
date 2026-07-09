@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { NavBar } from '../components/NavBar'
 import { PageSubtitle } from '../components/PageSubtitle'
 import { DrinkThumb } from '../lib/ui'
-import { buildIngredientBrowsePath } from '../lib/ingredientBrowse'
+import { getRecipeIngredientBrowseUrl } from '../lib/ingredientBrowse'
 import { rankBuyNextSuggestions } from '../lib/buyNext'
 import { useApp } from '../context/AppContext'
 import { findMatchingBarIngredient } from '../lib/matching'
@@ -148,7 +148,7 @@ export function NeedPage() {
                     {have ? '✓' : '✗'}{' '}
                     {!have ? (
                       <Link
-                        to={buildIngredientBrowsePath(req, allIngredients)}
+                        to={getRecipeIngredientBrowseUrl(req)}
                         className="missing-ingredient-link"
                       >
                         {req.brandName ?? req.genericName}
