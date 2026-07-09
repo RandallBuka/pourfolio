@@ -61,12 +61,12 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('57-chevy', '57 Chevy', [
     ing('Vodka', '1/2 oz'),
     ing('Peach Liqueur', '1 1/2 oz'),
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Pineapple Juice', '3 oz'),
   ], 'Highball Glass', 'Fill a Highball Glass half full or more with ice.  Add Vodka, Peach Liqueur and Orange Liqueur to a Cocktail Shaker half-filled with ice. Shake and strain into the Highball Glass.  Fill with Pineapple Juice and serve.', 'Cocktail'),
   cocktail('57-chevy-shooter', '57 Chevy Shooter', [
     ing('Southern Comfort Bourbon', '1/3 oz', { brandName: 'Southern Comfort Bourbon', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1/3 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1/3 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Amaretto', '1/3 oz'),
     ing('Orange Juice', '1 splash'),
     ing('Pineapple Juice', '1 splash'),
@@ -541,7 +541,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('apple-pineapple-grand-cosmopolitan', 'Apple Pineapple Grand Cosmopolitan', [
     ing('Apple Vodka', '1/2 oz'),
     ing('Pineapple Vodka', '1/2 oz'),
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Cranberry Juice', '1/2 oz'),
     ing('Lemon', '1 slice', { optional: true }),
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Apple and Pineapple Vodka, Grand Marnier and Cranberry Juice in the Shaker.  Shake, strain into a chilled Martini Glass, optionally garnish with a twist of Lemon and serve.', 'Cocktail'),
@@ -627,7 +627,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Cordial Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour in the Coffee Liqueur. Pierce the Coffee Liqueur with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the Coffee Liqueur. Then do the same thing with the Bacardi 151 Rum.  Serve. Bacardi 151 rum is 151 proof alcohol so it kicks up the strength of this cocktail a notch or two.', 'Other'),
   cocktail('b-52-on-the-rocks', 'B-52 on the Rocks', [
     ing('Kahlua Coffee Liqueur', '1 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Baileys Irish Cream', '1 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
   ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Coffee Liqueur, Orange Liqueur and Irish Cream to the Glass.  Stir and serve.', 'Cocktail'),
   cocktail('b-52-shot-1', 'B-52 Shot #1', [
@@ -637,13 +637,13 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Shot/Shooter Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour the Coffee Liqueur and Brandy in a Shot Glass. Pierce the mixture with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the mixture.  Serve.', 'Other'),
   cocktail('b-52-shot-2', 'B-52 Shot #2', [
     ing('Kahlua Coffee Liqueur', '1/3 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1/3 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/3 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Baileys Irish Cream', '1/3 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
   ], 'Shot/Shooter Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour the Coffee Liqueur and Grand Marnier in a Shot Glass. Pierce the mixture with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the mixture.  Serve.', 'Other'),
   shot('b-53-shot-1', 'B-53 Shot #1', [
     ing('Kahlua Coffee Liqueur', '1/3 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
     ing('Ramazzotti Sambuca', '1/3 oz', { brandName: 'Ramazzotti Sambuca', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1/3 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/3 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour in the Kahlua. Pierce the Coffee Liqueur with the Bar Spoon and SLOWLY add the Sambuca by pouring it over back of the spoon, allowing it to settle on top on top of the Coffee Liqueur. Then do the same thing with the Grand Marnier.  Serve.'),
   shot('b-53-shot-2', 'B-53 Shot #2', [
     ing('Kahlua Coffee Liqueur', '1/2 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
@@ -1553,7 +1553,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Sweet and Sour', '1 oz'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Blueberry Vodka and Sweet and Sour in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('blueberry-tea', 'Blueberry Tea', [
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Amaretto', '1 oz'),
     ing('Tea', '6 oz'),
   ], 'Brandy Snifter', 'Add the Grand Marnier and Amaretto to a Brandy Snifter.  Fill with Hot Tea to taste.  Stir and serve. Note: Swaddle the brandy snifter in serviettes or a cloth to protect the hands.', 'Other'),
@@ -1766,7 +1766,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Coffee Liqueur and Milk.  Stir and serve.', 'Cocktail'),
   shot('buck-shot', 'Buck Shot', [
     ing('Jim Beam Red Stag', '1 oz', { brandName: 'Jim Beam Red Stag', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Jim Beam Red Stag Infused Bourbon and Jager in the Shaker.  Shake, strain into a Shooter Glass and serve.'),
   cocktail('bucks-fizz', 'Bucks Fizz', [
     ing('Orange Juice', '2 oz'),
@@ -1819,7 +1819,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Baileys Irish Cream', '3 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
     ing('Kahlua Coffee Liqueur', '1 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
     ing('Vodka', '1 oz'),
-    ing('Grand Marnier Liqueur', '1 splash', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1 splash', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Amaretto', '1 oz'),
     ing('Nutmeg', '1 dash', { optional: true }),
   ], 'Highball Glass', 'Add one cup of crushed ice to a blender.  Add the Irish Cream, Coffee Liqueur, Vodka, Orange Liqueur (Grand Marnier if you have it) and Amaretto to the Blender. Blend at a low speed for five seconds, and then blend at a high speed until firm.  Pour contents into a Highball Glass, optionally top with Nutmeg and serve. The consistency should be like a milkshake.', 'Other'),
@@ -1890,7 +1890,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Triple Sec', '3/4 oz'),
     ing('Lime Juice', '3 oz'),
     ing('Sweet and Sour', '3/4 oz'),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Lime', '1 slice', { optional: true }),
   ], 'Margarita Glass', 'Fill a Cocktail Shaker half full with crushed ice. Rub the rim of a Margarita Glass with Lime Juice. Put the rim of the glass in Salt and turn glass in a circle until half of the glass or more is rimmed with Salt.  Combine the Tequila, Triple Sec, Lime Juice and Sweet and Sour in the Shaker. Shake and pour the contents (ice and all) into the Margarita Glass.  Top with a shot of Grand Marnier, optionally garnish with a slice of Lime and serve.', 'Cocktail'),
   cocktail('caesar', 'Caesar', [
@@ -2148,7 +2148,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Wine Glass', 'Get a standard size Wine Glass and fill it with Champagne.  Add three drops of Bitters.  Drop a teaspoon of Sugar (or one sugar cube) into the glass and serve.', 'Other'),
   cocktail('champagne-cosmopolitan', 'Champagne Cosmopolitan', [
     ing('Citrus Vodka', '1 oz'),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Cranberry Juice', '1 1/2 oz'),
     ing('Lime Juice', '1/2 oz'),
     ing('Champagne', '1 oz'),
@@ -2435,7 +2435,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Rum, Orange Liqueur and Chocolate Liqueur in the Shaker.  Shake well, strain into the chilled Martini Glass, optionally garnish with a twist of Orange and serve.', 'Other'),
   cocktail('cleveland-browns-the-browns-shot', 'Cleveland Browns - The Browns Shot', [
     ing('Kahlua Coffee Liqueur', '1/2 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Baileys Irish Cream', '1/2 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
   ], 'Shot/Shooter Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour the Coffee Liqueur and Grand Marnier in a Shot Glass. Pierce the mixture with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the mixture.  Serve.', 'Other'),
   cocktail('cliquet-1', 'Cliquet #1', [
@@ -2697,7 +2697,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('dallas-cowboys-cowboy-cocktail-2', 'Dallas Cowboys - Cowboy Cocktail #2', [
     ing('Tequila', '1 oz'),
     ing('Blue Curacao', '1/2 oz'),
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Ginger Ale', '1 1/2 oz'),
     ing('Lime Juice', '1/2 oz'),
   ], 'Highball Glass', 'Fill a Highball Glass with cubed ice.  Add the Tequila, Blue Curacao, Orange Liqueur (Grand Marnier if you have it), Ginger Ale and Lime Juice to the Glass.  Stir and serve.', 'Other'),
@@ -2712,7 +2712,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Citrus Vodka, Triple Sec and a splash of Orange Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   shot('dead-nazi-shot-1', 'Dead Nazi Shot #1', [
     ing('Goldschlager Cinnamon Schnapps', '1/2 oz', { brandName: 'Goldschlager Cinnamon Schnapps', mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Get a standard size Shot Glass.  Combine the Cinnamon Schnapps and Jager in the Glass.  Serve.'),
   shot('dead-nazi-shot-2', 'Dead Nazi Shot #2', [
     ing('Goldschlager Cinnamon Schnapps', '1/2 oz', { brandName: 'Goldschlager Cinnamon Schnapps', mode: 'premium' }),
@@ -2720,7 +2720,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Get a standard size Shot Glass.  Combine the Cinnamon and Peppermint Schnapps in the Glass.  Serve.'),
   shot('dead-nazi-shot-3', 'Dead Nazi Shot #3', [
     ing('Rumple Minze Peppermint Schnapps', '1/2 oz', { brandName: 'Rumple Minze Peppermint Schnapps', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Get a standard size Shot Glass.  Combine the Rumple Minze and Jager in the Glass.  Serve.'),
   cocktail('death-and-co-oaxaca-old-fashioned', 'Death And Co. Oaxaca Old-Fashioned', [
     ing('El Tesoro Tequila Reposado', '1 1/2 oz', { brandName: 'El Tesoro Tequila Reposado', allowGenericSubstitution: false, mode: 'premium' }),
@@ -3017,7 +3017,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('flaming-b52-1', 'Flaming B52 #1', [
     ing('Kahlua Coffee Liqueur', '1/3 oz', { brandName: 'Kahlua Coffee Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Baileys Irish Cream', '1/3 oz', { brandName: 'Baileys Irish Cream', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1/3 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/3 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Bacardi 151 Rum', '1 splash', { brandName: 'Bacardi 151 Rum', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Shot/Shooter Glass', 'Take a Shot Glass and a get a small spoon in order to help layer the shot.  Pour in the Kahlua. Pierce the Kahlua with the Bar Spoon and SLOWLY add the Baileys by pouring it over back of the spoon, allowing it to settle on top on top of the Kahlua. Then do the same thing with the Grand Marnier and add a splash of Bacardi 151 on top. Light with a Match or Lighter.  Serve, extinguish the flame and drink. Another option is to use a long straw. While the shot is still flaming, quickly place a straw down to the bottom of the glass and drink quickly. ALWAYS USE CAUTION WHEN FIRE IS INVOLVED!', 'Other'),
   cocktail('flaming-b52-2', 'Flaming B52 #2', [
@@ -3092,7 +3092,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Highball Glass', 'Fill a Highball Glass half full or more with ice.  Add the Gin, Raspberry Liqueur, Ginger Ale and Lime Juice to the Glass.  Stir, optionally garnish with a slice of Lime and serve.', 'Cocktail'),
   cocktail('floridian', 'Floridian', [
     ing('Absolut Mandrin Vodka', '2 oz', { brandName: 'Absolut Mandrin Vodka', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Orange Juice', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Orange Vodka, Grand Marnier and a splash of Orange Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('flying-grasshopper', 'Flying Grasshopper', [
@@ -3125,12 +3125,12 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Shot/Shooter Glass', 'Take a large Shot Glass and a get a bar spoon in order to help layer the shooter.  Pour in the Grenadine. Pierce the Grenadine with the Bar Spoon and SLOWLY add the Vodka by pouring it over back of the spoon, allowing it to settle on top on top of the Grenadine. Then do the same thing with the Blue Curacao.  Serve.', 'Other'),
   shot('four-horsemen-shot-1', 'Four Horsemen Shot #1', [
     ing('Bacardi 151 Rum', '1/3 oz', { brandName: 'Bacardi 151 Rum', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1/3 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/3 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Rumple Minze Peppermint Schnapps', '1/3 oz', { brandName: 'Rumple Minze Peppermint Schnapps', mode: 'premium' }),
   ], 'Get a standard size Shot Glass.  Slowly combine the Bacardi 151, Jager and Peppermint Schnapps in the Glass.  Serve.'),
   shot('four-horsemen-shot-2', 'Four Horsemen Shot #2', [
     ing('Bacardi 151 Rum', '3/4 oz', { brandName: 'Bacardi 151 Rum', mode: 'premium' }),
-    ing('Jagermeister Liqueur', '3/4 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '3/4 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Peppermint Schnapps', '3/4 oz'),
     ing('Tequila', '3/4 oz'),
   ], 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Rum, Jager, Peppermint Schnapps and Tequila in the Shaker.  Shake, strain into a large Shot Glass or small Rocks Glass and serve.'),
@@ -3176,30 +3176,30 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Amaretto', '1 oz'),
   ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Brandy and Amaretto.  Stir and serve.', 'Cocktail'),
   cocktail('french-connection-2', 'French Connection #2', [
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Courvoisier Cognac VS', '1 oz', { brandName: 'Courvoisier Cognac VS', mode: 'premium' }),
   ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Grand Marnier and Cognac.  Stir and serve.', 'Cocktail'),
   cocktail('french-cosmo', 'French Cosmo', [
     ing('Grey Goose L\'Orange Vodka', '2 oz', { brandName: 'Grey Goose L\'Orange Vodka', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Cranberry Juice', '1 splash'),
     ing('Lime Juice', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Grey Goose L\'Orange Vodka, Grand Marnier, a splash of Cranberry Juice and a splash of Lime Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Cocktail'),
   cocktail('french-ginger-martini-1', 'French Ginger Martini #1', [
     ing('Vodka', '2 oz'),
     ing('Ginger Liqueur', '2 oz'),
-    ing('Grand Marnier Liqueur', '1 splash', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 splash', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Lime', '1 wedge', { optional: true }),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Add the Vodka, Ginger Liqueur and a splash of Grand Marnier to Shaker.  Shake well, strain into the chilled Martini Glass, optionally garnish with a wedge of Lime and serve.', 'Martini'),
   cocktail('french-ginger-martini-2', 'French Ginger Martini #2', [
     ing('Ginger Vodka', '2 oz'),
-    ing('Grand Marnier Liqueur', '1 splash', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 splash', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Lime', '1 wedge', { optional: true }),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Add the Ginger Vodka and a splash of Grand Marnier to Shaker.  Shake well, strain into the chilled Martini Glass, optionally garnish with a wedge of Lime and serve.', 'Martini'),
   cocktail('french-ginger-martini-3', 'French Ginger Martini #3', [
     ing('Vodka', '2 oz'),
     ing('Gingerbread Liqueur', '2 oz'),
-    ing('Grand Marnier Liqueur', '1 splash', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 splash', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Lime', '1 wedge', { optional: true }),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Add the Vodka, Gingerbread Liqueur and a splash of Grand Marnier to Shaker.  Shake well, strain into the chilled Martini Glass, optionally garnish with a wedge of Lime and serve.', 'Martini'),
   cocktail('french-kamikaze-shooter', 'French Kamikaze Shooter', [
@@ -3216,7 +3216,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('french-kiss-1', 'French Kiss #1', [
     ing('Grey Goose Vodka', '1 oz', { brandName: 'Grey Goose Vodka', mode: 'premium' }),
     ing('Chambord Liqueur', '1 oz', { brandName: 'Chambord Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Pineapple Juice', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Vodka, Chambord, Grand Marnier and a splash of Pineapple Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('french-kiss-2', 'French Kiss #2', [
@@ -3297,7 +3297,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Orange Juice', 'Fill glass'),
   ], 'Collins Glass', 'Fill a Collins Glass with cubed ice.  Add the Peach Liqueur, Vodka and Orange Juice.  Stir and serve.', 'Cocktail'),
   cocktail('g-spot-shooter', 'G Spot Shooter', [
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Bacardi O Orange Rum', '1 oz', { brandName: 'Bacardi O Orange Rum', mode: 'premium' }),
     ing('99 Orange Schnapps', '1/4 oz', { brandName: '99 Orange Schnapps', mode: 'premium' }),
     ing('Cranberry Juice', '2 oz'),
@@ -3500,7 +3500,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Galliano, Creme de Cacao White and Cream in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Cocktail'),
   cocktail('golden-grand-margarita', 'Golden Grand Margarita', [
     ing('Tequila', '1 1/2 oz'),
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Lime Juice', '1/2 oz'),
     ing('Sweet and Sour', '3 oz'),
     ing('Orange Juice', '1 splash', { optional: true }),
@@ -3515,7 +3515,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Lime', '1 wedge', { optional: true }),
   ], 'Margarita Glass', 'Fill a Cocktail Shaker half full with crushed ice. Rub the rim of a Margarita Glass with Lime Juice. Put the rim of the glass in Salt and turn glass in a circle until half of the glass or more is rimmed with Salt.  Combine the Tequila, Orange Liqueur, Lime Juice and Sweet and Sour in the Shaker. Optionally add a splash of Orange Juice, shake and pour the contents (ice and all) into the Margarita Glass.  Optionally garnish with a wedge of Lime and Serve.', 'Cocktail'),
   cocktail('grand-mimosa', 'Grand Mimosa', [
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Champagne', '3/4 glass'),
     ing('Orange Juice', '1 splash'),
   ], 'Champagne Flute', 'Pour Grand Marnier into a Champagne Flute.  Fill almost to the top with Champagne and top off with the Orange Juice.  Serve.', 'Cocktail'),
@@ -3945,7 +3945,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Vodka and Blue Curacao in the Shaker.  Shake well, strain into the chilled Martini Glass, optionally top with some Club Soda, float a few Blueberries and serve.', 'Other'),
   cocktail('indianapolis-colts-colt-45', 'Indianapolis Colts - Colt 45', [
     ing('Gin', '1 oz'),
-    ing('Jagermeister Liqueur', '2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Red Bull', 'Fill glass', { brandName: 'Red Bull', mode: 'premium' }),
   ], 'Rocks Glass', 'Fill a Rocks Glass half full or more with ice.  Combine the Gin and Jager in the Glass and top with Energy Drink.  Stir and serve.', 'Other'),
   cocktail('irish-ale-cocktail', 'Irish Ale Cocktail', [
@@ -4005,7 +4005,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('irish-flag-1', 'Irish Flag #1', [
     ing('Creme de Menthe Green', '1 oz'),
     ing('Baileys Irish Cream', '1 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Pousse Cafe Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour in the Creme de Menthe Green. Pierce the Creme de Menthe Green with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the Creme de Menthe Green. Then do the same thing with the Grand Marnier.  Serve. The three flavors of the liqueurs are not the most complimentary but neither are they the worst and some people do like this one for its flavor.', 'Other'),
   cocktail('irish-flag-2', 'Irish Flag #2', [
     ing('Creme de Menthe Green', '1 oz'),
@@ -4099,7 +4099,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Rocks Glass', 'Fill an Rocks Glass half full or more with ice.  Add the Jack Daniels to the glass and fill with 7-Up.  Stir and serve.', 'Cocktail'),
   cocktail('jack-frost', 'Jack Frost', [
     ing('Rum', '1 oz'),
-    ing('Grand Marnier Liqueur', '3/4 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '3/4 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Champagne', '4 oz'),
     ing('Lemon Juice', '3/4 oz'),
     ing('Sugar Syrup', '1/4 oz'),
@@ -4126,10 +4126,10 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Pineapple', '1 slice', { optional: true }),
   ], 'Hurricane Glass', 'Add one half cup of crushed ice to a blender.  Add the Vodka, Blue Curacao and Pineapple Juice to the Blender. Blend at a low speed for five seconds, and then blend at a high speed until firm.  Pour contents into a Hurricane Glass, optionally top with a slice of Pineapple and serve.', 'Other'),
   shot('jager-shot', 'Jager Shot', [
-    ing('Jagermeister Liqueur', '1 1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Fill a Cocktail Shaker half full with crushed ice.  Add the Jager to the Shaker.  Shake, strain into a Shot Glass and serve.'),
   cocktail('jagertini', 'Jagertini', [
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Vodka', '1 oz'),
     ing('Cranberry Juice', '1 oz'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine equal amounts of Jager, Vodka and Cranberry Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
@@ -4279,7 +4279,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Lime', '1 slice', { optional: true }),
   ], 'Collins Glass', 'Fill a Collins Glass with cubed ice.  Combine the Rum, Hawaiian Punch and 7-Up or Sprite in the Glass.  Stir, optionally add a slice of Lemon or Lime and serve.', 'Cocktail'),
   cocktail('just-peachie', 'Just Peachie', [
-    ing('Absolut Apeach Vodka', '2 oz', { brandName: 'Absolut Apeach Vodka', mode: 'premium' }),
+    ing('Absolut Peach Vodka', '2 oz', { brandName: 'Absolut Peach Vodka', mode: 'premium' }),
     ing('DeKuyper Peachtree Schnapps', '1 oz', { brandName: 'DeKuyper Peachtree Schnapps', mode: 'premium' }),
     ing('Orange Juice', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Peach Vodka, Peach Liqueur and a splash of Orange Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
@@ -4609,25 +4609,25 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Rocks Glass', 'Get a Rocks Glass since this shooter is so large. Fill a Cocktail Shaker half full with crushed ice.  Combine the Amaretto, Bourbon and Pineapple Juice in the Shaker.  Stir or shake, strain into the Glass and serve.', 'Other'),
   shot('liquid-cocaine-shot-1', 'Liquid Cocaine Shot #1', [
     ing('Peppermint Schnapps', '1 oz'),
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Bacardi 151 Rum', '1 oz', { brandName: 'Bacardi 151 Rum', mode: 'premium' }),
   ], 'Get a large size Shot Glass.  Combine the Peppermint Schnapps, Jager and Rum in the Glass.  Serve.'),
   shot('liquid-cocaine-shot-2', 'Liquid Cocaine Shot #2', [
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Sambuca', '1 oz'),
   ], 'Get a large size Shot Glass.  Combine the Jager and Sambuca in the Glass.  Serve.'),
   shot('liquid-cocaine-shot-3', 'Liquid Cocaine Shot #3', [
     ing('Goldschlager Cinnamon Schnapps', '1 oz', { brandName: 'Goldschlager Cinnamon Schnapps', mode: 'premium' }),
     ing('Peppermint Schnapps', '1 oz'),
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Get a large size Shot Glass.  Combine the Cinnamon Schnapps, Peppermint Schnapps and Jager in the Glass.  Serve.'),
   shot('liquid-cocaine-shot-4', 'Liquid Cocaine Shot #4', [
-    ing('Jagermeister Liqueur', '1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Goldschlager Cinnamon Schnapps', '1/2 oz', { brandName: 'Goldschlager Cinnamon Schnapps', mode: 'premium' }),
   ], 'Get a standard size Shot Glass.  Combine the Jager and Cinnamon Schnapps in the Glass.  Serve.'),
   shot('liquid-cocaine-shot-5', 'Liquid Cocaine Shot #5', [
     ing('Goldschlager Cinnamon Schnapps', '1 oz', { brandName: 'Goldschlager Cinnamon Schnapps', mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Bacardi 151 Rum', '1 oz', { brandName: 'Bacardi 151 Rum', mode: 'premium' }),
   ], 'Fill a Cocktail Shaker half full with crushed ice and get a large size Shot Glass.  Combine the Cinnamon Schnapps, Jager and Rum in the Shaker.  Shake, strain into the Glass and serve.'),
   cocktail('liquid-marijuana', 'Liquid Marijuana', [
@@ -5379,13 +5379,13 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Milk', '3 oz'),
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Raspberry Liqueur (Chambord if you have it), Hazelnut Liqueur and Milk in the Shaker.  Shake, pour the contents (ice and all) into a Martini Glass and serve.', 'Cocktail'),
   cocktail('nuts-and-berries-2', 'Nuts and Berries #2', [
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Kahlua Coffee Liqueur', '1 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
     ing('Baileys Irish Cream', '1 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
     ing('Half and Half', '2 oz'),
   ], 'Rocks Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Grand Marnier, Coffee Liqueur, Irish Cream and Half and Half in the Shaker.  Shake, pour the contents (ice and all) into a Rocks Glass and serve.', 'Cocktail'),
   cocktail('nuts-and-berries-3', 'Nuts and Berries #3', [
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Kahlua Coffee Liqueur', '1 oz', { brandName: 'Kahlua Coffee Liqueur', mode: 'premium' }),
     ing('Baileys Irish Cream', '1 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
     ing('Milk', '2 oz'),
@@ -5443,7 +5443,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Absolut Kurant Vodka', '1/2 oz', { brandName: 'Absolut Kurant Vodka', mode: 'premium' }),
     ing('Malibu Coconut Rum', '1/4 oz', { brandName: 'Malibu Coconut Rum', mode: 'premium' }),
     ing('Amaretto', '1/4 oz'),
-    ing('Grand Marnier Liqueur', '1/4 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1/4 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Chambord Liqueur', '1/4 oz', { brandName: 'Chambord Liqueur', mode: 'premium' }),
     ing('Midori Melon Liqueur', '1/4 oz', { brandName: 'Midori Melon Liqueur', mode: 'premium' }),
     ing('Cranberry Juice', '1/2 oz'),
@@ -5489,12 +5489,12 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Collins Glass', 'Fill a Collins Glass with cubed ice.  Add the Orange Juice, Tonic Water and Lemon Juice.  Stir and serve.', 'Other'),
   cocktail('orange-monk', 'Orange Monk', [
     ing('Benedictine', '1 1/2 oz'),
-    ing('Grand Marnier Liqueur', '1 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Benedictine and Grand Marnier in the Shaker.  Shake well, strain into a Martini Glass and serve.', 'Cocktail'),
   cocktail('orgasm', 'Orgasm', [
     ing('Cointreau Liqueur', '1 oz', { brandName: 'Cointreau Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Baileys Irish Cream', '1 oz', { brandName: 'Baileys Irish Cream', mode: 'premium' }),
-    ing('Grand Marnier Liqueur', '3/4 oz', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '3/4 oz', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Cointreau, Irish Cream and Grand Marnier to the Glass.  Stir and serve.', 'Cocktail'),
   cocktail('ouzo-cocktail', 'Ouzo Cocktail', [
     ing('Ouzo', '1 oz'),
@@ -5572,7 +5572,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Cranberry Juice', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Vodka, X-Rated, and a splash each of Orange and Cranberry Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('peach-beamer', 'Peach Beamer', [
-    ing('Absolut Apeach Vodka', '2 oz', { brandName: 'Absolut Apeach Vodka', mode: 'premium' }),
+    ing('Absolut Peach Vodka', '2 oz', { brandName: 'Absolut Peach Vodka', mode: 'premium' }),
     ing('Jim Beam Bourbon', '1 oz', { brandName: 'Jim Beam Bourbon', mode: 'premium' }),
     ing('Grenadine', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Peach Vodka, Bourbon and a dash of Grenadine in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
@@ -5603,7 +5603,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('peachy-keen-martini', 'Peachy Keen Martini', [
     ing('Orange Vodka', '1 1/2 oz'),
     ing('Peach Liqueur', '1 1/2 oz'),
-    ing('Grand Marnier Liqueur', '1/4 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1/4 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Pineapple Juice', '3/4 oz'),
     ing('Grenadine', '1 splash'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Orange Vodka, Peach Liqueur and Pineapple Juice in the Shaker.  Shake well and strain into the chilled Martini Glass. Slowly add the Grenadine and it will sink to the bottom. Float the Orange Liqueur on top and serve.', 'Martini'),
@@ -5900,7 +5900,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Vodka, Pomegranate Liqueur and Cranberry Juice in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('pomegranate-martini-2', 'Pomegranate Martini #2', [
     ing('Vodka', '1 oz'),
-    ing('Grand Marnier Liqueur', '1/2 oz', { brandName: 'Grand Marnier Liqueur', mode: 'premium' }),
+    ing('Grand Marnier', '1/2 oz', { brandName: 'Grand Marnier', mode: 'premium' }),
     ing('Pomegranate Juice', '1 oz'),
     ing('Tonic Water', '1 splash', { optional: true }),
     ing('Lemon', '1 wedge', { optional: true }),
@@ -6013,10 +6013,10 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Chambord Liqueur', '1/2 oz', { brandName: 'Chambord Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Blue Curacao', '1/2 oz'),
     ing('Cranberry Juice', '1 oz'),
-    ing('Grand Marnier Liqueur', '1 splash', { brandName: 'Grand Marnier Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Grand Marnier', '1 splash', { brandName: 'Grand Marnier', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Raspberry Vodka, Chambord, Blue Curacao, Cranberry Juice and a splash of Grand Marnier in the Shaker.  Shake, strain into a chilled Martini Glass and serve.', 'Cocktail'),
   cocktail('purple-nipple-shooter', 'Purple Nipple Shooter', [
-    ing('Jagermeister Liqueur', '1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Midori Melon Liqueur', '1 1/2 oz', { brandName: 'Midori Melon Liqueur', mode: 'premium' }),
     ing('Cranberry Juice', '1 oz'),
     ing('Orange Juice', '1 splash'),
@@ -6170,12 +6170,12 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Beer', '1 bottle'),
   ], 'Beer Mug', 'Take a Beer Mug and pour in chilled Clamato Juice.  Add the Beer and slowly stir to mix.  Serve.', 'Other'),
   cocktail('red-headed-slut-shooter-1', 'Red Headed Slut Shooter #1', [
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Peach Liqueur', '1 oz'),
     ing('Cranberry Juice', '1 oz'),
   ], 'Shot/Shooter Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Jager, Peach Liqueur and Cranberry Juice in the Shaker.  Shake, strain into the Glass and serve. This is the original and most people\'s favorite Red Headed Slut.', 'Other'),
   cocktail('red-headed-slut-shooter-2', 'Red Headed Slut Shooter #2', [
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Vodka', '1 oz'),
     ing('Cranberry Juice', '1 splash'),
   ], 'Shot/Shooter Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Jager, Vodka and nice splash of Cranberry Juice in the Shaker.  Shake, strain into the Glass and serve.', 'Other'),
@@ -6749,13 +6749,13 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Midori Melon Liqueur', '3/4 oz', { brandName: 'Midori Melon Liqueur', mode: 'premium' }),
     ing('Sweet and Sour', '3-4 dashes'),
     ing('Chambord Liqueur', '3/4 oz', { brandName: 'Chambord Liqueur', mode: 'premium' }),
-    ing('Jagermeister Liqueur', '3/4 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '3/4 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Shot/Shooter Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Add the Melon Liqueur and Sweet and Sour mix to the Shaker. Shake and pour in a large size shot glass. Tilt the glass and pour the Raspberry Liqueur slowly down the inside of the glass and allow it to sink to the bottom. Then pour the Jager along the inside of the glass and it will layer on top.  Serve.', 'Other'),
   cocktail('sexy-alligator', 'Sexy Alligator', [
     ing('Midori Melon Liqueur', '1 oz', { brandName: 'Midori Melon Liqueur', mode: 'premium' }),
     ing('Pineapple Juice', '1 oz'),
     ing('Amaretto', '1 oz'),
-    ing('Jagermeister Liqueur', '1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Melon Liqueur and Pineapple Juice in the Shaker. Shake and strain into a chilled Martini Glass. Add Amaretto by pouring close to the inner edge of the glass and allowing it to sink to the bottom. Float Jager on top by holding spoon to edge of glass while pouring into the spoon.  Serve.', 'Cocktail'),
   cocktail('shady-lady', 'Shady Lady', [
     ing('Tequila', '1 oz'),
@@ -7147,24 +7147,24 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Pineapple', '1 slice', { optional: true }),
   ], 'Hurricane Glass', 'Fill a Large Hurricane Glass with cubed ice.  Add Bacardi 151 Rum, Rum, Triple Sec, Peach Liqueur along with the Orange, Pineapple and Pomegranate Juices.  Stir, optionally garnish with a slice of Lemon, Orange or Pineapple and serve.', 'Cocktail'),
   cocktail('surfer-on-acid-shooter-1', 'Surfer on Acid Shooter #1', [
-    ing('Jagermeister Liqueur', '1/3 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/3 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Malibu Coconut Rum', '1/3 oz', { brandName: 'Malibu Coconut Rum', mode: 'premium' }),
     ing('Pineapple Juice', '1/3 oz'),
   ], 'Shot/Shooter Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Jager, Coconut Rum and Pineapple Juice in the Shaker.  Shake, strain into the Shot Glass and serve.', 'Other'),
   shot('surfer-on-acid-shot-2', 'Surfer on Acid Shot #2', [
-    ing('Jagermeister Liqueur', '1/3 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/3 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Vodka', '1/3 oz'),
     ing('Midori Melon Liqueur', '1/3 oz', { brandName: 'Midori Melon Liqueur', mode: 'premium' }),
   ], 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Jager, Vodka and Melon Liqueur in the Shaker.  Shake, strain into the Shot Glass and serve.'),
   shot('surfer-on-acid-shot-3', 'Surfer on Acid Shot #3', [
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Malibu Coconut Rum', '1 oz', { brandName: 'Malibu Coconut Rum', mode: 'premium' }),
     ing('Peppermint Schnapps', '1 oz'),
   ], 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Jager, Coconut Rum and Peppermint Schnapps in the Shaker.  Shake, strain into the Shot Glass and serve.'),
   cocktail('swamp-thing', 'Swamp Thing', [
     ing('Melon Liqueur', '1/2 oz'),
     ing('Chambord Liqueur', '1/2 oz', { brandName: 'Chambord Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1/2 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1/2 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
   ], 'Pousse Cafe Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour in the Melon Liqueur. Pierce the Melon Liqueur with the Bar Spoon and SLOWLY add the Chambord by pouring it over back of the spoon, allowing it to settle on top on top of the Melon Liqueur. Then do the same thing with the Jager.  Serve.', 'Other'),
   cocktail('sweet-blackberry-tea', 'Sweet Blackberry Tea', [
     ing('Tea Vodka', '1 oz'),
@@ -7383,7 +7383,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Shot/Shooter Glass', 'Get a large size Shot Glass.  Combine the Whiskey, Bourbon and Tequila in the glass.  Serve.', 'Other'),
   cocktail('three-wise-men-shot-3', 'Three Wise Men Shot #3', [
     ing('Goldschlager Cinnamon Schnapps', '1 oz', { brandName: 'Goldschlager Cinnamon Schnapps', mode: 'premium' }),
-    ing('Jagermeister Liqueur', '1 oz', { brandName: 'Jagermeister Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Jagermeister', '1 oz', { brandName: 'Jagermeister', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Rumple Minze Peppermint Schnapps', '1 oz', { brandName: 'Rumple Minze Peppermint Schnapps', mode: 'premium' }),
   ], 'Shot/Shooter Glass', 'Get a large size Shot Glass.  Combine the Cinnamon Schnapps, Jagermeister and Peppermint Schnapps in the glass.  Serve.', 'Other'),
   cocktail('thug-passion-1', 'Thug Passion #1', [

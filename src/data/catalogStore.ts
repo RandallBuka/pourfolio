@@ -4,7 +4,7 @@ import { enrichWithUsState } from './ingredientStates'
 import { CORE_SEED_INGREDIENTS, pruneRedundantGenerics } from './ingredients'
 import { CORE_SEED_DRINKS } from './drinks'
 
-const CACHE_KEY = 'pourfolio-catalog-v1'
+const CACHE_KEY = 'pourfolio-catalog-v2'
 
 interface CatalogCache {
   version: number

@@ -458,7 +458,7 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
   },
   {
     id: 'brand-absolut-apeach-vodka',
-    name: 'Absolut Apeach Vodka',
+    name: 'Absolut Peach Vodka',
     genericName: 'Peach Vodka',
     company: 'Absolut',
     country: 'Sweden',
@@ -9048,16 +9048,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-grand-marnier-liqueur',
-    name: 'Grand Marnier Liqueur',
-    genericName: 'Orange Liqueur',
-    company: 'Grand Marnier',
-    country: 'France',
-    flavor: 'Congac',
-    type: 'Liqueur',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-grand-marnier-signature-collection-no-2-raspberry-peach',
     name: 'Grand Marnier Signature Collection No 2 Raspberry Peach',
     genericName: 'Grand Marnier Signature Collection No 2 Raspberry Peach',
@@ -10794,15 +10784,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     company: 'Jacopo Poli',
     country: 'Italy',
     type: 'Brandy',
-    category: 'Spirits',
-  },
-  {
-    id: 'brand-jagermeister-liqueur',
-    name: 'Jagermeister Liqueur',
-    genericName: 'Jagermeister',
-    company: 'Jagermeister',
-    country: 'Germany',
-    type: 'Liqueur',
     category: 'Spirits',
   },
   {
