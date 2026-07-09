@@ -20,6 +20,7 @@ import { captureBarPhoto } from '../lib/barPhoto'
 import { isOnboardingComplete } from '../lib/onboarding'
 
 import { pickRandomMakeableDrink } from '../lib/randomDrink'
+import { PressYourLuckCard } from '../components/PressYourLuckCard'
 import { useApp } from '../context/AppContext'
 
 
@@ -312,7 +313,7 @@ export function MyBarPage() {
 
       </div>
 
-
+      <PressYourLuckCard />
 
       {showBarPicker && (
 
