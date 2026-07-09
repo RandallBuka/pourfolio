@@ -1,5 +1,5 @@
 const BASE_PATH = self.location.pathname.replace(/sw\.js$/, '')
-const CACHE = 'pourfolio-shell-v6'
+const CACHE = 'pourfolio-shell-v7'
 
 /** Keep install tiny — large catalog JSON is cached lazily on fetch, not during install. */
 const SHELL = [
