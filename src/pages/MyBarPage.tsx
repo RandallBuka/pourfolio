@@ -254,7 +254,7 @@ export function MyBarPage() {
 
             <h3>What I&apos;m Missing</h3>
 
-            <p>For saved drinks</p>
+            <p>Unlocks the most recipes</p>
 
           </div>
 

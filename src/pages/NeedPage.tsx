@@ -4,18 +4,15 @@ import { NavBar } from '../components/NavBar'
 import { PageSubtitle } from '../components/PageSubtitle'
 import { DrinkThumb } from '../lib/ui'
 import { getRecipeIngredientBrowseUrl } from '../lib/ingredientBrowse'
-import { rankBuyNextSuggestions } from '../lib/buyNext'
+import { rankBuyNextSuggestions, rankClosestDrinks } from '../lib/buyNext'
 import { useApp } from '../context/AppContext'
 import { findMatchingBarIngredient } from '../lib/matching'
 import { resolveIngredientIdForRequirement } from '../lib/shoppingList'
-
-const TOP_DRINKS = ['old-fashioned', 'manhattan', 'margarita', 'martini', 'mojito', 'negroni', 'cosmopolitan', 'whiskey-sour']
 
 export function NeedPage() {
   const {
     activeBar,
     allDrinks,
-    allIngredients,
     state,
     matchContext,
     toggleShopping,
@@ -27,35 +24,30 @@ export function NeedPage() {
   const navigate = useNavigate()
   const [addedMsg, setAddedMsg] = useState<string | null>(null)
 
+  const favoriteIds = useMemo(() => new Set(state.favorites), [state.favorites])
+
   const buyNext = useMemo(
-    () => rankBuyNextSuggestions(allDrinks, matchContext, ingredientMap, {
-      limit: 8,
-      excludeIds: new Set(state.shoppingList),
-    }),
+    () =>
+      rankBuyNextSuggestions(allDrinks, matchContext, ingredientMap, {
+        limit: 8,
+        excludeIds: new Set(state.shoppingList),
+      }),
     [allDrinks, matchContext, ingredientMap, state.shoppingList]
   )
 
-  const targetDrinks = useMemo(() => {
-    const favDrinks = allDrinks.filter((d) => state.favorites.includes(d.id))
-    const topDrinks = allDrinks.filter((d) => TOP_DRINKS.includes(d.id))
-    const combined = [...favDrinks]
-    topDrinks.forEach((d) => {
-      if (!combined.find((c) => c.id === d.id)) combined.push(d)
-    })
-    return combined
-  }, [allDrinks, state.favorites])
-
-  const drinksWithGaps = useMemo(() => {
-    return targetDrinks.filter((drink) =>
-      drink.ingredients.some(
-        (req) => !req.optional && !findMatchingBarIngredient(req, matchContext)
-      )
-    )
-  }, [targetDrinks, matchContext])
+  const closestDrinks = useMemo(
+    () => rankClosestDrinks(allDrinks, matchContext, favoriteIds, { limit: 12 }),
+    [allDrinks, matchContext, favoriteIds]
+  )
 
   const addAllMissing = () => {
-    const n = addAllMissingToShopping(drinksWithGaps)
-    setAddedMsg(n > 0 ? `Added ${n} item${n !== 1 ? 's' : ''} to shopping list` : 'All missing items already on your list')
+    const drinks = closestDrinks.map((entry) => entry.drink)
+    const n = addAllMissingToShopping(drinks)
+    setAddedMsg(
+      n > 0
+        ? `Added ${n} item${n !== 1 ? 's' : ''} to shopping list`
+        : 'All missing items already on your list'
+    )
   }
 
   return (
@@ -64,13 +56,15 @@ export function NeedPage() {
 
       <PageSubtitle
         title={activeBar.name}
-        description="Green = you have it. Red = still need to buy it."
+        description="Buy what unlocks the most recipes — saved drinks shown first when you're close."
       />
 
       {buyNext.length > 0 && (
         <>
           <div className="section-header">Best next buy</div>
-          <p className="buy-next-hint">Ingredients that unlock the most new drinks for your bar.</p>
+          <p className="buy-next-hint">
+            One bottle from the catalog that opens the most new recipes for your bar.
+          </p>
           {buyNext.map((item) => (
             <div key={item.ingredientId} className="list-item buy-next-row">
               <div className="item-info">
@@ -100,8 +94,8 @@ export function NeedPage() {
         </>
       )}
 
-      {drinksWithGaps.length > 0 && (
-        <div className="detail-actions" style={{ marginTop: 0 }}>
+      {closestDrinks.length > 0 && (
+        <div className="detail-actions" style={{ marginTop: buyNext.length > 0 ? 12 : 0 }}>
           <button type="button" className="btn btn-primary" onClick={addAllMissing}>
             Add all missing to shopping list
           </button>
@@ -113,7 +107,13 @@ export function NeedPage() {
 
       {addedMsg && <p className="shopping-flash">{addedMsg}</p>}
 
-      {drinksWithGaps.map((drink) => {
+      {closestDrinks.length > 0 && (
+        <div className="section-header" style={{ marginTop: 16 }}>
+          Closest recipes
+        </div>
+      )}
+
+      {closestDrinks.map(({ drink, missingCount }) => {
         const missing = drink.ingredients.filter(
           (req) => !req.optional && !findMatchingBarIngredient(req, matchContext)
         )
@@ -124,7 +124,10 @@ export function NeedPage() {
               <DrinkThumb drink={drink} />
               <div className="item-info">
                 <div className="item-name">{drink.name}</div>
-                <div className="item-subtitle">{missing.length} missing</div>
+                <div className="item-subtitle">
+                  {missingCount} missing
+                  {favoriteIds.has(drink.id) ? ' · Saved' : ''}
+                </div>
               </div>
             </Link>
             <div style={{ padding: '0 16px 8px' }}>
@@ -175,10 +178,13 @@ export function NeedPage() {
         )
       })}
 
-      {drinksWithGaps.length === 0 && (
+      {buyNext.length === 0 && closestDrinks.length === 0 && (
         <div className="empty-state">
-          <h3>You're stocked for favorites & classics</h3>
-          <p>Add saved recipes or browse more drinks to see gaps</p>
+          <h3>Your bar is well stocked</h3>
+          <p>Browse recipes to find your next project — or add bottles to unlock more.</p>
+          <Link to="/drinks" className="btn btn-primary empty-state-cta">
+            Browse recipes
+          </Link>
         </div>
       )}
     </div>

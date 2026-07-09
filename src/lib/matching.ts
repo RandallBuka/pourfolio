@@ -81,7 +81,7 @@ export function findSubstituteOptions(
   })
 }
 
-function genericsMatch(a: string, b: string): boolean {
+export function genericsMatch(a: string, b: string): boolean {
   const na = normalize(a)
   const nb = normalize(b)
   if (na === nb) return true
