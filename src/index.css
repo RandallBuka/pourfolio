@@ -188,10 +188,7 @@ html.native-app .app-shell {
 }
 
 .page.hub-page {
-  flex: 1;
   min-height: 0;
-  height: auto;
-  max-height: none;
 }
 
 /* Nav bar — flat slate, no skeuomorphic gradient */
@@ -513,10 +510,16 @@ html.native-app .tab-bar {
 .hub-page {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+}
+
+.hub-page .nav-bar {
+  flex-shrink: 0;
 }
 
 .hub-header {
@@ -812,12 +815,12 @@ html.native-app .tab-bar {
 .hub-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto;
   gap: 10px;
   padding: 0 16px 12px;
-  flex: 1;
+  flex: 1 0 auto;
   min-height: 0;
-  align-content: stretch;
+  align-content: center;
 }
 
 .hub-tile {
@@ -832,7 +835,6 @@ html.native-app .tab-bar {
   text-decoration: none;
   color: inherit;
   transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
-  min-height: 0;
 }
 
 .hub-tile:hover {
@@ -1326,7 +1328,6 @@ html.native-app .tab-bar {
   .hub-grid {
     gap: 8px;
     padding: 0 12px 8px;
-    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
   }
 
   .hub-tile {
