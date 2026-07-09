@@ -1,13 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { NavBar } from '../components/NavBar'
 import { PageSubtitle } from '../components/PageSubtitle'
 import { DrinkThumb } from '../lib/ui'
 import { getRecipeIngredientBrowseUrl } from '../lib/ingredientBrowse'
-import { rankBuyNextSuggestions, rankClosestDrinks } from '../lib/buyNext'
+import { rankBuyNextSuggestions, rankClosestDrinks, type BuyNextSuggestion } from '../lib/buyNext'
 import { useApp } from '../context/AppContext'
 import { findMatchingBarIngredient } from '../lib/matching'
 import { resolveIngredientIdForRequirement } from '../lib/shoppingList'
+import type { Drink } from '../types'
 
 export function NeedPage() {
   const {
@@ -23,22 +24,30 @@ export function NeedPage() {
   } = useApp()
   const navigate = useNavigate()
   const [addedMsg, setAddedMsg] = useState<string | null>(null)
+  const [buyNext, setBuyNext] = useState<BuyNextSuggestion[]>([])
+  const [closestDrinks, setClosestDrinks] = useState<Array<{ drink: Drink; missingCount: number }>>([])
+  const [ranking, setRanking] = useState(true)
 
   const favoriteIds = useMemo(() => new Set(state.favorites), [state.favorites])
+  const shoppingKey = state.shoppingList.join('|')
 
-  const buyNext = useMemo(
-    () =>
-      rankBuyNextSuggestions(allDrinks, matchContext, ingredientMap, {
-        limit: 8,
-        excludeIds: new Set(state.shoppingList),
-      }),
-    [allDrinks, matchContext, ingredientMap, state.shoppingList]
-  )
+  useEffect(() => {
+    setRanking(true)
+    const timer = window.setTimeout(() => {
+      setBuyNext(
+        rankBuyNextSuggestions(allDrinks, matchContext, ingredientMap, {
+          limit: 8,
+          excludeIds: new Set(state.shoppingList),
+        })
+      )
+      setClosestDrinks(
+        rankClosestDrinks(allDrinks, matchContext, favoriteIds, { limit: 12 })
+      )
+      setRanking(false)
+    }, 0)
 
-  const closestDrinks = useMemo(
-    () => rankClosestDrinks(allDrinks, matchContext, favoriteIds, { limit: 12 }),
-    [allDrinks, matchContext, favoriteIds]
-  )
+    return () => window.clearTimeout(timer)
+  }, [allDrinks, matchContext, ingredientMap, shoppingKey, favoriteIds])
 
   const addAllMissing = () => {
     const drinks = closestDrinks.map((entry) => entry.drink)
@@ -59,7 +68,13 @@ export function NeedPage() {
         description="Buy what unlocks the most recipes — saved drinks shown first when you're close."
       />
 
-      {buyNext.length > 0 && (
+      {ranking && (
+        <p className="buy-next-hint" role="status">
+          Finding best buys for your bar…
+        </p>
+      )}
+
+      {!ranking && buyNext.length > 0 && (
         <>
           <div className="section-header">Best next buy</div>
           <p className="buy-next-hint">
@@ -94,7 +109,7 @@ export function NeedPage() {
         </>
       )}
 
-      {closestDrinks.length > 0 && (
+      {!ranking && closestDrinks.length > 0 && (
         <div className="detail-actions" style={{ marginTop: buyNext.length > 0 ? 12 : 0 }}>
           <button type="button" className="btn btn-primary" onClick={addAllMissing}>
             Add all missing to shopping list
@@ -107,13 +122,13 @@ export function NeedPage() {
 
       {addedMsg && <p className="shopping-flash">{addedMsg}</p>}
 
-      {closestDrinks.length > 0 && (
+      {!ranking && closestDrinks.length > 0 && (
         <div className="section-header" style={{ marginTop: 16 }}>
           Closest recipes
         </div>
       )}
 
-      {closestDrinks.map(({ drink, missingCount }) => {
+      {!ranking && closestDrinks.map(({ drink, missingCount }) => {
         const missing = drink.ingredients.filter(
           (req) => !req.optional && !findMatchingBarIngredient(req, matchContext)
         )
@@ -178,7 +193,7 @@ export function NeedPage() {
         )
       })}
 
-      {buyNext.length === 0 && closestDrinks.length === 0 && (
+      {!ranking && buyNext.length === 0 && closestDrinks.length === 0 && (
         <div className="empty-state">
           <h3>Your bar is well stocked</h3>
           <p>Browse recipes to find your next project — or add bottles to unlock more.</p>

@@ -81,6 +81,12 @@ export function findSubstituteOptions(
   })
 }
 
+export function substitutionPeerGenerics(genericName: string): string[] {
+  const groupId = groupIndex.get(normalize(genericName))
+  if (groupId === undefined) return [genericName]
+  return SUBSTITUTION_GROUPS[groupId]
+}
+
 export function genericsMatch(a: string, b: string): boolean {
   const na = normalize(a)
   const nb = normalize(b)

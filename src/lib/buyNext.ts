@@ -1,4 +1,10 @@
-import { canMakeDrink, findMatchingBarIngredient, genericsMatch, getMissingIngredients, normalize } from './matching'
+import {
+  canMakeDrink,
+  findMatchingBarIngredient,
+  getMissingIngredients,
+  normalize,
+  substitutionPeerGenerics,
+} from './matching'
 import type { Drink, Ingredient, IngredientMatchContext, RecipeIngredient } from '../types'
 
 export interface BuyNextSuggestion {
@@ -67,10 +73,12 @@ function catalogIngredientsForRequirement(
   }
 
   if (req.allowGenericSubstitution) {
-    for (const [key, ings] of indexes.byGeneric) {
-      if (key === target) continue
-      if (!genericsMatch(key, req.genericName)) continue
-      for (const ing of ings) add(ing)
+    for (const peer of substitutionPeerGenerics(req.genericName)) {
+      const peerKey = normalize(peer)
+      if (peerKey === target) continue
+      for (const ing of indexes.byGeneric.get(peerKey) ?? []) {
+        add(ing)
+      }
     }
   }
 
@@ -79,6 +87,7 @@ function catalogIngredientsForRequirement(
 
 /** Drinks that are close to makeable — one new bottle often unlocks these. */
 const MAX_MISSING_FOR_UNLOCK = 4
+const MAX_CANDIDATES_TO_SCORE = 500
 
 export function rankBuyNextSuggestions(
   allDrinks: Drink[],
@@ -90,15 +99,18 @@ export function rankBuyNextSuggestions(
   const barIds = matchContext.barIngredientIds
   const indexes = buildIngredientIndexes(ingredientMap)
 
-  const notMakeable = allDrinks.filter((d) => {
-    if (canMakeDrink(d.ingredients, matchContext)) return false
-    const missing = getMissingIngredients(d.ingredients, matchContext)
-    return missing.length > 0 && missing.length <= MAX_MISSING_FOR_UNLOCK
-  })
-
-  const candidateIds = new Set<string>()
-  for (const drink of notMakeable) {
+  const nearDrinks: Array<{ drink: Drink; missing: RecipeIngredient[] }> = []
+  for (const drink of allDrinks) {
+    if (canMakeDrink(drink.ingredients, matchContext)) continue
     const missing = getMissingIngredients(drink.ingredients, matchContext)
+    if (missing.length > 0 && missing.length <= MAX_MISSING_FOR_UNLOCK) {
+      nearDrinks.push({ drink, missing })
+    }
+  }
+
+  const candidateDrinks = new Map<string, Set<Drink>>()
+
+  for (const { drink, missing } of nearDrinks) {
     for (const req of missing) {
       for (const ing of catalogIngredientsForRequirement(
         req,
@@ -107,14 +119,20 @@ export function rankBuyNextSuggestions(
         barIds,
         excludeIds
       )) {
-        candidateIds.add(ing.id)
+        const drinks = candidateDrinks.get(ing.id) ?? new Set<Drink>()
+        drinks.add(drink)
+        candidateDrinks.set(ing.id, drinks)
       }
     }
   }
 
   const scored: BuyNextSuggestion[] = []
 
-  for (const ingredientId of candidateIds) {
+  const rankedCandidates = [...candidateDrinks.entries()]
+    .sort((a, b) => b[1].size - a[1].size)
+    .slice(0, MAX_CANDIDATES_TO_SCORE)
+
+  for (const [ingredientId, drinks] of rankedCandidates) {
     const ingredient = ingredientMap.get(ingredientId)
     if (!ingredient) continue
 
@@ -126,7 +144,7 @@ export function rankBuyNextSuggestions(
     }
 
     const unlocked: string[] = []
-    for (const drink of notMakeable) {
+    for (const drink of drinks) {
       if (canMakeDrink(drink.ingredients, simulatedContext)) {
         unlocked.push(drink.name)
       }
