@@ -44,31 +44,13 @@ function bootstrap() {
 }
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
+  const registerSw = () => {
     const swUrl = `${import.meta.env.BASE_URL}sw.js`
-    void navigator.serviceWorker
-      .register(swUrl)
-      .then((registration) => {
-        registration.addEventListener('updatefound', () => {
-          const worker = registration.installing
-          if (!worker) return
-          worker.addEventListener('statechange', () => {
-            if (worker.state !== 'installed' || !navigator.serviceWorker.controller) return
-            worker.postMessage({ type: 'SKIP_WAITING' })
-            // Reload only after the app has painted — avoids trapping users on the boot splash.
-            const reloadWhenReady = () => {
-              if (document.querySelector('.app-shell')) {
-                window.location.reload()
-                return
-              }
-              window.requestAnimationFrame(reloadWhenReady)
-            }
-            reloadWhenReady()
-          })
-        })
-      })
-      .catch(() => undefined)
-  })
+    void navigator.serviceWorker.register(swUrl).catch(() => undefined)
+  }
+
+  // Register after first paint — never compete with initial JS download/execute.
+  window.setTimeout(registerSw, 3_000)
 }
 
 bootstrap().catch(() => {

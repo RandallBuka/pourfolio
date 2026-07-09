@@ -107,27 +107,21 @@ export function PressYourLuckCard() {
 
       <div className="hub-luck-main">
         <div className="hub-luck-icon" aria-hidden>
-          <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden>
+          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden>
+            <circle cx="16" cy="19.5" r="8.25" fill="var(--luck-jester-face)" />
+            <path fill="var(--luck-jester-face)" d="M6.5 17.5 3.2 9.5 7.8 12.2Z" />
+            <path fill="var(--luck-jester-face)" d="M12.5 16.5 16 4.5 19.5 16.5Z" />
+            <path fill="var(--luck-jester-face)" d="M25.5 17.5 28.8 9.5 24.2 12.2Z" />
+            <circle cx="3.2" cy="9.5" r="2.75" fill="var(--luck-jester-face)" />
+            <circle cx="16" cy="4.5" r="2.75" fill="var(--luck-jester-face)" />
+            <circle cx="28.8" cy="9.5" r="2.75" fill="var(--luck-jester-face)" />
+            <ellipse cx="12.6" cy="18.8" rx="2" ry="2.5" fill="var(--luck-jester-detail)" />
+            <ellipse cx="19.4" cy="18.8" rx="2" ry="2.5" fill="var(--luck-jester-detail)" />
             <path
-              fill="currentColor"
-              d="M12 2.5 7.2 11.5 3.5 14.2 8.8 12.8 12 15.2 15.2 12.8 20.5 14.2 16.8 11.5Z"
+              fill="var(--luck-jester-detail)"
+              d="M10.5 22.2Q16 27.2 21.5 22.2Q16 24.8 10.5 22.2Z"
             />
-            <circle cx="3.5" cy="14.2" r="2" fill="currentColor" />
-            <circle cx="12" cy="2.5" r="2" fill="currentColor" />
-            <circle cx="20.5" cy="14.2" r="2" fill="currentColor" />
-            <circle cx="9.3" cy="16.2" r="1.35" fill="currentColor" />
-            <circle cx="14.7" cy="16.2" r="1.35" fill="currentColor" />
-            <path
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              d="M8.2 18.4Q12 21.2 15.8 18.4"
-            />
-            <path
-              fill="currentColor"
-              d="M6.8 19.8 8.6 22.2 12 20.4 15.4 22.2 17.2 19.8 15.8 18.6 12 19.8 8.2 18.6Z"
-            />
+            <circle cx="16" cy="21.2" r="1.1" fill="var(--luck-jester-detail)" />
           </svg>
         </div>
 

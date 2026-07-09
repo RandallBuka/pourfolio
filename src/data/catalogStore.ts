@@ -136,6 +136,15 @@ export async function loadCatalog(): Promise<void> {
   return loadPromise
 }
 
+// Warm catalog from localStorage before React mounts (repeat visits).
+hydrateCatalogFromStorage()
+
+function hydrateCatalogFromStorage(): void {
+  if (catalogLoaded) return
+  const cached = readCache()
+  if (cached) applyCatalog(cached.ingredients, cached.drinks)
+}
+
 export function getIngredientByGeneric(genericName: string): Ingredient | undefined {
   return SEED_INGREDIENTS.find((i) => i.genericName === genericName && i.name === genericName)
     ?? SEED_INGREDIENTS.find((i) => i.genericName === genericName)

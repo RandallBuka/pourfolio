@@ -1050,14 +1050,16 @@ html.native-app .tab-bar {
 
 .hub-luck-icon {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(145deg, #450a0a, #7f1d1d);
   color: #fecaca;
+  --luck-jester-face: #fff1f2;
+  --luck-jester-detail: #450a0a;
   border: 1px solid #dc2626;
   box-shadow: 0 0 14px rgba(220, 38, 38, 0.35);
   animation: hub-luck-icon-bob 2.8s ease-in-out infinite;
@@ -1065,6 +1067,8 @@ html.native-app .tab-bar {
 
 [data-theme='dark'] .hub-luck-icon {
   color: #fee2e2;
+  --luck-jester-face: #fff7ed;
+  --luck-jester-detail: #3f0d0d;
   background: linear-gradient(145deg, #3f0d0d, #991b1b);
 }
 

@@ -1,14 +1,12 @@
 const BASE_PATH = self.location.pathname.replace(/sw\.js$/, '')
-const CACHE = 'pourfolio-shell-v5'
+const CACHE = 'pourfolio-shell-v6'
 
+/** Keep install tiny — large catalog JSON is cached lazily on fetch, not during install. */
 const SHELL = [
   BASE_PATH,
   `${BASE_PATH}index.html`,
   `${BASE_PATH}manifest.json`,
   `${BASE_PATH}icons/icon.svg`,
-  `${BASE_PATH}catalog/version.json`,
-  `${BASE_PATH}catalog/ingredients.json`,
-  `${BASE_PATH}catalog/drinks.json`,
 ]
 
 function shouldCache(url) {
@@ -22,7 +20,6 @@ function shouldCache(url) {
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)))
-  self.skipWaiting()
 })
 
 self.addEventListener('activate', (event) => {
