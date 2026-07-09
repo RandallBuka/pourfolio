@@ -828,87 +828,6 @@ html.native-app .tab-bar {
   transform: translateY(0);
 }
 
-.hub-tile--bar {
-  gap: 8px;
-}
-
-.hub-tile--make {
-  gap: 8px;
-}
-
-.hub-tile--bar:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--pf-shadow-lg);
-  border-color: var(--pf-primary-muted);
-}
-
-.hub-tile--make:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--pf-shadow-lg);
-  border-color: var(--pf-primary-muted);
-}
-
-.hub-tile-link {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-decoration: none;
-  color: inherit;
-  flex: 1;
-  min-height: 0;
-}
-
-.hub-tile-scan-btn {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 8px 8px;
-  font-family: inherit;
-  line-height: 1.35;
-  border-radius: var(--pf-radius-sm);
-  border: 1px solid var(--pf-border);
-  background: var(--pf-bg);
-  color: var(--pf-primary-dark);
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-}
-
-.hub-tile-scan-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--pf-text);
-}
-
-.hub-tile-scan-sub {
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--pf-text-muted);
-}
-
-.hub-tile-scan-btn:hover .hub-tile-scan-title {
-  color: var(--pf-primary-dark);
-}
-
-.hub-tile-scan-btn:hover {
-  background: var(--pf-primary-muted);
-  border-color: var(--pf-primary);
-}
-
-.hub-tile-scan-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.hub-tile-scan-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.hub-tile-scan-btn:disabled .hub-tile-scan-sub {
-  color: var(--pf-text-muted);
-}
-
 .hub-tile .hub-icon {
   width: 40px;
   height: 40px;
@@ -955,7 +874,8 @@ html.native-app .tab-bar {
 }
 
 .hub-luck-card {
-  margin: 0 16px 16px;
+  grid-column: 1 / -1;
+  margin: 0;
   padding: 16px;
   background: var(--pf-surface);
   border-radius: var(--pf-radius);

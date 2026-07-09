@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { BarcodeScanModal } from '../components/BarcodeScanModal'
 
@@ -19,7 +19,6 @@ import { captureBarPhoto } from '../lib/barPhoto'
 
 import { isOnboardingComplete } from '../lib/onboarding'
 
-import { pickRandomMakeableDrink } from '../lib/randomDrink'
 import { PressYourLuckCard } from '../components/PressYourLuckCard'
 import { useApp } from '../context/AppContext'
 
@@ -27,15 +26,11 @@ import { useApp } from '../context/AppContext'
 
 export function MyBarPage() {
 
-  const navigate = useNavigate()
-
   const {
 
     activeBar,
 
     makeableCount,
-
-    makeableDrinks,
 
     state,
 
@@ -223,53 +218,27 @@ export function MyBarPage() {
 
       <div className="hub-grid">
 
-        <div className="hub-tile hub-tile--bar">
-          <Link to="/my-ingredients" className="hub-tile-link">
-            <div className="hub-icon hub-icon--have">
-              <HubTileIcon kind="bar" />
-            </div>
-            <div className="hub-tile-body">
-              <h3>What&apos;s On My Bar</h3>
-              <p>{barCount} ingredient{barCount !== 1 ? 's' : ''}</p>
-            </div>
-          </Link>
-          <button
-            type="button"
-            className="hub-tile-scan-btn"
-            onClick={() => setShowScan(true)}
-          >
-            <span className="hub-tile-scan-title">Add new ingredient</span>
-            <span className="hub-tile-scan-sub">Scan barcode or label photo</span>
-          </button>
-        </div>
+        <Link to="/my-ingredients" className="hub-tile">
+          <div className="hub-icon hub-icon--have">
+            <HubTileIcon kind="bar" />
+          </div>
+          <div className="hub-tile-body">
+            <h3>What&apos;s On My Bar</h3>
+            <p>{barCount} ingredient{barCount !== 1 ? 's' : ''}</p>
+          </div>
+        </Link>
 
 
 
-        <div className="hub-tile hub-tile--make">
-          <Link to="/can-make" className="hub-tile-link">
-            <div className="hub-icon hub-icon--make">
-              <HubTileIcon kind="make" />
-            </div>
-            <div className="hub-tile-body">
-              <h3>Drinks I Can Make</h3>
-              <p>{makeableCount} ready now</p>
-            </div>
-          </Link>
-          <button
-            type="button"
-            className="hub-tile-scan-btn"
-            disabled={makeableCount === 0}
-            onClick={() => {
-              const drink = pickRandomMakeableDrink(makeableDrinks)
-              if (drink) {
-                navigate(`/drinks/${drink.id}`, { state: { randomPick: Date.now() } })
-              }
-            }}
-          >
-            <span className="hub-tile-scan-title">Pick a random drink</span>
-            <span className="hub-tile-scan-sub">From what you can make now</span>
-          </button>
-        </div>
+        <Link to="/can-make" className="hub-tile">
+          <div className="hub-icon hub-icon--make">
+            <HubTileIcon kind="make" />
+          </div>
+          <div className="hub-tile-body">
+            <h3>Drinks I Can Make</h3>
+            <p>{makeableCount} ready now</p>
+          </div>
+        </Link>
 
 
 
@@ -311,9 +280,8 @@ export function MyBarPage() {
 
         </Link>
 
+        <PressYourLuckCard />
       </div>
-
-      <PressYourLuckCard />
 
       {showBarPicker && (
 
