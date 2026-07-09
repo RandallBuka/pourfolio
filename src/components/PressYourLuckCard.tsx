@@ -108,9 +108,11 @@ export function PressYourLuckCard() {
       <div className="hub-luck-main">
         <div className="hub-luck-icon" aria-hidden>
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2.5 4.5 18.5h15L12 2.5z" />
-            <path d="M12 9v3.5" />
-            <circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none" />
+            <circle cx="12" cy="13" r="7.5" />
+            <path d="M12 5.5v15M5.5 13h13" />
+            <path d="M7.4 8.7l9.2 8.6M16.6 8.7l-9.2 8.6" />
+            <circle cx="12" cy="13" r="1.6" fill="currentColor" stroke="none" />
+            <path d="M12 2.5 14.4 6.8H9.6Z" fill="currentColor" stroke="none" />
           </svg>
         </div>
 
