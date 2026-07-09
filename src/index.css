@@ -878,19 +878,16 @@ html.native-app .tab-bar {
   position: relative;
   overflow: hidden;
   margin: 0;
-  padding: 18px 16px 16px;
+  padding: 14px 12px;
   background:
     radial-gradient(ellipse 120% 80% at 50% -20%, rgba(251, 191, 36, 0.45), transparent 55%),
     linear-gradient(155deg, #fffbeb 0%, #fef3c7 38%, #fde68a 72%, #fcd34d 100%);
   border-radius: var(--pf-radius);
   border: 2px solid #f59e0b;
   box-shadow:
-    0 4px 0 #d97706,
-    0 10px 28px rgba(245, 158, 11, 0.28),
+    0 3px 0 #d97706,
+    0 6px 18px rgba(245, 158, 11, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.65);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
   isolation: isolate;
 }
 
@@ -900,8 +897,8 @@ html.native-app .tab-bar {
     linear-gradient(155deg, #451a03 0%, #78350f 42%, #92400e 78%, #b45309 100%);
   border-color: #fbbf24;
   box-shadow:
-    0 4px 0 #92400e,
-    0 10px 28px rgba(0, 0, 0, 0.45),
+    0 3px 0 #92400e,
+    0 6px 18px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
@@ -946,49 +943,49 @@ html.native-app .tab-bar {
 @keyframes hub-luck-card-pulse {
   from {
     box-shadow:
-      0 4px 0 #d97706,
-      0 10px 28px rgba(245, 158, 11, 0.28),
+      0 3px 0 #d97706,
+      0 6px 18px rgba(245, 158, 11, 0.22),
       inset 0 1px 0 rgba(255, 255, 255, 0.65);
   }
   to {
     box-shadow:
-      0 4px 0 #d97706,
-      0 0 32px rgba(251, 191, 36, 0.75),
-      inset 0 0 24px rgba(251, 191, 36, 0.25);
+      0 3px 0 #d97706,
+      0 0 24px rgba(251, 191, 36, 0.65),
+      inset 0 0 16px rgba(251, 191, 36, 0.2);
   }
 }
 
 @keyframes hub-luck-winner-pop {
   0% { transform: scale(1); }
-  40% { transform: scale(1.02); }
+  40% { transform: scale(1.015); }
   100% { transform: scale(1); }
 }
 
 .hub-luck-lights {
   position: absolute;
-  inset: 8px;
+  inset: 6px 8px;
   pointer-events: none;
   z-index: 0;
 }
 
 .hub-luck-light {
   position: absolute;
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #fef08a;
-  box-shadow: 0 0 6px #fbbf24, 0 0 12px rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 4px #fbbf24;
   animation: hub-luck-bulb 1.4s ease-in-out infinite;
   animation-delay: calc(var(--i) * 0.17s);
 }
 
 .hub-luck-light:nth-child(1) { top: 0; left: 8%; }
 .hub-luck-light:nth-child(2) { top: 0; left: 28%; }
-.hub-luck-light:nth-child(3) { top: 0; left: calc(50% - 3.5px); }
+.hub-luck-light:nth-child(3) { top: 0; left: calc(50% - 2.5px); }
 .hub-luck-light:nth-child(4) { top: 0; right: 28%; }
 .hub-luck-light:nth-child(5) { top: 0; right: 8%; }
 .hub-luck-light:nth-child(6) { bottom: 0; left: 14%; }
-.hub-luck-light:nth-child(7) { bottom: 0; left: calc(50% - 3.5px); }
+.hub-luck-light:nth-child(7) { bottom: 0; left: calc(50% - 2.5px); }
 .hub-luck-light:nth-child(8) { bottom: 0; right: 14%; }
 
 .hub-luck-card--spinning .hub-luck-light {
@@ -1006,34 +1003,26 @@ html.native-app .tab-bar {
   50% { opacity: 1; background: #fff; }
 }
 
-.hub-luck-header,
-.hub-luck-controls,
-.hub-luck-slot,
-.hub-luck-spin,
-.hub-luck-hint,
-.hub-luck-result {
+.hub-luck-main {
   position: relative;
   z-index: 1;
-}
-
-.hub-luck-header {
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding-top: 4px;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
 }
 
 .hub-luck-icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(145deg, #fef08a, #f59e0b);
   color: #78350f;
-  box-shadow: 0 3px 0 #b45309, 0 4px 12px rgba(180, 83, 9, 0.35);
+  box-shadow: 0 2px 0 #b45309, 0 3px 8px rgba(180, 83, 9, 0.3);
   animation: hub-luck-icon-bob 2.8s ease-in-out infinite;
 }
 
@@ -1044,13 +1033,18 @@ html.native-app .tab-bar {
 
 @keyframes hub-luck-icon-bob {
   0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-3px) rotate(2deg); }
+  50% { transform: translateY(-2px) rotate(2deg); }
 }
 
-.hub-luck-heading h3 {
+.hub-luck-body {
+  min-width: 0;
+}
+
+.hub-luck-body h3 {
   margin: 0 0 4px;
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 800;
+  line-height: 1.25;
   letter-spacing: -0.02em;
   background: linear-gradient(90deg, #b45309, #d97706, #b45309);
   background-size: 200% auto;
@@ -1060,7 +1054,7 @@ html.native-app .tab-bar {
   animation: hub-luck-title-shine 3s linear infinite;
 }
 
-[data-theme='dark'] .hub-luck-heading h3 {
+[data-theme='dark'] .hub-luck-body h3 {
   background: linear-gradient(90deg, #fde68a, #fff, #fde68a);
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -1072,49 +1066,62 @@ html.native-app .tab-bar {
   to { background-position: 200% center; }
 }
 
-.hub-luck-heading p {
+.hub-luck-subtitle {
   margin: 0;
   font-size: 12px;
-  line-height: 1.35;
+  line-height: 1.3;
   color: #92400e;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-[data-theme='dark'] .hub-luck-heading p {
+[data-theme='dark'] .hub-luck-subtitle {
   color: #fde68a;
 }
 
-.hub-luck-controls {
+.hub-luck-subtitle--spinning {
+  filter: blur(0.3px);
+}
+
+.hub-luck-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 10px;
-  border-radius: var(--pf-radius-sm);
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(245, 158, 11, 0.35);
+  gap: 8px;
+  min-width: 0;
 }
 
-[data-theme='dark'] .hub-luck-controls {
-  background: rgba(0, 0, 0, 0.22);
-  border-color: rgba(251, 191, 36, 0.35);
+.hub-luck-footer .hub-luck-subtitle {
+  flex: 1;
+  min-width: 0;
 }
 
-.hub-luck-count-label {
-  font-size: 14px;
-  font-weight: 700;
-  color: #78350f;
+.hub-luck-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-[data-theme='dark'] .hub-luck-count-label {
-  color: #fef3c7;
+.hub-luck-stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .hub-luck-stepper button {
-  border-color: rgba(245, 158, 11, 0.5);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: var(--pf-radius-sm);
+  border: 1px solid rgba(245, 158, 11, 0.5);
   background: rgba(255, 255, 255, 0.7);
   color: #92400e;
   font-weight: 700;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 [data-theme='dark'] .hub-luck-stepper button {
@@ -1122,71 +1129,31 @@ html.native-app .tab-bar {
   color: #fde68a;
 }
 
+.hub-luck-stepper span {
+  min-width: 14px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #78350f;
+}
+
+[data-theme='dark'] .hub-luck-stepper span {
+  color: #fef3c7;
+}
+
 .hub-luck-stepper button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.hub-luck-slot {
-  min-height: 48px;
-  padding: 10px 12px;
-  border-radius: var(--pf-radius-sm);
-  background: rgba(255, 255, 255, 0.55);
-  border: 2px dashed #f59e0b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow: hidden;
-}
-
-[data-theme='dark'] .hub-luck-slot {
-  background: rgba(0, 0, 0, 0.28);
-  border-color: #fbbf24;
-}
-
-.hub-luck-slot-label {
-  display: block;
-  font-weight: 800;
-  font-size: 14px;
-  line-height: 1.3;
-  color: #78350f;
-  animation: hub-luck-slot-in 0.12s ease-out;
-}
-
-[data-theme='dark'] .hub-luck-slot-label {
-  color: #fef3c7;
-}
-
-.hub-luck-slot--spinning .hub-luck-slot-label {
-  animation: hub-luck-slot-cycle 0.07s steps(1) infinite;
-  filter: blur(0.3px);
-}
-
-.hub-luck-slot--winner {
-  border-style: solid;
-  border-color: #fbbf24;
-  background: rgba(255, 255, 255, 0.75);
-  box-shadow: inset 0 0 16px rgba(251, 191, 36, 0.35);
-}
-
-@keyframes hub-luck-slot-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes hub-luck-slot-cycle {
-  50% { transform: translateY(-2px); }
-}
-
 .hub-luck-spin {
   position: relative;
-  width: 100%;
+  flex-shrink: 0;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.02em;
-  padding: 14px 16px;
+  padding: 8px 12px;
   border: 2px solid #b45309;
   border-radius: var(--pf-radius-sm);
   cursor: pointer;
@@ -1194,26 +1161,22 @@ html.native-app .tab-bar {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
   background: linear-gradient(180deg, #fde047 0%, #fbbf24 42%, #f59e0b 100%);
   box-shadow:
-    0 5px 0 #b45309,
-    0 8px 20px rgba(180, 83, 9, 0.35),
-    inset 0 2px 0 rgba(255, 255, 255, 0.55);
+    0 3px 0 #b45309,
+    0 4px 12px rgba(180, 83, 9, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .hub-luck-spin:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow:
-    0 6px 0 #b45309,
-    0 12px 24px rgba(180, 83, 9, 0.4),
-    inset 0 2px 0 rgba(255, 255, 255, 0.55);
 }
 
 .hub-luck-spin:active:not(:disabled) {
-  transform: translateY(3px);
+  transform: translateY(2px);
   box-shadow:
-    0 2px 0 #b45309,
-    0 4px 12px rgba(180, 83, 9, 0.3),
-    inset 0 2px 0 rgba(255, 255, 255, 0.45);
+    0 1px 0 #b45309,
+    0 2px 8px rgba(180, 83, 9, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .hub-luck-spin:disabled {
@@ -1229,7 +1192,7 @@ html.native-app .tab-bar {
 
 .hub-luck-spin-glow {
   position: absolute;
-  inset: -4px;
+  inset: -3px;
   border-radius: inherit;
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.55), transparent 70%);
   opacity: 0;
@@ -1255,116 +1218,19 @@ html.native-app .tab-bar {
   to { opacity: 1; }
 }
 
-.hub-luck-hint {
-  margin: 0;
-  font-size: 12px;
-  color: #92400e;
-  text-align: center;
-  font-weight: 500;
-}
-
-[data-theme='dark'] .hub-luck-hint {
-  color: #fde68a;
-}
-
-.hub-luck-result {
-  padding-top: 8px;
-  border-top: 2px dashed rgba(245, 158, 11, 0.45);
-  animation: hub-luck-reveal 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
-}
-
-@keyframes hub-luck-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.hub-luck-result-title {
-  margin: 0 0 10px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #b45309;
-}
-
-[data-theme='dark'] .hub-luck-result-title {
-  color: #fbbf24;
-}
-
-.hub-luck-ingredients {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.hub-luck-ingredient {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 8px;
-  border-radius: var(--pf-radius-sm);
-  background: rgba(255, 255, 255, 0.5);
-  animation: hub-luck-ing-pop 0.4s cubic-bezier(0.34, 1.3, 0.64, 1) backwards;
-  animation-delay: calc(var(--luck-i) * 0.08s);
-}
-
-[data-theme='dark'] .hub-luck-ingredient {
-  background: rgba(0, 0, 0, 0.22);
-}
-
-@keyframes hub-luck-ing-pop {
-  from {
-    opacity: 0;
-    transform: translateX(-12px) scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-.hub-luck-ingredient .item-thumb {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-}
-
-.hub-luck-ingredient-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: #78350f;
-  line-height: 1.3;
-}
-
-[data-theme='dark'] .hub-luck-ingredient-name {
-  color: #fef3c7;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hub-luck-card::before,
   .hub-luck-card--spinning,
   .hub-luck-card--winner,
   .hub-luck-light,
   .hub-luck-icon,
-  .hub-luck-heading h3,
-  .hub-luck-slot-label,
+  .hub-luck-body h3,
   .hub-luck-spin--active,
-  .hub-luck-spin--active .hub-luck-spin-glow,
-  .hub-luck-result,
-  .hub-luck-ingredient {
+  .hub-luck-spin--active .hub-luck-spin-glow {
     animation: none !important;
   }
 
-  .hub-luck-slot--spinning .hub-luck-slot-label {
+  .hub-luck-subtitle--spinning {
     filter: none;
   }
 }

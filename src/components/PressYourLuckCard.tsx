@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { IngredientThumb } from '../lib/ui'
 import { useApp } from '../context/AppContext'
 import { pickRandomShotIngredients } from '../lib/randomShot'
 import { isLiquidIngredient } from '../lib/ingredientLiquid'
@@ -20,7 +19,7 @@ export function PressYourLuckCard() {
   const [result, setResult] = useState<Ingredient[] | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [spinning, setSpinning] = useState(false)
-  const [slotLabel, setSlotLabel] = useState('Tap to spin!')
+  const [cycleLabel, setCycleLabel] = useState('')
   const spinTimerRef = useRef<number | null>(null)
 
   const barIngredients = useMemo(
@@ -51,26 +50,37 @@ export function PressYourLuckCard() {
 
   useEffect(() => {
     if (!spinning || !barIngredients.length) return
-    setSlotLabel(randomBarName(barIngredients))
+    setCycleLabel(randomBarName(barIngredients))
     const id = window.setInterval(() => {
-      setSlotLabel(randomBarName(barIngredients))
+      setCycleLabel(randomBarName(barIngredients))
     }, 70)
     return () => window.clearInterval(id)
   }, [spinning, barIngredients])
+
+  const subtitle = useMemo(() => {
+    if (message) return message
+    if (spinning) return cycleLabel
+    if (result?.length) return result.map((ing) => ing.name).join(' + ')
+    if (!canSpin) {
+      return barIngredients.length === 0
+        ? 'Stock your bar to spin'
+        : 'Add a pourable ingredient'
+    }
+    return 'Wild random shot from your bar'
+  }, [message, spinning, cycleLabel, result, canSpin, barIngredients.length])
 
   const spin = () => {
     if (!canSpin || spinning) return
     setSpinning(true)
     setMessage(null)
     setResult(null)
-    setSlotLabel(randomBarName(barIngredients))
+    setCycleLabel(randomBarName(barIngredients))
 
     if (spinTimerRef.current) window.clearTimeout(spinTimerRef.current)
     spinTimerRef.current = window.setTimeout(() => {
       const picked = pickRandomShotIngredients(barIngredients, count)
       if (!picked.ok) {
         setResult(null)
-        setSlotLabel('No luck…')
         setMessage(
           picked.reason === 'empty-bar'
             ? 'Add ingredients to your bar first.'
@@ -78,7 +88,6 @@ export function PressYourLuckCard() {
         )
       } else {
         setResult(picked.ingredients)
-        setSlotLabel(picked.ingredients.map((ing) => ing.name).join(' + '))
         setMessage(null)
       }
       setSpinning(false)
@@ -97,9 +106,9 @@ export function PressYourLuckCard() {
         ))}
       </div>
 
-      <div className="hub-luck-header">
+      <div className="hub-luck-main">
         <div className="hub-luck-icon" aria-hidden>
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M6 4h12l-6 8v0z" />
             <path d="M12 12v5" />
             <path d="M9 21h6" />
@@ -109,84 +118,49 @@ export function PressYourLuckCard() {
             <circle cx="17" cy="7" r="0.6" fill="currentColor" stroke="none" />
           </svg>
         </div>
-        <div className="hub-luck-heading">
+
+        <div className="hub-luck-body">
           <h3 id="hub-luck-title">Press Your Luck</h3>
-          <p>Wild random shot from your bar — always at least one pourable ingredient.</p>
-        </div>
-      </div>
+          <div className="hub-luck-footer">
+            <p className={`hub-luck-subtitle${spinning ? ' hub-luck-subtitle--spinning' : ''}`} aria-live="polite">
+              {subtitle}
+            </p>
+            <div className="hub-luck-actions">
+              <div className="hub-luck-stepper" aria-label="Number of ingredients">
+                <button
+                  type="button"
+                  onClick={() => setCount((c) => Math.max(MIN_COUNT, c - 1))}
+                  disabled={!canSpin || count <= MIN_COUNT || spinning}
+                  aria-label="Fewer ingredients"
+                >
+                  −
+                </button>
+                <span>{count}</span>
+                <button
+                  type="button"
+                  onClick={() => setCount((c) => Math.min(maxCount, c + 1))}
+                  disabled={!canSpin || count >= maxCount || spinning}
+                  aria-label="More ingredients"
+                >
+                  +
+                </button>
+              </div>
 
-      <div className="hub-luck-controls">
-        <span className="hub-luck-count-label">Ingredients</span>
-        <div className="servings-stepper hub-luck-stepper">
-          <button
-            type="button"
-            onClick={() => setCount((c) => Math.max(MIN_COUNT, c - 1))}
-            disabled={!canSpin || count <= MIN_COUNT || spinning}
-            aria-label="Fewer ingredients"
-          >
-            −
-          </button>
-          <span>{count}</span>
-          <button
-            type="button"
-            onClick={() => setCount((c) => Math.min(maxCount, c + 1))}
-            disabled={!canSpin || count >= maxCount || spinning}
-            aria-label="More ingredients"
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      <div
-        className={`hub-luck-slot${spinning ? ' hub-luck-slot--spinning' : ''}${result && !spinning ? ' hub-luck-slot--winner' : ''}`}
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        <span className="hub-luck-slot-label" key={slotLabel}>
-          {slotLabel}
-        </span>
-      </div>
-
-      <button
-        type="button"
-        className={`hub-luck-spin${spinning ? ' hub-luck-spin--active' : ''}`}
-        onClick={spin}
-        disabled={!canSpin || spinning}
-      >
-        <span className="hub-luck-spin-glow" aria-hidden />
-        <span className="hub-luck-spin-text">
-          {spinning ? 'Spinning…' : 'Press your luck!'}
-        </span>
-      </button>
-
-      {!canSpin && (
-        <p className="hub-luck-hint">
-          {barIngredients.length === 0
-            ? 'Stock your bar to spin wild shot combos.'
-            : 'Add a spirit, liqueur, mixer, or juice to enable random shots.'}
-        </p>
-      )}
-
-      {message && <p className="hub-luck-hint">{message}</p>}
-
-      {result && result.length > 0 && !spinning && (
-        <div className="hub-luck-result">
-          <p className="hub-luck-result-title">Tonight&apos;s chaos shot</p>
-          <ul className="hub-luck-ingredients">
-            {result.map((ing, idx) => (
-              <li
-                key={ing.id}
-                className="hub-luck-ingredient"
-                style={{ '--luck-i': idx } as CSSProperties}
+              <button
+                type="button"
+                className={`hub-luck-spin${spinning ? ' hub-luck-spin--active' : ''}`}
+                onClick={spin}
+                disabled={!canSpin || spinning}
               >
-                <IngredientThumb ingredient={ing} />
-                <span className="hub-luck-ingredient-name">{ing.name}</span>
-              </li>
-            ))}
-          </ul>
+                <span className="hub-luck-spin-glow" aria-hidden />
+                <span className="hub-luck-spin-text">
+                  {spinning ? '…' : 'Spin!'}
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </section>
   )
 }
