@@ -99,22 +99,18 @@ export function PressYourLuckCard() {
       className={`hub-luck-card${spinning ? ' hub-luck-card--spinning' : ''}${result && !spinning ? ' hub-luck-card--winner' : ''}`}
       aria-labelledby="hub-luck-title"
     >
-      <div className="hub-luck-lights" aria-hidden>
+      <div className="hub-luck-warnings" aria-hidden>
         {Array.from({ length: 8 }, (_, i) => (
-          <span key={i} className="hub-luck-light" style={{ '--i': i } as CSSProperties} />
+          <span key={i} className="hub-luck-warning-blink" style={{ '--i': i } as CSSProperties} />
         ))}
       </div>
 
       <div className="hub-luck-main">
         <div className="hub-luck-icon" aria-hidden>
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 4h12l-6 8v0z" />
-            <path d="M12 12v5" />
-            <path d="M9 21h6" />
-            <rect x="15" y="3" width="6" height="6" rx="1" />
-            <circle cx="17" cy="5.5" r="0.6" fill="currentColor" stroke="none" />
-            <circle cx="19" cy="7" r="0.6" fill="currentColor" stroke="none" />
-            <circle cx="17" cy="7" r="0.6" fill="currentColor" stroke="none" />
+            <path d="M12 2.5 4.5 18.5h15L12 2.5z" />
+            <path d="M12 9v3.5" />
+            <circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none" />
           </svg>
         </div>
 

@@ -899,26 +899,43 @@ html.native-app .tab-bar {
   margin: 0;
   padding: 14px 12px;
   background:
-    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(251, 191, 36, 0.45), transparent 55%),
-    linear-gradient(155deg, #fffbeb 0%, #fef3c7 38%, #fde68a 72%, #fcd34d 100%);
+    radial-gradient(ellipse 85% 65% at 88% 8%, rgba(220, 38, 38, 0.22), transparent 52%),
+    radial-gradient(ellipse 55% 45% at 6% 92%, rgba(127, 29, 29, 0.28), transparent 48%),
+    linear-gradient(158deg, #140a0c 0%, #241016 42%, #1a0d12 100%);
   border-radius: var(--pf-radius);
-  border: 2px solid #f59e0b;
+  border: 2px dashed #dc2626;
   box-shadow:
-    0 3px 0 #d97706,
-    0 6px 18px rgba(245, 158, 11, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    0 0 0 1px rgba(220, 38, 38, 0.2),
+    0 4px 18px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   isolation: isolate;
 }
 
 [data-theme='dark'] .hub-luck-card {
   background:
-    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(251, 191, 36, 0.22), transparent 55%),
-    linear-gradient(155deg, #451a03 0%, #78350f 42%, #92400e 78%, #b45309 100%);
-  border-color: #fbbf24;
+    radial-gradient(ellipse 85% 65% at 88% 8%, rgba(248, 113, 113, 0.14), transparent 52%),
+    radial-gradient(ellipse 55% 45% at 6% 92%, rgba(153, 27, 27, 0.22), transparent 48%),
+    linear-gradient(158deg, #0f0809 0%, #1c0b10 42%, #12080c 100%);
+  border-color: #f87171;
   box-shadow:
-    0 3px 0 #92400e,
-    0 6px 18px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    0 0 0 1px rgba(248, 113, 113, 0.18),
+    0 4px 20px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.hub-luck-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -42deg,
+    transparent,
+    transparent 10px,
+    rgba(220, 38, 38, 0.035) 10px,
+    rgba(220, 38, 38, 0.035) 20px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hub-luck-card::before {
@@ -928,7 +945,7 @@ html.native-app .tab-bar {
   background: linear-gradient(
     105deg,
     transparent 38%,
-    rgba(255, 255, 255, 0.35) 50%,
+    rgba(248, 113, 113, 0.12) 50%,
     transparent 62%
   );
   transform: translateX(-120%);
@@ -962,15 +979,15 @@ html.native-app .tab-bar {
 @keyframes hub-luck-card-pulse {
   from {
     box-shadow:
-      0 3px 0 #d97706,
-      0 6px 18px rgba(245, 158, 11, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      0 0 0 1px rgba(220, 38, 38, 0.2),
+      0 4px 18px rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
   to {
     box-shadow:
-      0 3px 0 #d97706,
-      0 0 24px rgba(251, 191, 36, 0.65),
-      inset 0 0 16px rgba(251, 191, 36, 0.2);
+      0 0 0 1px rgba(248, 113, 113, 0.45),
+      0 0 28px rgba(220, 38, 38, 0.55),
+      inset 0 0 18px rgba(127, 29, 29, 0.35);
   }
 }
 
@@ -980,46 +997,46 @@ html.native-app .tab-bar {
   100% { transform: scale(1); }
 }
 
-.hub-luck-lights {
+.hub-luck-warnings {
   position: absolute;
   inset: 6px 8px;
   pointer-events: none;
   z-index: 0;
 }
 
-.hub-luck-light {
+.hub-luck-warning-blink {
   position: absolute;
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #fef08a;
-  box-shadow: 0 0 4px #fbbf24;
-  animation: hub-luck-bulb 1.4s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.17s);
+  background: #ef4444;
+  box-shadow: 0 0 5px #dc2626, 0 0 10px rgba(220, 38, 38, 0.55);
+  animation: hub-luck-warning-pulse 1.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.19s);
 }
 
-.hub-luck-light:nth-child(1) { top: 0; left: 8%; }
-.hub-luck-light:nth-child(2) { top: 0; left: 28%; }
-.hub-luck-light:nth-child(3) { top: 0; left: calc(50% - 2.5px); }
-.hub-luck-light:nth-child(4) { top: 0; right: 28%; }
-.hub-luck-light:nth-child(5) { top: 0; right: 8%; }
-.hub-luck-light:nth-child(6) { bottom: 0; left: 14%; }
-.hub-luck-light:nth-child(7) { bottom: 0; left: calc(50% - 2.5px); }
-.hub-luck-light:nth-child(8) { bottom: 0; right: 14%; }
+.hub-luck-warning-blink:nth-child(1) { top: 0; left: 8%; }
+.hub-luck-warning-blink:nth-child(2) { top: 0; left: 28%; }
+.hub-luck-warning-blink:nth-child(3) { top: 0; left: calc(50% - 2.5px); }
+.hub-luck-warning-blink:nth-child(4) { top: 0; right: 28%; }
+.hub-luck-warning-blink:nth-child(5) { top: 0; right: 8%; }
+.hub-luck-warning-blink:nth-child(6) { bottom: 0; left: 14%; }
+.hub-luck-warning-blink:nth-child(7) { bottom: 0; left: calc(50% - 2.5px); }
+.hub-luck-warning-blink:nth-child(8) { bottom: 0; right: 14%; }
 
-.hub-luck-card--spinning .hub-luck-light {
-  animation: hub-luck-bulb-spin 0.28s steps(2) infinite;
+.hub-luck-card--spinning .hub-luck-warning-blink {
+  animation: hub-luck-warning-alarm 0.28s steps(2) infinite;
   animation-delay: calc(var(--i) * 0.06s);
 }
 
-@keyframes hub-luck-bulb {
-  0%, 100% { opacity: 0.35; transform: scale(0.85); }
-  50% { opacity: 1; transform: scale(1.1); }
+@keyframes hub-luck-warning-pulse {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.15); }
 }
 
-@keyframes hub-luck-bulb-spin {
-  0%, 100% { opacity: 0.2; background: #fde68a; }
-  50% { opacity: 1; background: #fff; }
+@keyframes hub-luck-warning-alarm {
+  0%, 100% { opacity: 0.15; background: #991b1b; }
+  50% { opacity: 1; background: #fca5a5; }
 }
 
 .hub-luck-main {
@@ -1039,15 +1056,16 @@ html.native-app .tab-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(145deg, #fef08a, #f59e0b);
-  color: #78350f;
-  box-shadow: 0 2px 0 #b45309, 0 3px 8px rgba(180, 83, 9, 0.3);
+  background: linear-gradient(145deg, #450a0a, #7f1d1d);
+  color: #fecaca;
+  border: 1px solid #dc2626;
+  box-shadow: 0 0 14px rgba(220, 38, 38, 0.35);
   animation: hub-luck-icon-bob 2.8s ease-in-out infinite;
 }
 
 [data-theme='dark'] .hub-luck-icon {
-  color: #fef3c7;
-  background: linear-gradient(145deg, #fbbf24, #d97706);
+  color: #fee2e2;
+  background: linear-gradient(145deg, #3f0d0d, #991b1b);
 }
 
 @keyframes hub-luck-icon-bob {
@@ -1065,31 +1083,27 @@ html.native-app .tab-bar {
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.02em;
-  background: linear-gradient(90deg, #b45309, #d97706, #b45309);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: hub-luck-title-shine 3s linear infinite;
+  color: #fecaca;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.45);
+  animation: hub-luck-title-flicker 4.2s ease-in-out infinite;
 }
 
 [data-theme='dark'] .hub-luck-body h3 {
-  background: linear-gradient(90deg, #fde68a, #fff, #fde68a);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #fee2e2;
 }
 
-@keyframes hub-luck-title-shine {
-  to { background-position: 200% center; }
+@keyframes hub-luck-title-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  94% { opacity: 0.82; }
+  96% { opacity: 1; }
+  98% { opacity: 0.88; }
 }
 
 .hub-luck-subtitle {
   margin: 0;
   font-size: 12px;
   line-height: 1.3;
-  color: #92400e;
+  color: #fca5a5;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -1097,11 +1111,12 @@ html.native-app .tab-bar {
 }
 
 [data-theme='dark'] .hub-luck-subtitle {
-  color: #fde68a;
+  color: #f87171;
 }
 
 .hub-luck-subtitle--spinning {
   filter: blur(0.3px);
+  color: #fef2f2;
 }
 
 .hub-luck-subtitle--wrap {
@@ -1144,13 +1159,13 @@ html.native-app .tab-bar {
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #92400e;
+  color: #f87171;
   white-space: nowrap;
   line-height: 1;
 }
 
 [data-theme='dark'] .hub-luck-count-label {
-  color: #fde68a;
+  color: #fca5a5;
 }
 
 .hub-luck-stepper {
@@ -1164,9 +1179,9 @@ html.native-app .tab-bar {
   height: 28px;
   padding: 0;
   border-radius: var(--pf-radius-sm);
-  border: 1px solid rgba(245, 158, 11, 0.5);
-  background: rgba(255, 255, 255, 0.7);
-  color: #92400e;
+  border: 1px solid rgba(220, 38, 38, 0.55);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fecaca;
   font-weight: 700;
   font-size: 16px;
   font-family: inherit;
@@ -1174,8 +1189,8 @@ html.native-app .tab-bar {
 }
 
 [data-theme='dark'] .hub-luck-stepper button {
-  background: rgba(0, 0, 0, 0.3);
-  color: #fde68a;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fee2e2;
 }
 
 .hub-luck-stepper span {
@@ -1183,11 +1198,11 @@ html.native-app .tab-bar {
   text-align: center;
   font-weight: 700;
   font-size: 14px;
-  color: #78350f;
+  color: #fecaca;
 }
 
 [data-theme='dark'] .hub-luck-stepper span {
-  color: #fef3c7;
+  color: #fee2e2;
 }
 
 .hub-luck-stepper button:disabled {
@@ -1201,35 +1216,39 @@ html.native-app .tab-bar {
   font-family: inherit;
   font-size: 13px;
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   padding: 8px 12px;
-  border: 2px solid #b45309;
+  border: 2px solid #7f1d1d;
   border-radius: var(--pf-radius-sm);
   cursor: pointer;
-  color: #451a03;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
-  background: linear-gradient(180deg, #fde047 0%, #fbbf24 42%, #f59e0b 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(180deg, #ef4444 0%, #dc2626 48%, #991b1b 100%);
   box-shadow:
-    0 3px 0 #b45309,
-    0 4px 12px rgba(180, 83, 9, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    0 3px 0 #7f1d1d,
+    0 0 16px rgba(220, 38, 38, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .hub-luck-spin:hover:not(:disabled) {
   transform: translateY(-1px);
+  box-shadow:
+    0 4px 0 #7f1d1d,
+    0 0 22px rgba(239, 68, 68, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .hub-luck-spin:active:not(:disabled) {
   transform: translateY(2px);
   box-shadow:
-    0 1px 0 #b45309,
-    0 2px 8px rgba(180, 83, 9, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 1px 0 #7f1d1d,
+    0 0 10px rgba(220, 38, 38, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .hub-luck-spin:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   transform: none;
 }
@@ -1243,7 +1262,7 @@ html.native-app .tab-bar {
   position: absolute;
   inset: -3px;
   border-radius: inherit;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.55), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(248, 113, 113, 0.65), transparent 70%);
   opacity: 0;
   pointer-events: none;
 }
@@ -1271,7 +1290,7 @@ html.native-app .tab-bar {
   .hub-luck-card::before,
   .hub-luck-card--spinning,
   .hub-luck-card--winner,
-  .hub-luck-light,
+  .hub-luck-warning-blink,
   .hub-luck-icon,
   .hub-luck-body h3,
   .hub-luck-spin--active,
