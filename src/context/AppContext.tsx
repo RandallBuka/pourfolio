@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { getDrinkIngredientSummary } from '../data/drinks'
 import { canMakeDrink, getMissingIngredients } from '../lib/matching'
 import { buildIngredientCatalog, getSeedIngredient } from '../lib/ingredientEdit'
-import { SEED_DRINKS, SEED_INGREDIENTS } from '../data/catalogStore'
+import { SEED_DRINKS, SEED_INGREDIENTS, useCatalogReady } from '../data/catalogStore'
 import { createDefaultState, generateId, loadState, saveState } from '../lib/storage'
 import { parseBackup } from '../lib/backup'
 import {
@@ -147,6 +147,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [undoSnapshot, setUndoSnapshot] = useState<UndoSnapshot | null>(() => loadUndoSnapshot())
   const [authUser, setAuthUser] = useState<User | null>(null)
   const [authReady, setAuthReady] = useState(() => !isSupabaseConfigured())
+  const catalogReady = useCatalogReady()
 
   useEffect(() => {
     if (!isSupabaseConfigured()) return
@@ -258,14 +259,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       state.ingredientOverrides ?? {},
       state.hiddenIngredients
     ),
-    [state.customIngredients, state.ingredientOverrides, state.hiddenIngredients]
+    [state.customIngredients, state.ingredientOverrides, state.hiddenIngredients, catalogReady]
   )
 
   const allDrinks = useMemo(
     () => [...SEED_DRINKS, ...state.customDrinks].filter(
       (d) => !state.hiddenDrinks.includes(d.id)
     ),
-    [state.customDrinks, state.hiddenDrinks]
+    [state.customDrinks, state.hiddenDrinks, catalogReady]
   )
 
   const ingredientMap = useMemo(

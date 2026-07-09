@@ -2914,6 +2914,16 @@ html.native-app .filter-panel {
   border-bottom: 1px solid var(--pf-warning-border);
 }
 
+.catalog-loading-banner {
+  padding: 8px 14px;
+  background: var(--pf-accent-muted, rgba(13, 148, 136, 0.12));
+  color: var(--pf-accent, #0d9488);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid var(--pf-border);
+}
+
 .settings-cta {
   width: 100%;
   border: none;

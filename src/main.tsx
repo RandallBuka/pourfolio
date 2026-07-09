@@ -15,7 +15,7 @@ import './index.css'
 initTheme()
 initNativeShell()
 
-async function bootstrap() {
+function bootstrap() {
   const authCallback = hasAuthCallbackInUrl()
 
   if (
@@ -28,13 +28,13 @@ async function bootstrap() {
     return
   }
 
-  await loadCatalog()
-
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <App />
     </StrictMode>
   )
+
+  void loadCatalog()
 
   if (authCallback && isSupabaseConfigured()) {
     void initSupabaseAuth()
@@ -53,10 +53,17 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
           const worker = registration.installing
           if (!worker) return
           worker.addEventListener('statechange', () => {
-            if (worker.state === 'installed' && navigator.serviceWorker.controller) {
-              worker.postMessage({ type: 'SKIP_WAITING' })
-              window.location.reload()
+            if (worker.state !== 'installed' || !navigator.serviceWorker.controller) return
+            worker.postMessage({ type: 'SKIP_WAITING' })
+            // Reload only after the app has painted — avoids trapping users on the boot splash.
+            const reloadWhenReady = () => {
+              if (document.querySelector('.app-shell')) {
+                window.location.reload()
+                return
+              }
+              window.requestAnimationFrame(reloadWhenReady)
             }
+            reloadWhenReady()
           })
         })
       })

@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from 'react'
 import type { Drink, Ingredient } from '../types'
 import { enrichWithUsState } from './ingredientStates'
 import { CORE_SEED_INGREDIENTS, pruneRedundantGenerics } from './ingredients'
@@ -16,7 +17,35 @@ export let SEED_INGREDIENTS: Ingredient[] = [...CORE_SEED_INGREDIENTS]
 export let SEED_DRINKS: Drink[] = [...CORE_SEED_DRINKS]
 
 let catalogLoaded = false
+let catalogRevision = 0
 let loadPromise: Promise<void> | null = null
+const catalogListeners = new Set<() => void>()
+
+const CATALOG_FETCH_MS = 20_000
+
+function notifyCatalogListeners(): void {
+  catalogRevision += 1
+  for (const listener of catalogListeners) listener()
+}
+
+export function getCatalogRevision(): number {
+  return catalogRevision
+}
+
+export function subscribeCatalogLoaded(listener: () => void): () => void {
+  catalogListeners.add(listener)
+  return () => catalogListeners.delete(listener)
+}
+
+async function fetchWithTimeout(url: string, ms = CATALOG_FETCH_MS): Promise<Response> {
+  const controller = new AbortController()
+  const timer = window.setTimeout(() => controller.abort(), ms)
+  try {
+    return await fetch(url, { signal: controller.signal })
+  } finally {
+    window.clearTimeout(timer)
+  }
+}
 
 function readCache(): CatalogCache | null {
   try {
@@ -48,10 +77,25 @@ function applyCatalog(extIngredients: Ingredient[], extDrinks: Drink[]): void {
   ])
   SEED_DRINKS = [...CORE_SEED_DRINKS, ...extDrinks]
   catalogLoaded = true
+  notifyCatalogListeners()
+}
+
+function markCatalogReady(): void {
+  if (catalogLoaded) return
+  catalogLoaded = true
+  notifyCatalogListeners()
 }
 
 export function isCatalogLoaded(): boolean {
   return catalogLoaded
+}
+
+export function useCatalogReady(): boolean {
+  return useSyncExternalStore(
+    subscribeCatalogLoaded,
+    () => catalogLoaded,
+    () => true
+  )
 }
 
 export async function loadCatalog(): Promise<void> {
@@ -69,12 +113,12 @@ export async function loadCatalog(): Promise<void> {
 
     try {
       const [versionRes, ingRes, drinkRes] = await Promise.all([
-        fetch(`${base}catalog/version.json`),
-        fetch(`${base}catalog/ingredients.json`),
-        fetch(`${base}catalog/drinks.json`),
+        fetchWithTimeout(`${base}catalog/version.json`),
+        fetchWithTimeout(`${base}catalog/ingredients.json`),
+        fetchWithTimeout(`${base}catalog/drinks.json`),
       ])
       if (!ingRes.ok || !drinkRes.ok) {
-        catalogLoaded = true
+        markCatalogReady()
         return
       }
 
@@ -85,7 +129,7 @@ export async function loadCatalog(): Promise<void> {
       applyCatalog(extIngredients, extDrinks)
       writeCache(version ?? 0, extIngredients, extDrinks)
     } catch {
-      catalogLoaded = true
+      markCatalogReady()
     }
   })()
 

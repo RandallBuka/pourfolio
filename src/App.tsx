@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { TabBar } from './components/TabBar'
 import { InstallPrompt } from './components/InstallPrompt'
 import { OfflineIndicator } from './components/OfflineIndicator'
+import { CatalogLoadingBanner } from './components/CatalogLoadingBanner'
 import { ScrollToTop } from './components/ScrollToTop'
 import { MyBarPage } from './pages/MyBarPage'
 import { CanMakePage } from './pages/CanMakePage'
@@ -27,6 +28,7 @@ function AppShell() {
   return (
     <div className="app-shell">
       <OfflineIndicator />
+      <CatalogLoadingBanner />
       <InstallPrompt />
       <ScrollToTop />
       <main className="page-content">
