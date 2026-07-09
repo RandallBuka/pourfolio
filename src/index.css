@@ -49,6 +49,7 @@
   --pf-list-active: #eef2f6;
   --pf-overlay: rgba(15, 23, 42, 0.5);
   --pf-thumb-bg: #ffffff;
+  --pf-photo-thumb-bg: #ffffff;
   --pf-favorite-idle: #cbd5e1;
   --pf-error-bg: #fef2f2;
   --pf-error-border: #fecaca;
@@ -102,6 +103,7 @@
   --pf-list-active: #334155;
   --pf-overlay: rgba(0, 0, 0, 0.65);
   --pf-thumb-bg: #334155;
+  --pf-photo-thumb-bg: #ffffff;
   --pf-favorite-idle: #64748b;
   --pf-error-bg: #450a0a;
   --pf-error-border: #7f1d1d;
@@ -1294,11 +1296,11 @@ html.native-app .tab-bar {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: var(--pf-thumb-bg);
+  background: var(--pf-photo-thumb-bg);
 }
 
 .item-thumb--photo {
-  background: var(--pf-thumb-bg);
+  background: var(--pf-photo-thumb-bg);
   border: 1px solid var(--pf-border);
 }
 

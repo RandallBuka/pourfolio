@@ -23,6 +23,7 @@ import { scaleAmount } from '../lib/recipeScale'
 
 import { shareRecipe } from '../lib/recipeShare'
 
+import { getRecipeIngredientBrowseUrl } from '../lib/ingredientBrowse'
 import type { RecipeIngredient } from '../types'
 
 
@@ -466,7 +467,7 @@ function RecipeIngredientRow({
 
   const displayIng = matched ?? [...ingredientMap.values()].find((i) => i.genericName === req.genericName)
   const matchNote = matched ? explainMatch(req, matched) : null
-  const ingredientsBrowseUrl = `/ingredients?genericName=${encodeURIComponent(req.genericName)}`
+  const ingredientsBrowseUrl = getRecipeIngredientBrowseUrl(req)
 
   return (
     <div

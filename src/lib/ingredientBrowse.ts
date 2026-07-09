@@ -1,57 +1,33 @@
 import type { Ingredient, RecipeIngredient } from '../types'
 import { normalize } from './matching'
 
-export interface IngredientBrowseParams {
-  q?: string
-  genericName?: string
+/** Catalog bottles that satisfy a premium recipe's brand requirement. */
+export function ingredientMatchesBrand(ing: Ingredient, brand: string): boolean {
+  const target = normalize(brand)
+  const name = normalize(ing.name)
+  if (!target || !name) return false
+  if (name === target) return true
+  if (name.startsWith(`${target} `)) return true
+  if (target.startsWith(`${name} `)) return true
+  return false
 }
 
-/** Build Stock tab URL params for a missing recipe ingredient */
-export function getIngredientBrowseParams(
-  req: RecipeIngredient,
-  ingredients: Ingredient[]
-): IngredientBrowseParams {
-  const generic = req.genericName.trim()
-  const display = (req.brandName ?? req.genericName).trim()
-
-  const sameGeneric = ingredients.filter(
-    (i) => normalize(i.genericName) === normalize(generic)
-  )
-
-  const nameMatches = ingredients.filter((i) => {
-    const n = normalize(i.name)
-    const g = normalize(generic)
-    const d = normalize(display)
-    return n === d || n.includes(d) || d.includes(n) || (g.length > 3 && n.includes(g))
-  })
-
-  if (req.brandName && nameMatches.length <= 2) {
-    return { q: req.brandName }
-  }
-
-  if (sameGeneric.length > 1) {
-    return { genericName: generic }
-  }
-
-  if (nameMatches.length === 1) {
-    return { q: nameMatches[0].name }
-  }
-
-  if (sameGeneric.length === 1) {
-    return { q: sameGeneric[0].name }
-  }
-
-  return { q: display }
+export function applyIngredientBrandFilter(items: Ingredient[], brand: string): Ingredient[] {
+  if (!brand.trim()) return items
+  return items.filter((ing) => ingredientMatchesBrand(ing, brand))
 }
 
-export function buildIngredientBrowsePath(
-  req: RecipeIngredient,
-  ingredients: Ingredient[]
-): string {
-  const params = getIngredientBrowseParams(req, ingredients)
-  const search = new URLSearchParams()
-  if (params.q) search.set('q', params.q)
-  if (params.genericName) search.set('genericName', params.genericName)
-  const qs = search.toString()
-  return qs ? `/ingredients?${qs}` : '/ingredients'
+export function applyIngredientBrandIdFilter(items: Ingredient[], brandId: string): Ingredient[] {
+  if (!brandId.trim()) return items
+  return items.filter((ing) => ing.id === brandId)
+}
+
+export function getRecipeIngredientBrowseUrl(req: RecipeIngredient): string {
+  if (req.mode === 'premium' && req.brandId) {
+    return `/ingredients?brandId=${encodeURIComponent(req.brandId)}`
+  }
+  if (req.mode === 'premium' && req.brandName) {
+    return `/ingredients?brand=${encodeURIComponent(req.brandName)}`
+  }
+  return `/ingredients?genericName=${encodeURIComponent(req.genericName)}`
 }

@@ -16,6 +16,10 @@ import {
   type IngredientFilterField,
   type IngredientFilters,
 } from '../lib/ingredientFilter'
+import {
+  applyIngredientBrandFilter,
+  applyIngredientBrandIdFilter,
+} from '../lib/ingredientBrowse'
 import { isUsCountry } from '../data/usStates'
 import type { IngredientCategory } from '../types'
 
@@ -27,10 +31,14 @@ export function AllIngredientsPage() {
   const [searchParams] = useSearchParams()
   const initialQ = searchParams.get('q') ?? ''
   const initialGeneric = searchParams.get('genericName') ?? ''
+  const initialBrand = searchParams.get('brand') ?? ''
+  const initialBrandId = searchParams.get('brandId') ?? ''
   const [search, setSearch] = useState(initialQ)
+  const [brandFilter, setBrandFilter] = useState(initialBrand)
+  const [brandIdFilter, setBrandIdFilter] = useState(initialBrandId)
   const [filters, setFilters] = useState<IngredientFilters>(() => ({
     ...EMPTY_INGREDIENT_FILTERS,
-    genericName: initialGeneric ? [initialGeneric] : [],
+    genericName: initialGeneric && !initialBrand && !initialBrandId ? [initialGeneric] : [],
   }))
   const [onShelfOnly, setOnShelfOnly] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
@@ -49,8 +57,20 @@ export function AllIngredientsPage() {
   useEffect(() => {
     const q = searchParams.get('q')
     const generic = searchParams.get('genericName')
+    const brand = searchParams.get('brand')
+    const brandId = searchParams.get('brandId')
     if (q) setSearch(q)
-    if (generic) {
+    if (brand) {
+      setBrandFilter(brand)
+      setBrandIdFilter('')
+      setFilters((f) => ({ ...f, genericName: [] }))
+    } else if (brandId) {
+      setBrandIdFilter(brandId)
+      setBrandFilter('')
+      setFilters((f) => ({ ...f, genericName: [] }))
+    } else if (generic) {
+      setBrandFilter('')
+      setBrandIdFilter('')
       setFilters((f) => ({
         ...f,
         genericName: f.genericName.includes(generic) ? f.genericName : [generic],
@@ -58,7 +78,12 @@ export function AllIngredientsPage() {
     }
   }, [searchParams])
 
-  const browseLabel = initialGeneric || initialQ
+  const brandIdLabel = useMemo(
+    () => (brandIdFilter ? allIngredients.find((i) => i.id === brandIdFilter)?.name : undefined),
+    [allIngredients, brandIdFilter]
+  )
+
+  const browseLabel = brandFilter || brandIdLabel || initialGeneric || initialQ
 
   const onShelfIds = useMemo(
     () => new Set(activeBar.ingredientIds),
@@ -68,9 +93,11 @@ export function AllIngredientsPage() {
   const filtered = useMemo(() => {
     let items = [...allIngredients].sort((a, b) => a.name.localeCompare(b.name))
     items = applyIngredientFilters(items, filters, { onShelfOnly }, onShelfIds)
+    if (brandIdFilter) items = applyIngredientBrandIdFilter(items, brandIdFilter)
+    else if (brandFilter) items = applyIngredientBrandFilter(items, brandFilter)
     items = applyIngredientSearch(items, search)
     return items
-  }, [allIngredients, search, filters, onShelfOnly, onShelfIds])
+  }, [allIngredients, search, filters, onShelfOnly, onShelfIds, brandFilter, brandIdFilter])
 
   const activeLetters = useMemo(() => getActiveAlphaLetters(filtered), [filtered])
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
@@ -80,12 +107,32 @@ export function AllIngredientsPage() {
     if (!el) return
     el.scrollIntoView({ behavior: scrubbing ? 'auto' : 'smooth', block: 'start' })
   }, [])
-  const activePills = formatActiveFilters(filters, onShelfOnly)
-  const filterCount = getActiveFilterCount(filters, onShelfOnly)
+  const activePills = useMemo(() => {
+    const pills = formatActiveFilters(filters, onShelfOnly)
+    if (brandFilter) {
+      pills.unshift({ key: 'brand', label: `Brand: ${brandFilter}` })
+    }
+    if (brandIdFilter) {
+      pills.unshift({
+        key: 'brandId',
+        label: `Bottle: ${brandIdLabel ?? brandIdFilter}`,
+      })
+    }
+    return pills
+  }, [filters, onShelfOnly, brandFilter, brandIdFilter, brandIdLabel])
+  const filterCount = getActiveFilterCount(filters, onShelfOnly) + (brandFilter ? 1 : 0) + (brandIdFilter ? 1 : 0)
 
   const removePill = (pill: { key: string; field?: string; value?: string }) => {
     if (pill.key === 'onShelf') {
       setOnShelfOnly(false)
+      return
+    }
+    if (pill.key === 'brand') {
+      setBrandFilter('')
+      return
+    }
+    if (pill.key === 'brandId') {
+      setBrandIdFilter('')
       return
     }
     if (pill.field && pill.value) {
