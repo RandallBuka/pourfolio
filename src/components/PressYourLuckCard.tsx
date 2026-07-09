@@ -5,7 +5,6 @@ import { isLiquidIngredient } from '../lib/ingredientLiquid'
 import type { Ingredient } from '../types'
 
 const MIN_COUNT = 1
-const MAX_COUNT = 6
 const SPIN_MS = 1400
 
 function randomBarName(ingredients: Ingredient[]): string {
@@ -35,7 +34,7 @@ export function PressYourLuckCard() {
     [barIngredients]
   )
 
-  const maxCount = Math.min(MAX_COUNT, Math.max(MIN_COUNT, barIngredients.length))
+  const maxCount = Math.max(MIN_COUNT, barIngredients.length)
   const canSpin = barIngredients.length > 0 && liquidCount > 0
 
   useEffect(() => {
