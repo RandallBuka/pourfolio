@@ -108,20 +108,41 @@ export function PressYourLuckCard() {
       <div className="hub-luck-main">
         <div className="hub-luck-icon" aria-hidden>
           <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden>
-            <circle cx="16" cy="19.5" r="8.25" fill="var(--luck-jester-face)" />
-            <path fill="var(--luck-jester-face)" d="M6.5 17.5 3.2 9.5 7.8 12.2Z" />
-            <path fill="var(--luck-jester-face)" d="M12.5 16.5 16 4.5 19.5 16.5Z" />
-            <path fill="var(--luck-jester-face)" d="M25.5 17.5 28.8 9.5 24.2 12.2Z" />
-            <circle cx="3.2" cy="9.5" r="2.75" fill="var(--luck-jester-face)" />
-            <circle cx="16" cy="4.5" r="2.75" fill="var(--luck-jester-face)" />
-            <circle cx="28.8" cy="9.5" r="2.75" fill="var(--luck-jester-face)" />
-            <ellipse cx="12.6" cy="18.8" rx="2" ry="2.5" fill="var(--luck-jester-detail)" />
-            <ellipse cx="19.4" cy="18.8" rx="2" ry="2.5" fill="var(--luck-jester-detail)" />
+            <circle cx="16" cy="21.5" r="6.75" fill="var(--luck-jester-face)" />
             <path
-              fill="var(--luck-jester-detail)"
-              d="M10.5 22.2Q16 27.2 21.5 22.2Q16 24.8 10.5 22.2Z"
+              fill="var(--luck-jester-hat)"
+              d="M8.2 15.4
+                 C6.2 14.8 4.6 11.5 6.1 8.8
+                 C7.2 10.4 8.6 12.2 10.1 13.6
+                 L14.8 13
+                 C15.4 9.2 15.8 6.4 16 5.2
+                 C16.2 6.4 16.6 9.2 17.2 13
+                 L21.9 13.6
+                 C23.4 12.2 24.8 10.4 25.9 8.8
+                 C27.4 11.5 25.8 14.8 23.8 15.4
+                 C21.4 16.3 18.7 16.6 16 16.6
+                 C13.3 16.6 10.6 16.3 8.2 15.4
+                 Z"
             />
-            <circle cx="16" cy="21.2" r="1.1" fill="var(--luck-jester-detail)" />
+            <circle cx="6.1" cy="8.8" r="1.65" fill="var(--luck-jester-hat)" stroke="var(--luck-jester-detail)" strokeWidth="0.55" />
+            <circle cx="16" cy="5.2" r="1.65" fill="var(--luck-jester-hat)" stroke="var(--luck-jester-detail)" strokeWidth="0.55" />
+            <circle cx="25.9" cy="8.8" r="1.65" fill="var(--luck-jester-hat)" stroke="var(--luck-jester-detail)" strokeWidth="0.55" />
+            <path
+              fill="none"
+              stroke="var(--luck-jester-detail)"
+              strokeWidth="0.75"
+              strokeOpacity="0.35"
+              d="M8.5 15.6 Q16 17 23.5 15.6"
+            />
+            <circle cx="13.3" cy="20.5" r="1" fill="var(--luck-jester-detail)" />
+            <circle cx="18.7" cy="20.5" r="1" fill="var(--luck-jester-detail)" />
+            <path
+              fill="none"
+              stroke="var(--luck-jester-detail)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              d="M13.5 23.3 Q16 24.6 18.5 23.3"
+            />
           </svg>
         </div>
 
