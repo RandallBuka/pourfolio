@@ -129,24 +129,29 @@ export function PressYourLuckCard() {
               {subtitle}
             </p>
             <div className="hub-luck-actions">
-              <div className="hub-luck-stepper" aria-label="Number of ingredients">
-                <button
-                  type="button"
-                  onClick={() => setCount((c) => Math.max(MIN_COUNT, c - 1))}
-                  disabled={!canSpin || count <= MIN_COUNT || spinning}
-                  aria-label="Fewer ingredients"
-                >
-                  −
-                </button>
-                <span>{count}</span>
-                <button
-                  type="button"
-                  onClick={() => setCount((c) => Math.min(maxCount, c + 1))}
-                  disabled={!canSpin || count >= maxCount || spinning}
-                  aria-label="More ingredients"
-                >
-                  +
-                </button>
+              <div className="hub-luck-count" role="group" aria-labelledby="hub-luck-count-label">
+                <span id="hub-luck-count-label" className="hub-luck-count-label">
+                  Ingredients
+                </span>
+                <div className="hub-luck-stepper">
+                  <button
+                    type="button"
+                    onClick={() => setCount((c) => Math.max(MIN_COUNT, c - 1))}
+                    disabled={!canSpin || count <= MIN_COUNT || spinning}
+                    aria-label="Fewer ingredients"
+                  >
+                    −
+                  </button>
+                  <span aria-hidden>{count}</span>
+                  <button
+                    type="button"
+                    onClick={() => setCount((c) => Math.min(maxCount, c + 1))}
+                    disabled={!canSpin || count >= maxCount || spinning}
+                    aria-label="More ingredients"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
               <button

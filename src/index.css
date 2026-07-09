@@ -1124,10 +1124,31 @@ html.native-app .tab-bar {
 
 .hub-luck-actions {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
   flex-shrink: 0;
   padding-top: 1px;
+}
+
+.hub-luck-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.hub-luck-count-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #92400e;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+[data-theme='dark'] .hub-luck-count-label {
+  color: #fde68a;
 }
 
 .hub-luck-stepper {
@@ -1328,6 +1349,10 @@ html.native-app .tab-bar {
 
   .hub-luck-subtitle {
     font-size: 11px;
+  }
+
+  .hub-luck-count-label {
+    font-size: 9px;
   }
 
   .hub-luck-stepper button {
