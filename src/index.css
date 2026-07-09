@@ -875,51 +875,213 @@ html.native-app .tab-bar {
 
 .hub-luck-card {
   grid-column: 1 / -1;
+  position: relative;
+  overflow: hidden;
   margin: 0;
-  padding: 16px;
-  background: var(--pf-surface);
+  padding: 18px 16px 16px;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(251, 191, 36, 0.45), transparent 55%),
+    linear-gradient(155deg, #fffbeb 0%, #fef3c7 38%, #fde68a 72%, #fcd34d 100%);
   border-radius: var(--pf-radius);
-  box-shadow: var(--pf-shadow);
-  border: 1px solid var(--pf-border);
+  border: 2px solid #f59e0b;
+  box-shadow:
+    0 4px 0 #d97706,
+    0 10px 28px rgba(245, 158, 11, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  isolation: isolate;
+}
+
+[data-theme='dark'] .hub-luck-card {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(251, 191, 36, 0.22), transparent 55%),
+    linear-gradient(155deg, #451a03 0%, #78350f 42%, #92400e 78%, #b45309 100%);
+  border-color: #fbbf24;
+  box-shadow:
+    0 4px 0 #92400e,
+    0 10px 28px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.hub-luck-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  animation: hub-luck-shimmer 4.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hub-luck-card--spinning {
+  animation: hub-luck-card-pulse 0.22s ease-in-out infinite alternate;
+}
+
+.hub-luck-card--spinning::before {
+  animation: hub-luck-shimmer-fast 0.55s linear infinite;
+}
+
+.hub-luck-card--winner {
+  animation: hub-luck-winner-pop 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes hub-luck-shimmer {
+  0%, 72%, 100% { transform: translateX(-120%); }
+  28% { transform: translateX(120%); }
+}
+
+@keyframes hub-luck-shimmer-fast {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(120%); }
+}
+
+@keyframes hub-luck-card-pulse {
+  from {
+    box-shadow:
+      0 4px 0 #d97706,
+      0 10px 28px rgba(245, 158, 11, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+  to {
+    box-shadow:
+      0 4px 0 #d97706,
+      0 0 32px rgba(251, 191, 36, 0.75),
+      inset 0 0 24px rgba(251, 191, 36, 0.25);
+  }
+}
+
+@keyframes hub-luck-winner-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.hub-luck-lights {
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hub-luck-light {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fef08a;
+  box-shadow: 0 0 6px #fbbf24, 0 0 12px rgba(251, 191, 36, 0.6);
+  animation: hub-luck-bulb 1.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.17s);
+}
+
+.hub-luck-light:nth-child(1) { top: 0; left: 8%; }
+.hub-luck-light:nth-child(2) { top: 0; left: 28%; }
+.hub-luck-light:nth-child(3) { top: 0; left: calc(50% - 3.5px); }
+.hub-luck-light:nth-child(4) { top: 0; right: 28%; }
+.hub-luck-light:nth-child(5) { top: 0; right: 8%; }
+.hub-luck-light:nth-child(6) { bottom: 0; left: 14%; }
+.hub-luck-light:nth-child(7) { bottom: 0; left: calc(50% - 3.5px); }
+.hub-luck-light:nth-child(8) { bottom: 0; right: 14%; }
+
+.hub-luck-card--spinning .hub-luck-light {
+  animation: hub-luck-bulb-spin 0.28s steps(2) infinite;
+  animation-delay: calc(var(--i) * 0.06s);
+}
+
+@keyframes hub-luck-bulb {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes hub-luck-bulb-spin {
+  0%, 100% { opacity: 0.2; background: #fde68a; }
+  50% { opacity: 1; background: #fff; }
+}
+
+.hub-luck-header,
+.hub-luck-controls,
+.hub-luck-slot,
+.hub-luck-spin,
+.hub-luck-hint,
+.hub-luck-result {
+  position: relative;
+  z-index: 1;
 }
 
 .hub-luck-header {
   display: flex;
   gap: 12px;
   align-items: flex-start;
+  padding-top: 4px;
 }
 
 .hub-luck-icon {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f59e0b22, #ef444422);
-  color: #d97706;
+  background: linear-gradient(145deg, #fef08a, #f59e0b);
+  color: #78350f;
+  box-shadow: 0 3px 0 #b45309, 0 4px 12px rgba(180, 83, 9, 0.35);
+  animation: hub-luck-icon-bob 2.8s ease-in-out infinite;
 }
 
 [data-theme='dark'] .hub-luck-icon {
-  color: #fbbf24;
+  color: #fef3c7;
+  background: linear-gradient(145deg, #fbbf24, #d97706);
+}
+
+@keyframes hub-luck-icon-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-3px) rotate(2deg); }
 }
 
 .hub-luck-heading h3 {
   margin: 0 0 4px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--pf-text);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #b45309, #d97706, #b45309);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hub-luck-title-shine 3s linear infinite;
+}
+
+[data-theme='dark'] .hub-luck-heading h3 {
+  background: linear-gradient(90deg, #fde68a, #fff, #fde68a);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes hub-luck-title-shine {
+  to { background-position: 200% center; }
 }
 
 .hub-luck-heading p {
   margin: 0;
   font-size: 12px;
   line-height: 1.35;
-  color: var(--pf-text-muted);
+  color: #92400e;
+  font-weight: 500;
+}
+
+[data-theme='dark'] .hub-luck-heading p {
+  color: #fde68a;
 }
 
 .hub-luck-controls {
@@ -927,12 +1089,37 @@ html.native-app .tab-bar {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--pf-radius-sm);
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+[data-theme='dark'] .hub-luck-controls {
+  background: rgba(0, 0, 0, 0.22);
+  border-color: rgba(251, 191, 36, 0.35);
 }
 
 .hub-luck-count-label {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--pf-text);
+  font-weight: 700;
+  color: #78350f;
+}
+
+[data-theme='dark'] .hub-luck-count-label {
+  color: #fef3c7;
+}
+
+.hub-luck-stepper button {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(255, 255, 255, 0.7);
+  color: #92400e;
+  font-weight: 700;
+}
+
+[data-theme='dark'] .hub-luck-stepper button {
+  background: rgba(0, 0, 0, 0.3);
+  color: #fde68a;
 }
 
 .hub-luck-stepper button:disabled {
@@ -940,57 +1127,174 @@ html.native-app .tab-bar {
   cursor: not-allowed;
 }
 
+.hub-luck-slot {
+  min-height: 48px;
+  padding: 10px 12px;
+  border-radius: var(--pf-radius-sm);
+  background: rgba(255, 255, 255, 0.55);
+  border: 2px dashed #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .hub-luck-slot {
+  background: rgba(0, 0, 0, 0.28);
+  border-color: #fbbf24;
+}
+
+.hub-luck-slot-label {
+  display: block;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #78350f;
+  animation: hub-luck-slot-in 0.12s ease-out;
+}
+
+[data-theme='dark'] .hub-luck-slot-label {
+  color: #fef3c7;
+}
+
+.hub-luck-slot--spinning .hub-luck-slot-label {
+  animation: hub-luck-slot-cycle 0.07s steps(1) infinite;
+  filter: blur(0.3px);
+}
+
+.hub-luck-slot--winner {
+  border-style: solid;
+  border-color: #fbbf24;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 0 16px rgba(251, 191, 36, 0.35);
+}
+
+@keyframes hub-luck-slot-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hub-luck-slot-cycle {
+  50% { transform: translateY(-2px); }
+}
+
 .hub-luck-spin {
+  position: relative;
   width: 100%;
-  font-size: 15px;
-  font-weight: 700;
-  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 14px 16px;
+  border: 2px solid #b45309;
+  border-radius: var(--pf-radius-sm);
+  cursor: pointer;
+  color: #451a03;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  background: linear-gradient(180deg, #fde047 0%, #fbbf24 42%, #f59e0b 100%);
+  box-shadow:
+    0 5px 0 #b45309,
+    0 8px 20px rgba(180, 83, 9, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.55);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.hub-luck-spin:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 0 #b45309,
+    0 12px 24px rgba(180, 83, 9, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.55);
+}
+
+.hub-luck-spin:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    0 2px 0 #b45309,
+    0 4px 12px rgba(180, 83, 9, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.hub-luck-spin:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.hub-luck-spin-text {
+  position: relative;
+  z-index: 1;
+}
+
+.hub-luck-spin-glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.55), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hub-luck-spin--active {
-  animation: hub-luck-pulse 0.45s ease-in-out;
+  animation: hub-luck-btn-wiggle 0.14s ease-in-out infinite;
 }
 
-@keyframes hub-luck-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(0.98); }
+.hub-luck-spin--active .hub-luck-spin-glow {
+  opacity: 1;
+  animation: hub-luck-btn-glow 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes hub-luck-btn-wiggle {
+  0%, 100% { transform: rotate(-1.5deg) scale(1); }
+  50% { transform: rotate(1.5deg) scale(1.03); }
+}
+
+@keyframes hub-luck-btn-glow {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
 }
 
 .hub-luck-hint {
   margin: 0;
   font-size: 12px;
-  color: var(--pf-text-muted);
+  color: #92400e;
   text-align: center;
+  font-weight: 500;
+}
+
+[data-theme='dark'] .hub-luck-hint {
+  color: #fde68a;
 }
 
 .hub-luck-result {
-  padding-top: 4px;
-  border-top: 1px solid var(--pf-border);
-  animation: hub-luck-reveal 0.3s ease-out;
-}
-
-.hub-luck-result--hidden {
-  opacity: 0;
+  padding-top: 8px;
+  border-top: 2px dashed rgba(245, 158, 11, 0.45);
+  animation: hub-luck-reveal 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
 @keyframes hub-luck-reveal {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .hub-luck-result-title {
   margin: 0 0 10px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--pf-primary-dark);
+  color: #b45309;
+}
+
+[data-theme='dark'] .hub-luck-result-title {
+  color: #fbbf24;
 }
 
 .hub-luck-ingredients {
@@ -1006,6 +1310,26 @@ html.native-app .tab-bar {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--pf-radius-sm);
+  background: rgba(255, 255, 255, 0.5);
+  animation: hub-luck-ing-pop 0.4s cubic-bezier(0.34, 1.3, 0.64, 1) backwards;
+  animation-delay: calc(var(--luck-i) * 0.08s);
+}
+
+[data-theme='dark'] .hub-luck-ingredient {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+@keyframes hub-luck-ing-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-12px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
 }
 
 .hub-luck-ingredient .item-thumb {
@@ -1016,9 +1340,33 @@ html.native-app .tab-bar {
 
 .hub-luck-ingredient-name {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--pf-text);
+  font-weight: 700;
+  color: #78350f;
   line-height: 1.3;
+}
+
+[data-theme='dark'] .hub-luck-ingredient-name {
+  color: #fef3c7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-luck-card::before,
+  .hub-luck-card--spinning,
+  .hub-luck-card--winner,
+  .hub-luck-light,
+  .hub-luck-icon,
+  .hub-luck-heading h3,
+  .hub-luck-slot-label,
+  .hub-luck-spin--active,
+  .hub-luck-spin--active .hub-luck-spin-glow,
+  .hub-luck-result,
+  .hub-luck-ingredient {
+    animation: none !important;
+  }
+
+  .hub-luck-slot--spinning .hub-luck-slot-label {
+    filter: none;
+  }
 }
 
 @media (max-height: 640px) {
