@@ -45,7 +45,7 @@ export function AdvancedSettingsSection({
       <div className="card">
         <div className="card-body">
           <p className="modal-hint" style={{ margin: '0 0 12px' }}>
-            If the installed app looks outdated or shows a blank screen, reset cached files. Your bar data is kept.
+            If the app looks outdated or ingredient names seem wrong, reset cached files (including the ingredient catalog). Your bar data is kept.
           </p>
           <button
             type="button"

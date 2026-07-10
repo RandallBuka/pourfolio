@@ -4,7 +4,14 @@ import { enrichWithUsState } from './ingredientStates'
 import { CORE_SEED_INGREDIENTS, pruneRedundantGenerics } from './ingredients'
 import { CORE_SEED_DRINKS } from './drinks'
 
-const CACHE_KEY = 'pourfolio-catalog-v2'
+const CACHE_KEY = 'pourfolio-catalog-v3'
+
+/** Catalog rows removed from the server — skip when merging stale local cache. */
+const REMOVED_CATALOG_IDS = new Set([
+  'brand-aperol-liqueur-aperitif',
+  'brand-grand-marnier-liqueur',
+  'brand-jagermeister-liqueur',
+])
 
 interface CatalogCache {
   version: number
@@ -71,13 +78,35 @@ function writeCache(version: number, ingredients: Ingredient[], drinks: Drink[])
 }
 
 function applyCatalog(extIngredients: Ingredient[], extDrinks: Drink[]): void {
+  const filtered = extIngredients.filter((item) => !REMOVED_CATALOG_IDS.has(item.id))
   SEED_INGREDIENTS = pruneRedundantGenerics([
     ...CORE_SEED_INGREDIENTS,
-    ...extIngredients.map((item) => enrichWithUsState(item)),
+    ...filtered.map((item) => enrichWithUsState(item)),
   ])
   SEED_DRINKS = [...CORE_SEED_DRINKS, ...extDrinks]
   catalogLoaded = true
   notifyCatalogListeners()
+}
+
+/** Drop cached catalog JSON so the next load fetches fresh data from the server. */
+export function clearCatalogCache(): void {
+  try {
+    localStorage.removeItem(CACHE_KEY)
+    localStorage.removeItem('pourfolio-catalog-v2')
+  } catch {
+    // private mode
+  }
+}
+
+async function fetchRemoteVersion(base: string): Promise<number> {
+  try {
+    const versionRes = await fetchWithTimeout(`${base}catalog/version.json`)
+    if (!versionRes.ok) return 0
+    const data = (await versionRes.json()) as { version?: number }
+    return data.version ?? 0
+  } catch {
+    return 0
+  }
 }
 
 function markCatalogReady(): void {
@@ -99,37 +128,44 @@ export function useCatalogReady(): boolean {
 }
 
 export async function loadCatalog(): Promise<void> {
-  if (catalogLoaded) return
   if (loadPromise) return loadPromise
 
   loadPromise = (async () => {
     const base = import.meta.env.BASE_URL
-
     const cached = readCache()
-    if (cached) {
-      applyCatalog(cached.ingredients, cached.drinks)
+    const remoteVersion = await fetchRemoteVersion(base)
+    const cacheIsFresh = cached != null && remoteVersion > 0 && cached.version >= remoteVersion
+
+    if (cacheIsFresh) {
+      if (!catalogLoaded) applyCatalog(cached.ingredients, cached.drinks)
+      return
+    }
+
+    if (cached && remoteVersion === 0) {
+      if (!catalogLoaded) applyCatalog(cached.ingredients, cached.drinks)
       return
     }
 
     try {
-      const [versionRes, ingRes, drinkRes] = await Promise.all([
-        fetchWithTimeout(`${base}catalog/version.json`),
+      const [ingRes, drinkRes] = await Promise.all([
         fetchWithTimeout(`${base}catalog/ingredients.json`),
         fetchWithTimeout(`${base}catalog/drinks.json`),
       ])
       if (!ingRes.ok || !drinkRes.ok) {
-        markCatalogReady()
+        if (cached) applyCatalog(cached.ingredients, cached.drinks)
+        else markCatalogReady()
         return
       }
 
-      const version = versionRes.ok ? ((await versionRes.json()) as { version?: number }).version : 0
       const extIngredients = (await ingRes.json()) as Ingredient[]
       const extDrinks = (await drinkRes.json()) as Drink[]
+      const version = remoteVersion || Date.now()
 
       applyCatalog(extIngredients, extDrinks)
-      writeCache(version ?? 0, extIngredients, extDrinks)
+      writeCache(version, extIngredients, extDrinks)
     } catch {
-      markCatalogReady()
+      if (cached) applyCatalog(cached.ingredients, cached.drinks)
+      else markCatalogReady()
     }
   })()
 

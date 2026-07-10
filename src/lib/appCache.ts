@@ -1,9 +1,12 @@
+import { clearCatalogCache } from '../data/catalogStore'
+
 export interface ClearAppCacheResult {
   clearedCaches: number
   unregisteredWorkers: number
+  clearedCatalogCache: boolean
 }
 
-/** Clears PWA/service worker caches. Does not remove bar data in localStorage. */
+/** Clears PWA/service worker caches and stale catalog JSON. Does not remove bar data in localStorage. */
 export async function clearAppCache(): Promise<ClearAppCacheResult> {
   let clearedCaches = 0
   let unregisteredWorkers = 0
@@ -26,5 +29,7 @@ export async function clearAppCache(): Promise<ClearAppCacheResult> {
     )
   }
 
-  return { clearedCaches, unregisteredWorkers }
+  clearCatalogCache()
+
+  return { clearedCaches, unregisteredWorkers, clearedCatalogCache: true }
 }
