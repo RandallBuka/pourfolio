@@ -10,6 +10,7 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-aperol-liqueur-aperitif': 'brand-aperol',
   'brand-appleton-estate-rum': 'brand-appleton-rum-estate-vx-jamaican',
   'brand-bacardi-solera-rum': 'brand-bacardi-1873-solera-rum',
+  'brand-bacardi-superior-white-rum': 'brand-bacardi-superior-rum',
 }
 
 function remapIngredientId(id: string): string {

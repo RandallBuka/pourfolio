@@ -671,17 +671,17 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Cherry', '1', { optional: true }),
   ], 'Highball Glass', 'Fill a Highball Glass with cubed ice.  Add Lemon Rum, Mountain Dew and top with a splash of Orange Juice.  Optionally garnish with a slice of Orange and a Cherry and serve.', 'Cocktail'),
   cocktail('bacardi-cocktail-1', 'Bacardi Cocktail #1', [
-    ing('Bacardi Superior White Rum', '1 3/4 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '1 3/4 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Lemon Juice', '3/4 oz'),
     ing('Grenadine', '1/2 oz'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Bacardi Light Rum, Lemon Juice and Grenadine in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('bacardi-cocktail-2', 'Bacardi Cocktail #2', [
-    ing('Bacardi Superior White Rum', '1 3/4 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '1 3/4 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Lime Juice', '3/4 oz'),
     ing('Grenadine', '1/2 oz'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Bacardi Light Rum, Lime Juice and Grenadine in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('bacardi-cocktail-3', 'Bacardi Cocktail #3', [
-    ing('Bacardi Superior White Rum', '1 3/4 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '1 3/4 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Sweet and Sour', '3/4 oz'),
     ing('Grenadine', '1/2 oz'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Bacardi Light Rum, Sweet and Sour and Grenadine in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
@@ -2230,7 +2230,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Cream', '2-3 drops'),
   ], 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Add the Strawberry Liqueur to a Cocktail Shaker half filled with crushed ice. Shake to chill and pout into a Shot Glass. Add a few drops of the Cream by pouring it over back of the spoon and into the shot.  Serve.'),
   shot('cherry-popper-shot-3', 'Cherry Popper Shot #3', [
-    ing('Bacardi Superior White Rum', '3/4 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '3/4 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Triple Sec', '1/4 oz'),
     ing('Grenadine', '1 dash'),
   ], 'Get a standard size Shot Glass.  Combine the Rum and Triple Sec in the Shot Glass and add a dash of Grenadine.  Serve.'),
@@ -3812,7 +3812,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Cinnamon', '1 pinch', { optional: true }),
   ], 'Get a standard size Shot Glass.  Pour in the Apple Liqueur. Pierce the Apple Liqueur with the Bar Spoon and SLOWLY add the Cinnamon Schnapps by pouring it over back of the spoon, allowing it to settle on top on top of the Apple Liqueur.  Optionally add a pinch of Cinnamon and serve.'),
   cocktail('hot-buttered-rum', 'Hot Buttered Rum', [
-    ing('Bacardi Superior White Rum', '2 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '2 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Sugar', '1 tsp'),
     ing('Butter', '1/2 tsp'),
     ing('Cloves', '2'),
@@ -4777,7 +4777,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Cherry', '1', { optional: true }),
   ], 'Highball Glass', 'Fill a Cocktail Shaker half full with ice.  Combine the Rum, Almond Syrup, Triple Sec and Sweet and Sour in the Shaker. Shake and pour the contents (ice and all) into a Collins Glass.  Garnish with a Cherry and serve. Note: The Almond syrup is REALLY important to make this cocktail right.', 'Other'),
   cocktail('mai-tai-2', 'Mai Tai #2', [
-    ing('Bacardi Superior White Rum', '1 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '1 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Bacardi Gold Rum', '1/2 oz', { brandName: 'Bacardi Gold Rum', mode: 'premium' }),
     ing('Myers\'s Original Dark Rum', '1/2 oz', { brandName: 'Myers\'s Original Dark Rum', mode: 'premium' }),
     ing('Bacardi 151 Rum', '1/4 oz', { brandName: 'Bacardi 151 Rum', allowGenericSubstitution: false, mode: 'premium' }),
@@ -7248,13 +7248,13 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Tequila, Lemon Juice, Grenadine and Egg White in the Shaker.  Shake, strain into a chilled Martini Glass, optionally garnish with a slice of Lemon and serve.', 'Cocktail'),
   cocktail('tequila-mockingbird-1', 'Tequila Mockingbird #1', [
     ing('Tequila', '1 oz'),
-    ing('Bacardi Superior White Rum', '1/2 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '1/2 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Lemonade', 'Fill glass'),
     ing('Blue Curacao', '1/2 oz'),
   ], 'Hurricane Glass', 'Fill a Hurricane Glass with crushed ice.  Pour the Tequila and then the Rum. Fill almost to top with Lemonade and slowly pour Blue Curacao over top for effect.  Serve.', 'Cocktail'),
   cocktail('tequila-mockingbird-2', 'Tequila Mockingbird #2', [
     ing('Tequila', '1 1/2 oz'),
-    ing('Bacardi Superior White Rum', '1/2 oz', { brandName: 'Bacardi Superior White Rum', mode: 'premium' }),
+    ing('Bacardi Superior Rum', '1/2 oz', { brandName: 'Bacardi Superior Rum', mode: 'premium' }),
     ing('Orange Juice', '2 oz'),
     ing('Cranberry Juice', '1 oz'),
     ing('Blue Curacao', '1/2 oz'),
