@@ -992,7 +992,7 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
   },
   {
     id: 'brand-angels-envy-cask-strength-bourbon-118-2-proof',
-    name: 'Angels Envy Cask Strength Bourbon 118.2 Proof',
+    name: 'Angel\'s Envy Cask Strength Bourbon 118.2 Proof',
     genericName: 'Bourbon',
     company: 'Angel\'s Envy',
     country: 'USA',
@@ -1001,7 +1001,7 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
   },
   {
     id: 'brand-angels-envy-oloroso-sherry-cask-finish',
-    name: 'Angels Envy Oloroso Sherry Cask Finish',
+    name: 'Angel\'s Envy Oloroso Sherry Cask Finish',
     genericName: 'Bourbon',
     company: 'Angel\'s Envy',
     country: 'USA',
