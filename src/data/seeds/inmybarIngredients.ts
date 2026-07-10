@@ -1679,15 +1679,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-baileys-hint-of-coffee',
-    name: 'Baileys Hint Of Coffee',
-    genericName: 'Coffee Liqueur',
-    company: 'Baileys',
-    country: 'Ireland',
-    type: 'Liqueur',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-baileys-mint-chocolate-irish-cream',
     name: 'Baileys Mint Chocolate Irish Cream',
     genericName: 'Chocolate Irish Cream',
