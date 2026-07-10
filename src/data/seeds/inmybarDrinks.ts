@@ -447,9 +447,9 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Midori Melon Liqueur', '1/2 oz', { brandName: 'Midori Melon Liqueur', mode: 'premium' }),
   ], 'Shot/Shooter Glass', 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour in the Coffee Liqueur. Pierce the Coffee Liqueur with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the Coffee Liqueur. Then do the same thing with the Melon Liqueur.  Serve.', 'Other'),
   cocktail('aperol-orange', 'Aperol Orange', [
-    ing('Aperol Liqueur Aperitif', '1 oz', { brandName: 'Aperol Liqueur Aperitif', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Aperol', '1 oz', { brandName: 'Aperol', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Orange Juice', '2 oz'),
-  ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Aperol Liqueur Aperitif and Orange Juice to the glass.  Stir and serve.', 'Cocktail'),
+  ], 'Rocks Glass', 'Fill a Rocks Glass with cubed ice.  Add the Aperol and Orange Juice to the glass.  Stir and serve.', 'Cocktail'),
   cocktail('apple-brandy-sour', 'Apple Brandy Sour', [
     ing('Apple Brandy', '2 oz'),
     ing('Powdered Sugar', '1/2 tsp'),

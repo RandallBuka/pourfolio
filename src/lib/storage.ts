@@ -7,6 +7,7 @@ const LEGACY_KEY = 'inmybar-state-v1'
 const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-grand-marnier-liqueur': 'brand-grand-marnier',
   'brand-jagermeister-liqueur': 'brand-jagermeister',
+  'brand-aperol-liqueur-aperitif': 'brand-aperol',
 }
 
 function remapIngredientId(id: string): string {

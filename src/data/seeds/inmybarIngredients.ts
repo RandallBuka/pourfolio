@@ -1064,15 +1064,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-aperol-liqueur-aperitif',
-    name: 'Aperol Liqueur Aperitif',
-    genericName: 'Aperol',
-    company: 'Aperol',
-    country: 'Italy',
-    type: 'Liqueur',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-apple',
     name: 'Apple',
     genericName: 'Apple',
