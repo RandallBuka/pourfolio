@@ -1717,15 +1717,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-bakers-7-year-old-single-barrel',
-    name: 'Bakers 7 Year Old Single Barrel',
-    genericName: 'Bourbon',
-    company: 'Baker\'s',
-    country: 'USA',
-    type: 'Bourbon',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-bakon-vodka',
     name: 'Bakon Vodka',
     genericName: 'Vodka',

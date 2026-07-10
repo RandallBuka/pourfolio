@@ -16,6 +16,7 @@ const REMOVED_CATALOG_IDS = new Set([
   'brand-bacardi-solera-rum',
   'brand-bacardi-superior-white-rum',
   'brand-baileys-hint-of-coffee',
+  'brand-bakers-7-year-old-single-barrel',
 ])
 
 interface CatalogCache {
