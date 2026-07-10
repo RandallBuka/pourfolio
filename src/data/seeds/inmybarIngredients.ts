@@ -1632,15 +1632,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-bacardi-solera-rum',
-    name: 'Bacardi Solera Rum',
-    genericName: 'Rum',
-    company: 'Bacardi',
-    country: 'Puerto Rico',
-    type: 'Rum',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-bacardi-superior-white-rum',
     name: 'Bacardi Superior White Rum',
     genericName: 'Rum',
