@@ -1082,16 +1082,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Juices',
   },
   {
-    id: 'brand-apple-pie-liqueur',
-    name: 'Apple Pie Liqueur',
-    genericName: 'Apple Liqueur',
-    company: 'Apple Pie',
-    country: 'USA',
-    flavor: 'Apple',
-    type: 'Liqueur',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-appleton-estate-reserve-rum',
     name: 'Appleton Estate Reserve Rum',
     genericName: 'Rum',
