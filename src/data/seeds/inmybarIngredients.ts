@@ -1091,15 +1091,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-appleton-estate-rum',
-    name: 'Appleton Estate Rum',
-    genericName: 'Dark Rum',
-    company: 'Appleton',
-    country: 'Jamaica',
-    type: 'Rum',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-appleton-rum-estate-special-gold',
     name: 'Appleton Rum Estate Special Gold',
     genericName: 'Gold Rum',
