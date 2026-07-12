@@ -45,10 +45,13 @@ async function main() {
   const startAt = parseStartArg()
   const startIndex = startAt - 1
   const map = loadExistingMap()
-  let found = Object.keys(map).length
+  for (const ing of INGREDIENT_IMAGE_SEED) {
+    if (!(ing.id in map)) map[ing.id] = ''
+  }
+  let found = Object.values(map).filter((v) => v.length > 0).length
   let processed = 0
 
-  console.log(`Loaded ${found} existing images`)
+  console.log(`Loaded ${found} existing images (${INGREDIENT_IMAGE_SEED.length} catalog keys)`)
   if (startAt > 1) {
     console.log(`Resuming at item ${startAt}/${INGREDIENT_IMAGE_SEED.length}`)
   }
@@ -62,10 +65,9 @@ async function main() {
 
     if (url) {
       map[ing.id] = url
-      found = Object.keys(map).length
-    } else if (map[ing.id]) {
-      delete map[ing.id]
-      found = Object.keys(map).length
+      found = Object.values(map).filter((v) => v.length > 0).length
+    } else {
+      map[ing.id] = map[ing.id] ?? ''
     }
 
     if (processed % SAVE_EVERY === 0) {

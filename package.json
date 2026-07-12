@@ -13,6 +13,7 @@
     "fetch-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-ingredient-images.ts",
     "fetch-drink-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-drink-images.ts",
     "fetch-all-images": "npm run fetch-images && npm run fetch-drink-images",
+    "sync-image-keys": "node node_modules/tsx/dist/cli.mjs scripts/sync-ingredient-image-keys.ts",
     "cap:sync": "npm run build && npx cap sync",
     "cap:ios": "npm run cap:sync && npx cap open ios",
     "cap:android": "npm run cap:sync && npx cap open android",
