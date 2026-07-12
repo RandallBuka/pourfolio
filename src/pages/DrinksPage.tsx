@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { NavBar } from '../components/NavBar'
 import { DrinkFilterPanel } from '../components/DrinkFilterPanel'
 import { FilterPills, ListFilterToolbar } from '../components/ListFilterToolbar'
@@ -17,10 +17,13 @@ import {
   type DrinkFilterField,
   type DrinkFilters,
 } from '../lib/drinkFilter'
+import { useListScrollRestoration } from '../hooks/useListScrollRestoration'
+import { saveScrollForRoute, scrollRouteKey } from '../lib/scrollRestoration'
 
 export function DrinksPage() {
   const { allDrinks, makeableDrinks, getDrinkSummary, canMake, state } = useApp()
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
   const ingredientFilter = searchParams.get('ingredient')
   const [search, setSearch] = useState('')
@@ -59,6 +62,8 @@ export function DrinksPage() {
     return items
   }, [allDrinks, search, filters, readyToPourOnly, favoritesOnly, filterContext])
 
+  useListScrollRestoration(filtered.length)
+
   const activeLetters = useMemo(() => getActiveAlphaLetters(filtered), [filtered])
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
 
@@ -94,6 +99,7 @@ export function DrinksPage() {
       : (filtered.length ? filtered : allDrinks)
     const drink = pickRandomMakeableDrink(pool)
     if (drink) {
+      saveScrollForRoute(scrollRouteKey(location.pathname, location.search))
       navigate(`/drinks/${drink.id}`, { state: { randomPick: Date.now() } })
     }
   }

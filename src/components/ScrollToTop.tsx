@@ -1,40 +1,18 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigationType } from 'react-router-dom'
 import {
+  clearScrollRestoreTimers,
   getPageScrollContainer,
-  getSavedScrollPosition,
-  restoreScrollPosition,
-  saveScrollPosition,
+  isListScrollRoute,
+  restoreScrollForRoute,
+  scrollRouteKey,
 } from '../lib/scrollRestoration'
 
-/**
- * Track scroll per history entry (location.key) so Back returns to the prior offset.
- * Pathname alone is not enough — revisiting /ingredients via Back reuses the same key.
- */
+/** Scroll detail/settings pages to top on forward nav; list pages use useListScrollRestoration. */
 export function ScrollToTop() {
-  const location = useLocation()
-  const historyKey = location.key
-
-  useEffect(() => {
-    const container = getPageScrollContainer()
-    if (!container) return
-
-    const onScroll = () => saveScrollPosition(historyKey)
-    container.addEventListener('scroll', onScroll, { passive: true })
-
-    const onClick = (event: MouseEvent) => {
-      const target = event.target
-      if (target instanceof Element && target.closest('a[href], button')) {
-        saveScrollPosition(historyKey)
-      }
-    }
-    container.addEventListener('click', onClick, true)
-
-    return () => {
-      container.removeEventListener('scroll', onScroll)
-      container.removeEventListener('click', onClick, true)
-    }
-  }, [historyKey])
+  const { pathname, search } = useLocation()
+  const navigationType = useNavigationType()
+  const routeKey = scrollRouteKey(pathname, search)
 
   useEffect(() => {
     const container = getPageScrollContainer()
@@ -43,14 +21,15 @@ export function ScrollToTop() {
       return
     }
 
-    const saved = getSavedScrollPosition(historyKey)
-    if (saved != null && saved > 0) {
-      restoreScrollPosition(container, saved)
+    if (isListScrollRoute(pathname)) {
+      restoreScrollForRoute(container, routeKey)
       return
     }
 
+    clearScrollRestoreTimers()
+    if (navigationType === 'POP') return
     container.scrollTop = 0
-  }, [historyKey])
+  }, [routeKey, pathname, navigationType])
 
   return null
 }

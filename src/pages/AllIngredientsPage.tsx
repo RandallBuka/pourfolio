@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { NavBar } from '../components/NavBar'
 import { IngredientFilterPanel } from '../components/IngredientFilterPanel'
 import { BarcodeScanModal } from '../components/BarcodeScanModal'
@@ -22,12 +22,15 @@ import {
 } from '../lib/ingredientBrowse'
 import { isUsCountry } from '../data/usStates'
 import type { IngredientCategory } from '../types'
+import { useListScrollRestoration } from '../hooks/useListScrollRestoration'
+import { saveScrollForRoute, scrollRouteKey } from '../lib/scrollRestoration'
 
 const CATEGORIES: IngredientCategory[] = ['Spirits', 'Liqueurs', 'Mixers', 'Juices', 'Fruits', 'Garnishes', 'Other']
 
 export function AllIngredientsPage() {
   const { allIngredients, isInBar, addCustomIngredient, activeBar } = useApp()
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
   const initialQ = searchParams.get('q') ?? ''
   const initialGeneric = searchParams.get('genericName') ?? ''
@@ -99,6 +102,8 @@ export function AllIngredientsPage() {
     return items
   }, [allIngredients, search, filters, onShelfOnly, onShelfIds, brandFilter, brandIdFilter])
 
+  useListScrollRestoration(filtered.length)
+
   const activeLetters = useMemo(() => getActiveAlphaLetters(filtered), [filtered])
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
 
@@ -151,6 +156,7 @@ export function AllIngredientsPage() {
     }
     setRandomMsg(null)
     const ing = filtered[Math.floor(Math.random() * filtered.length)]
+    saveScrollForRoute(scrollRouteKey(location.pathname, location.search))
     navigate(`/ingredients/${ing.id}`)
   }
 
