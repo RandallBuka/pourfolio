@@ -13,6 +13,7 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-bacardi-superior-white-rum': 'brand-bacardi-superior-rum',
   'brand-baileys-hint-of-coffee': 'brand-baileys-coffee-irish-cream',
   'brand-bakers-7-year-old-single-barrel': 'brand-baker-s-bourbon',
+  'brand-bombay-gin': 'brand-bombay-sapphire-gin',
 }
 
 function remapIngredientId(id: string): string {

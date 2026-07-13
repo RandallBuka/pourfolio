@@ -2700,15 +2700,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-bombay-gin',
-    name: 'Bombay Gin',
-    genericName: 'Gin',
-    company: 'Bombay',
-    country: 'England',
-    type: 'Gin',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-bones-rum',
     name: 'Bones Rum',
     genericName: 'Rum',
