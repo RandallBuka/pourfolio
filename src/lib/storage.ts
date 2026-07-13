@@ -26,6 +26,8 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-bruichladdich-trilogy-waves': 'brand-bruichladdich-waves',
   'brand-bulleit-straight-rye-whiskey': 'brand-bulleit-rye',
   'brand-bunnahabhain-malt': 'brand-bunnahabhain',
+  'brand-calvados-coquerel': 'brand-coquerel-calvados-vs',
+  'brand-calvados-coqurel-fine': 'brand-coquerel-calvados-vs',
 }
 
 function remapIngredientId(id: string): string {

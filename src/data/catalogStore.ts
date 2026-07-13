@@ -30,6 +30,8 @@ const REMOVED_CATALOG_IDS = new Set([
   'brand-randys-fernet',
   'brand-randys-terrarium-bitters',
   'brand-bulleit-straight-rye-whiskey',
+  'brand-calvados-coquerel',
+  'brand-calvados-coqurel-fine',
 ])
 
 /** Rename retired catalog ids when stale caches still carry the old rows. */
@@ -49,6 +51,14 @@ const RENAMED_CATALOG_IDS: Record<string, { id: string; name: string }> = {
   'brand-bunnahabhain-malt': {
     id: 'brand-bunnahabhain',
     name: 'Bunnahabhain',
+  },
+  'brand-calvados-coquerel': {
+    id: 'brand-coquerel-calvados-vs',
+    name: 'Coquerel Calvados VS',
+  },
+  'brand-calvados-coqurel-fine': {
+    id: 'brand-coquerel-calvados-vs',
+    name: 'Coquerel Calvados VS',
   },
 }
 
