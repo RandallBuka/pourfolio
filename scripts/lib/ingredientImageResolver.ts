@@ -1,3 +1,6 @@
+import { isProfessionalIngredientImageUrl } from '../../src/lib/ingredientImageQuality.ts'
+import { isAfterIngredientImageAnchor } from '../../src/lib/ingredientImageAnchor.ts'
+
 export interface IngredientImageQuery {
   id: string
   name: string
@@ -82,7 +85,7 @@ export function scoreImageCandidate(
   ing: IngredientImageQuery,
   label: string,
   url: string,
-  source: 'commons' | 'wikipedia' | 'off' | 'cdb' | 'other'
+  source: 'commons' | 'wikipedia' | 'off' | 'cdb' | 'retail' | 'other'
 ): number {
   const combined = `${label} ${url}`
   const normalizedLabel = normalizeName(label)
@@ -104,6 +107,8 @@ export function scoreImageCandidate(
   if (BOTTLE_HINT_RE.test(combined)) score += 0.12
   if (/\bbottle\b/i.test(combined)) score += 0.18
   if (source === 'off' && /image_front/i.test(url)) score += 0.2
+  if (source === 'retail' && /cdn\.shopify\.com|missionliquor\.com/i.test(url)) score += 0.28
+  if (/\bwhite\b|highres|product.?shot|isolated/i.test(combined)) score += 0.15
   if (source === 'cdb' && normalizeName(label) !== normalizeName(ing.name)) score -= 0.35
 
   // Penalize wrong-brand wikipedia/commons picks (e.g. Bowmore for Aberlour)
@@ -132,9 +137,10 @@ export function isAcceptableIngredientImage(
   ing: IngredientImageQuery,
   label: string,
   url: string,
-  source: 'commons' | 'wikipedia' | 'off' | 'cdb' | 'other'
+  source: 'commons' | 'wikipedia' | 'off' | 'cdb' | 'retail' | 'other'
 ): boolean {
-  return scoreImageCandidate(ing, label, url, source) >= 0.42
+  if (!isProfessionalIngredientImageUrl(url, ing.name, label)) return false
+  return scoreImageCandidate(ing, label, url, source) >= 0.5
 }
 
 async function headOk(url: string): Promise<boolean> {
@@ -341,6 +347,109 @@ async function tryBrandParentBottle(ing: IngredientImageQuery): Promise<string |
   return best.url
 }
 
+async function tryMissionLiquorSearch(ing: IngredientImageQuery): Promise<string | null> {
+  const queries = [
+    ing.name,
+    ing.company ? `${ing.company} ${ing.genericName}` : '',
+    `${ing.name.split(/\s+/).slice(0, 3).join(' ')} ${ing.genericName}`,
+  ].filter(Boolean)
+
+  let best: { url: string; score: number; label: string } | null = null
+
+  for (const query of queries) {
+    const api =
+      'https://www.missionliquor.com/search/suggest.json?' +
+      `q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=10`
+    const data = await fetchJson<{
+      resources?: { results?: { products?: Array<{ title: string; image?: string; featured_image?: { url?: string } }> } }
+    }>(api)
+
+    for (const product of data?.resources?.results?.products ?? []) {
+      const url = product.image || product.featured_image?.url
+      if (!url) continue
+
+      let score = scoreImageCandidate(ing, product.title, url, 'retail')
+      if (/\b750\s*ml\b/i.test(product.title)) score += 0.12
+      if (/\b1\s*l\b|\b1l\b|\b1000\s*ml\b/i.test(product.title)) score += 0.06
+      if (/\b(6pk|multipack|pack of|sampler|gift set|variety|tasting set)\b/i.test(product.title)) score -= 0.45
+      if (/\b50\s*ml\b|\b100\s*ml\b|\b200\s*ml\b/i.test(product.title)) score -= 0.2
+      for (const term of [
+        'soccer', 'edition', 'collaboration', 'nba', 'nfl', 'holiday', 'christmas', 'halloween',
+        'commemorative', 'winter', 'spring', 'summer', 'fall', 'limited', 'special release',
+      ]) {
+        if (
+          product.title.toLowerCase().includes(term) &&
+          !ing.name.toLowerCase().includes(term)
+        ) {
+          score -= 0.45
+          break
+        }
+      }
+      if (!isProfessionalIngredientImageUrl(url, ing.name, product.title)) continue
+      if (!isAcceptableIngredientImage(ing, product.title, url, 'retail')) continue
+      if (!best || score > best.score) best = { url, score, label: product.title }
+    }
+  }
+
+  if (!best) return null
+  if (!(await headOk(best.url))) return null
+  return best.url
+}
+
+async function tryDuckDuckGoImageSearch(ing: IngredientImageQuery): Promise<string | null> {
+  const queries = [
+    `${ing.name} bottle white background`,
+    `${ing.name} bottle isolated`,
+    `${ing.name} ${ing.genericName} bottle product`,
+  ]
+
+  let best: { url: string; score: number; label: string } | null = null
+
+  for (const query of queries) {
+    try {
+      const pageRes = await fetchTimed(
+        `https://duckduckgo.com/?${new URLSearchParams({ q: query, ia: 'images' })}`,
+        { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' } }
+      )
+      if (!pageRes?.ok) continue
+      const html = await pageRes.text()
+      const vqdMatch = html.match(/vqd=['"](\d+-\d+(?:-\d+)?)['"]/) ?? html.match(/vqd=(\d+-\d+(?:-\d+)?)/)
+      if (!vqdMatch) continue
+
+      const imgRes = await fetchTimed(
+        `https://duckduckgo.com/i.js?${new URLSearchParams({
+          l: 'us-en',
+          o: 'json',
+          q: query,
+          vqd: vqdMatch[1],
+          p: '-1',
+        })}`,
+        { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', referer: 'https://duckduckgo.com/' } }
+      )
+      if (!imgRes?.ok) continue
+      const data = (await imgRes.json()) as { results?: Array<{ title?: string; image?: string }> }
+
+      for (const hit of data.results ?? []) {
+        const url = hit.image
+        const label = hit.title ?? ''
+        if (!url) continue
+        const score = scoreImageCandidate(ing, label, url, 'other')
+        if (!isProfessionalIngredientImageUrl(url, ing.name, label)) continue
+        if (!isAcceptableIngredientImage(ing, label, url, 'other')) continue
+        if (!best || score > best.score) best = { url, score, label }
+      }
+    } catch {
+      continue
+    }
+    if (best) break
+    await new Promise((r) => setTimeout(r, 1200))
+  }
+
+  if (!best) return null
+  if (!(await headOk(best.url))) return null
+  return best.url
+}
+
 async function tryGenericFallback(ing: IngredientImageQuery): Promise<string | null> {
   const cdb = await tryCocktailDbExact(ing.genericName)
   if (!cdb) return null
@@ -349,33 +458,13 @@ async function tryGenericFallback(ing: IngredientImageQuery): Promise<string | n
 }
 
 export async function resolveIngredientImage(ing: IngredientImageQuery): Promise<string | null> {
-  const branded = isBrandedIngredient(ing)
-  const attempts: Array<() => Promise<string | null>> = branded
-    ? [
-        () => tryOpenFoodFacts(ing),
-        () => tryCommonsSearch(ing),
-        () => tryWikipediaImages(ing),
-        () => tryBrandParentBottle(ing),
-        () => tryCocktailDbExact(ing.name),
-      ]
-    : [
-        () => tryCocktailDbExact(ing.genericName),
-        () => tryCommonsSearch(ing),
-        () => tryWikipediaImages(ing),
-        () => tryOpenFoodFacts(ing),
-      ]
+  if (!isAfterIngredientImageAnchor(ing.id)) return null
 
-  for (const attempt of attempts) {
-    const url = await attempt()
-    if (!url) continue
-    const label = ing.name
-    if (isAcceptableIngredientImage(ing, label, url, branded ? 'other' : 'cdb')) {
-      return url
-    }
+  for (const attempt of [tryMissionLiquorSearch, tryDuckDuckGoImageSearch]) {
+    const url = await attempt(ing)
+    if (url) return url
   }
-
-  if (branded) return null
-  return tryGenericFallback(ing)
+  return null
 }
 
 const INGREDIENT_RESOLVE_TIMEOUT_MS = 45_000
@@ -400,7 +489,8 @@ export async function resolveIngredientImageWithTimeout(
 }
 
 export function shouldUseIngredientImageUrl(ing: IngredientImageQuery, url: string): boolean {
-  if (!url) return false
+  if (!url || !isAfterIngredientImageAnchor(ing.id)) return false
+  if (!isProfessionalIngredientImageUrl(url, ing.name)) return false
   if (isBrandedIngredient(ing) && isGenericCdbIngredientUrl(url)) return false
-  return isAcceptableIngredientImage(ing, ing.name, url, 'other')
+  return isAcceptableIngredientImage(ing, ing.name, url, 'retail')
 }

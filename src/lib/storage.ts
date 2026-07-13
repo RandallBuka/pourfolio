@@ -14,6 +14,13 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-baileys-hint-of-coffee': 'brand-baileys-coffee-irish-cream',
   'brand-bakers-7-year-old-single-barrel': 'brand-baker-s-bourbon',
   'brand-bombay-gin': 'brand-bombay-sapphire-gin',
+  'brand-bonnet-creme-de-cassis-black-currant': 'brand-pages-creme-de-cassis',
+  'brand-bonnet-creme-de-fraise-strawberry': 'brand-pages-creme-de-fraise',
+  'brand-bonnet-creme-de-framboise-raspberry': 'brand-pages-creme-de-framboise',
+  'brand-bonnet-creme-de-mure-blackberry': 'brand-pages-creme-de-mure',
+  'brand-bonnet-creme-de-myrtle-blueberry': 'brand-pages-creme-de-myrtilles',
+  'brand-bonnet-creme-de-peche-peach': 'brand-pages-creme-de-peche',
+  'brand-pages-parfait-amour-liqueur': 'brand-pages-parfait-amour',
 }
 
 function remapIngredientId(id: string): string {

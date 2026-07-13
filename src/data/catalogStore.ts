@@ -18,6 +18,14 @@ const REMOVED_CATALOG_IDS = new Set([
   'brand-baileys-hint-of-coffee',
   'brand-bakers-7-year-old-single-barrel',
   'brand-bombay-gin',
+  'brand-bonnet-creme-de-cassis-black-currant',
+  'brand-bonnet-creme-de-fraise-strawberry',
+  'brand-bonnet-creme-de-framboise-raspberry',
+  'brand-bonnet-creme-de-mure-blackberry',
+  'brand-bonnet-creme-de-myrtle-blueberry',
+  'brand-bonnet-creme-de-peche-peach',
+  'brand-bonnet-creme-de-poire-pear',
+  'brand-pages-parfait-amour-liqueur',
 ])
 
 interface CatalogCache {
