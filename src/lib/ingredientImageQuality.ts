@@ -15,7 +15,7 @@ const VARIANT_TERMS = [
 
 /** Shopify product CDN paths from liquor retailers — typically white-bg bottle photography. */
 const TRUSTED_PRODUCT_CDN_RE =
-  /(missionliquor\.com\/cdn\/shop\/|cdn\.shopify\.com\/s\/files\/[^/]+\/(?:products|files)\/)/i
+  /(missionliquor\.com\/cdn\/shop\/|cdn\.shopify\.com\/s\/files\/(?:[^/]+\/)*(?:products|files)\/)/i
 
 const WHITE_BG_HINT_RE = /\b(white\s*background|isolated|product\s*shot|highres|high-res|on\s*white)\b/i
 
