@@ -37,6 +37,14 @@ const RENAMED_CATALOG_IDS: Record<string, { id: string; name: string }> = {
     id: 'brand-broken-bell-small-batch-bourbon',
     name: 'Broken Bell Small Batch Bourbon',
   },
+  'brand-bruichladdich-trilogy-peat': {
+    id: 'brand-bruichladdich-peat',
+    name: 'Bruichladdich Peat',
+  },
+  'brand-bruichladdich-trilogy-waves': {
+    id: 'brand-bruichladdich-waves',
+    name: 'Bruichladdich Waves',
+  },
 }
 
 function migrateCatalogIngredients(ingredients: Ingredient[]): Ingredient[] {
@@ -56,6 +64,10 @@ function migrateCatalogIngredients(ingredients: Ingredient[]): Ingredient[] {
       /single\s+batch/i.test(next.name)
     ) {
       next = { ...next, name: 'Broken Bell Small Batch Bourbon' }
+    }
+
+    if (/bruichladdich trilogy/i.test(next.name)) {
+      next = { ...next, name: next.name.replace(/\s*Trilogy\s*/i, ' ').replace(/\s+/g, ' ').trim() }
     }
 
     if (seen.has(next.id)) continue

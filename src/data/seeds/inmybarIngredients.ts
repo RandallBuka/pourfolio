@@ -3041,8 +3041,8 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-bruichladdich-trilogy-peat',
-    name: 'Bruichladdich Trilogy Peat',
+    id: 'brand-bruichladdich-peat',
+    name: 'Bruichladdich Peat',
     genericName: 'Scotch',
     company: 'Bruichladdich',
     country: 'Scotland',
@@ -3050,8 +3050,8 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-bruichladdich-trilogy-waves',
-    name: 'Bruichladdich Trilogy Waves',
+    id: 'brand-bruichladdich-waves',
+    name: 'Bruichladdich Waves',
     genericName: 'Scotch',
     company: 'Bruichladdich',
     country: 'Scotland',

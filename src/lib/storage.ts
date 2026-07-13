@@ -22,6 +22,8 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-bonnet-creme-de-peche-peach': 'brand-pages-creme-de-peche',
   'brand-pages-parfait-amour-liqueur': 'brand-pages-parfait-amour',
   'brand-broken-bell-single-batch-bourbon': 'brand-broken-bell-small-batch-bourbon',
+  'brand-bruichladdich-trilogy-peat': 'brand-bruichladdich-peat',
+  'brand-bruichladdich-trilogy-waves': 'brand-bruichladdich-waves',
 }
 
 function remapIngredientId(id: string): string {
@@ -53,6 +55,9 @@ function remapIngredientOverrides(
       /single\s+batch/i.test(merged.name)
     ) {
       merged.name = 'Broken Bell Small Batch Bourbon'
+    }
+    if (merged.name && /bruichladdich trilogy/i.test(merged.name)) {
+      merged.name = merged.name.replace(/\s*Trilogy\s*/i, ' ').replace(/\s+/g, ' ').trim()
     }
     out[mappedId] = merged
   }
