@@ -3461,15 +3461,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-campari-aperitivo-liqueur',
-    name: 'Campari Aperitivo Liqueur',
-    genericName: 'Campari',
-    company: 'Campari',
-    country: 'Italy',
-    type: 'Liqueur',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-campari-cask-tales',
     name: 'Campari Cask Tales',
     genericName: 'Campari',

@@ -1133,7 +1133,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Tequila', '(Any good blanco), 2 oz', { allowGenericSubstitution: false }),
     ing('Lime Juice', '(Freshly squeezed), 3/4 oz', { allowGenericSubstitution: false }),
     ing('Cointreau Liqueur', '1/2 oz', { brandName: 'Cointreau Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
-    ing('Campari Aperitivo Liqueur', '1/4 oz', { brandName: 'Campari Aperitivo Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Campari', '1/4 oz', { brandName: 'Campari', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Lime', '1 wedge', { optional: true, allowGenericSubstitution: false }),
   ], 'Rocks Glass', 'Combine the tequila, lime juice, Cointreau, and Campari in a cocktail shaker filled with ice. Shake until your arms hurt, 10 to 20 seconds, then strain into an ice-filled rocks glass. Garnish with the lime wedge.', 'Cocktail'),
   cocktail('black-and-blue-mojito', 'Black and Blue Mojito', [
@@ -1980,7 +1980,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
     ing('Cranberry Juice', '1 oz'),
   ], 'Collins Glass', 'Fill a Collins Glass with cubed ice.  Add the Coconut Vodka, Orange Juice and Cranberry Juice.  Stir and serve.', 'Cocktail'),
   cocktail('campari-soda', 'Campari Soda', [
-    ing('Campari Aperitivo Liqueur', '2 oz', { brandName: 'Campari Aperitivo Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Campari', '2 oz', { brandName: 'Campari', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Club Soda', 'Fill glass'),
     ing('Lime', '1 wedge', { optional: true }),
     ing('Lemon', '1 wedge', { optional: true }),
@@ -3847,7 +3847,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   cocktail('humgroni', 'Humgroni', [
     ing('Hum Hibiscus Liqueur', '1 1/2 oz', { brandName: 'Hum Hibiscus Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Gin', '1 1/2 oz'),
-    ing('Campari Aperitivo Liqueur', '1 1/2 oz', { brandName: 'Campari Aperitivo Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Campari', '1 1/2 oz', { brandName: 'Campari', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Orange', '1 twist', { optional: true }),
   ], 'Martini/Cocktail Glass', 'Fill a Cocktail Shaker half full with crushed ice.  Combine the Hum Hibiscus Liqueur, Gin and Campari in the Shaker.  Shake well, strain into a Martini Glass, optioally garnish with a twist of Orange and serve.', 'Martini'),
   cocktail('hummingbird', 'Hummingbird', [
@@ -5245,7 +5245,7 @@ export const INMYBAR_SEED_DRINKS: Drink[] = [
   ], 'Take a Shot Glass and a get a bar spoon in order to help layer the shot.  Pour the Coffee Liqueur into the Shot Glass. Pierce the Coffee Liqueur with the Bar Spoon and SLOWLY add the Irish Cream by pouring it over back of the spoon, allowing it to settle on top on top of the Coffee Liqueur. Then do the same thing with the Vodka.  Serve.'),
   cocktail('negroski', 'Negroski', [
     ing('Vodka', '2 1/2 oz'),
-    ing('Campari Aperitivo Liqueur', '1 1/2 oz', { brandName: 'Campari Aperitivo Liqueur', allowGenericSubstitution: false, mode: 'premium' }),
+    ing('Campari', '1 1/2 oz', { brandName: 'Campari', allowGenericSubstitution: false, mode: 'premium' }),
     ing('Sweet Vermouth', '1/2 oz'),
   ], 'Martini/Cocktail Glass', 'Chill a Martini Glass prior to mixing. Fill a Cocktail Shaker half full with crushed ice.  Combine the Vodka, Campari and Sweet Vermouth in the Shaker.  Shake well, strain into the chilled Martini Glass and serve.', 'Martini'),
   cocktail('neon', 'Neon', [

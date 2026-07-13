@@ -28,6 +28,7 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-bunnahabhain-malt': 'brand-bunnahabhain',
   'brand-calvados-coquerel': 'brand-coquerel-calvados-vs',
   'brand-calvados-coqurel-fine': 'brand-coquerel-calvados-vs',
+  'brand-campari-aperitivo-liqueur': 'brand-campari',
 }
 
 function remapIngredientId(id: string): string {

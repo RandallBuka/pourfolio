@@ -62,6 +62,10 @@ const RENAMED_CATALOG_IDS: Record<string, { id: string; name: string }> = {
     id: 'brand-coquerel-calvados-vs',
     name: 'Coquerel Calvados VS',
   },
+  'brand-campari-aperitivo-liqueur': {
+    id: 'brand-campari',
+    name: 'Campari',
+  },
 }
 
 function migrateCatalogIngredients(ingredients: Ingredient[]): Ingredient[] {
