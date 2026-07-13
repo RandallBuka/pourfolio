@@ -24,6 +24,8 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-broken-bell-single-batch-bourbon': 'brand-broken-bell-small-batch-bourbon',
   'brand-bruichladdich-trilogy-peat': 'brand-bruichladdich-peat',
   'brand-bruichladdich-trilogy-waves': 'brand-bruichladdich-waves',
+  'brand-bulleit-straight-rye-whiskey': 'brand-bulleit-rye',
+  'brand-bunnahabhain-malt': 'brand-bunnahabhain',
 }
 
 function remapIngredientId(id: string): string {
