@@ -26,6 +26,9 @@ const REMOVED_CATALOG_IDS = new Set([
   'brand-bonnet-creme-de-peche-peach',
   'brand-bonnet-creme-de-poire-pear',
   'brand-pages-parfait-amour-liqueur',
+  'brand-brandy-peak-aged-pear-brandy',
+  'brand-randys-fernet',
+  'brand-randys-terrarium-bitters',
 ])
 
 interface CatalogCache {

@@ -21,6 +21,7 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-bonnet-creme-de-myrtle-blueberry': 'brand-pages-creme-de-myrtilles',
   'brand-bonnet-creme-de-peche-peach': 'brand-pages-creme-de-peche',
   'brand-pages-parfait-amour-liqueur': 'brand-pages-parfait-amour',
+  'brand-broken-bell-single-batch-bourbon': 'brand-broken-bell-small-batch-bourbon',
 }
 
 function remapIngredientId(id: string): string {
