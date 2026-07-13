@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "seed": "node scripts/seed-data.mjs",
     "fetch-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-ingredient-images.ts",
+    "refresh-ingredient-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-ingredient-images.ts -- --refresh-invalid",
     "fetch-drink-images": "node node_modules/tsx/dist/cli.mjs scripts/fetch-drink-images.ts",
     "prune-drink-images": "node node_modules/tsx/dist/cli.mjs scripts/prune-drink-images.ts",
     "fetch-all-images": "npm run fetch-images && npm run fetch-drink-images",

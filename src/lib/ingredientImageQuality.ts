@@ -2,7 +2,7 @@
 export const MISSION_LIQUOR_SHOPIFY_STORE = '/s/files/1/0144/7703/3526/'
 
 const REJECTED_URL_RE =
-  /(wikimedia|wikipedia|thecocktaildb|openfoodfacts|wine_glass|cocktail|in_glass|_glass\.|hands?|people|person|lineup|shelf|smirnoff|distillery|panoramio|geograph|pinimg|pinterest|i\.pinimg)/i
+  /(wikimedia|wikipedia|thecocktaildb|openfoodfacts|gstatic|wine_glass|cocktail|in_glass|_glass\.|hands?|people|person|lineup|shelf|smirnoff|distillery|panoramio|geograph|pinimg|pinterest|i\.pinimg)/i
 
 const MULTI_PRODUCT_RE =
   /\b(6pk|multipack|pack of|sampler|gift set|variety|tasting set|3-pack|3 pack|4-pack|lineup|collection|assortment)\b/i
@@ -29,8 +29,8 @@ function urlVariantMismatch(url: string, ingredientName: string): boolean {
 }
 
 /**
- * Strict quality gate for ingredients AFTER the black-olives anchor.
- * Accepts Mission Liquor and similar retailer product shots on white backgrounds.
+ * Quality gate for ingredient image URLs at write time (fetch/prune scripts).
+ * The app shows whatever is stored in ingredient-images.json without re-filtering.
  */
 export function isProfessionalIngredientImageUrl(url: string, ingredientName = '', label = ''): boolean {
   if (!url?.trim()) return false
