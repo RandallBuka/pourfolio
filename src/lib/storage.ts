@@ -1,4 +1,4 @@
-import type { AppState, BarProfile } from '../types'
+import type { AppState, BarProfile, IngredientOverride } from '../types'
 
 const STORAGE_KEY = 'pourfolio-state-v1'
 const LEGACY_KEY = 'inmybar-state-v1'
@@ -40,6 +40,25 @@ function remapIdList(ids: string[]): string[] {
   return out
 }
 
+function remapIngredientOverrides(
+  overrides: Record<string, IngredientOverride>
+): Record<string, IngredientOverride> {
+  const out: Record<string, import('../types').IngredientOverride> = {}
+  for (const [id, override] of Object.entries(overrides)) {
+    const mappedId = remapIngredientId(id)
+    const merged = { ...out[mappedId], ...override }
+    if (
+      mappedId === 'brand-broken-bell-small-batch-bourbon' &&
+      merged.name &&
+      /single\s+batch/i.test(merged.name)
+    ) {
+      merged.name = 'Broken Bell Small Batch Bourbon'
+    }
+    out[mappedId] = merged
+  }
+  return out
+}
+
 function normalizeState(state: AppState): AppState {
   return {
     ...state,
@@ -48,6 +67,8 @@ function normalizeState(state: AppState): AppState {
       ingredientIds: remapIdList(bar.ingredientIds),
     })),
     shoppingList: remapIdList(state.shoppingList),
+    hiddenIngredients: remapIdList(state.hiddenIngredients ?? []),
+    ingredientOverrides: remapIngredientOverrides(state.ingredientOverrides ?? {}),
   }
 }
 

@@ -31,6 +31,41 @@ const REMOVED_CATALOG_IDS = new Set([
   'brand-randys-terrarium-bitters',
 ])
 
+/** Rename retired catalog ids when stale caches still carry the old rows. */
+const RENAMED_CATALOG_IDS: Record<string, { id: string; name: string }> = {
+  'brand-broken-bell-single-batch-bourbon': {
+    id: 'brand-broken-bell-small-batch-bourbon',
+    name: 'Broken Bell Small Batch Bourbon',
+  },
+}
+
+function migrateCatalogIngredients(ingredients: Ingredient[]): Ingredient[] {
+  const out: Ingredient[] = []
+  const seen = new Set<string>()
+
+  for (const item of ingredients) {
+    if (REMOVED_CATALOG_IDS.has(item.id)) continue
+
+    const rename = RENAMED_CATALOG_IDS[item.id]
+    let next: Ingredient = rename
+      ? { ...item, id: rename.id, name: rename.name }
+      : item
+
+    if (
+      next.id === 'brand-broken-bell-small-batch-bourbon' &&
+      /single\s+batch/i.test(next.name)
+    ) {
+      next = { ...next, name: 'Broken Bell Small Batch Bourbon' }
+    }
+
+    if (seen.has(next.id)) continue
+    seen.add(next.id)
+    out.push(next)
+  }
+
+  return out
+}
+
 interface CatalogCache {
   version: number
   ingredients: Ingredient[]
@@ -96,10 +131,10 @@ function writeCache(version: number, ingredients: Ingredient[], drinks: Drink[])
 }
 
 function applyCatalog(extIngredients: Ingredient[], extDrinks: Drink[]): void {
-  const filtered = extIngredients.filter((item) => !REMOVED_CATALOG_IDS.has(item.id))
+  const migrated = migrateCatalogIngredients(extIngredients)
   SEED_INGREDIENTS = pruneRedundantGenerics([
     ...CORE_SEED_INGREDIENTS,
-    ...filtered.map((item) => enrichWithUsState(item)),
+    ...migrated.map((item) => enrichWithUsState(item)),
   ])
   SEED_DRINKS = [...CORE_SEED_DRINKS, ...extDrinks]
   catalogLoaded = true
@@ -175,7 +210,7 @@ export async function loadCatalog(): Promise<void> {
         return
       }
 
-      const extIngredients = (await ingRes.json()) as Ingredient[]
+      const extIngredients = migrateCatalogIngredients((await ingRes.json()) as Ingredient[])
       const extDrinks = (await drinkRes.json()) as Drink[]
       const version = remoteVersion || Date.now()
 
