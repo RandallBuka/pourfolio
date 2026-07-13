@@ -203,19 +203,9 @@ async function main() {
 
         newlyFound++
 
-      } else if (isAfterIngredientImageAnchor(ing.id)) {
+      } else if (isAfterIngredientImageAnchor(ing.id) && !(map[ing.id] ?? '')) {
 
-        const existing = map[ing.id] ?? ''
-
-        if (refreshInvalid && existing && !isProfessionalIngredientImageUrl(existing, ing.name)) {
-
-          map[ing.id] = ''
-
-        } else if (!existing) {
-
-          map[ing.id] = ''
-
-        }
+        map[ing.id] = ''
 
       }
 
