@@ -30,8 +30,6 @@ const REMOVED_CATALOG_IDS = new Set([
   'brand-randys-fernet',
   'brand-randys-terrarium-bitters',
   'brand-bulleit-straight-rye-whiskey',
-  'brand-calvados-coquerel',
-  'brand-calvados-coqurel-fine',
 ])
 
 /** Rename retired catalog ids when stale caches still carry the old rows. */
@@ -52,6 +50,10 @@ const RENAMED_CATALOG_IDS: Record<string, { id: string; name: string }> = {
     id: 'brand-bunnahabhain',
     name: 'Bunnahabhain',
   },
+  'brand-bulleit-straight-rye-whiskey': {
+    id: 'brand-bulleit-rye',
+    name: 'Bulleit Rye',
+  },
   'brand-calvados-coquerel': {
     id: 'brand-coquerel-calvados-vs',
     name: 'Coquerel Calvados VS',
@@ -67,9 +69,9 @@ function migrateCatalogIngredients(ingredients: Ingredient[]): Ingredient[] {
   const seen = new Set<string>()
 
   for (const item of ingredients) {
-    if (REMOVED_CATALOG_IDS.has(item.id)) continue
-
     const rename = RENAMED_CATALOG_IDS[item.id]
+    if (REMOVED_CATALOG_IDS.has(item.id) && !rename) continue
+
     let next: Ingredient = rename
       ? { ...item, id: rename.id, name: rename.name }
       : item
