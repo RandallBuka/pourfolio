@@ -29,6 +29,7 @@ const INGREDIENT_ID_ALIASES: Record<string, string> = {
   'brand-calvados-coquerel': 'brand-coquerel-calvados-vs',
   'brand-calvados-coqurel-fine': 'brand-coquerel-calvados-vs',
   'brand-campari-aperitivo-liqueur': 'brand-campari',
+  'brand-canadian-club-blended-canadian-reserve': 'brand-canadian-club-whisky',
 }
 
 function remapIngredientId(id: string): string {

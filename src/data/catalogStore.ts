@@ -66,6 +66,10 @@ const RENAMED_CATALOG_IDS: Record<string, { id: string; name: string }> = {
     id: 'brand-campari',
     name: 'Campari',
   },
+  'brand-canadian-club-blended-canadian-reserve': {
+    id: 'brand-canadian-club-whisky',
+    name: 'Canadian Club Whisky',
+  },
 }
 
 function migrateCatalogIngredients(ingredients: Ingredient[]): Ingredient[] {

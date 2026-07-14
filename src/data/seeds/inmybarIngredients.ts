@@ -3515,15 +3515,6 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
     category: 'Spirits',
   },
   {
-    id: 'brand-canadian-club-blended-canadian-reserve',
-    name: 'Canadian Club Blended Canadian Reserve',
-    genericName: 'Whiskey',
-    company: 'Canadian Club',
-    country: 'Canada',
-    type: 'Whiskey',
-    category: 'Spirits',
-  },
-  {
     id: 'brand-canadian-club-rye-whiskey',
     name: 'Canadian Club Rye Whiskey',
     genericName: 'Whiskey',
