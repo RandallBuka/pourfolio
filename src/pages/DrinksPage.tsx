@@ -18,7 +18,7 @@ import {
   type DrinkFilters,
 } from '../lib/drinkFilter'
 import { useListScrollRestoration } from '../hooks/useListScrollRestoration'
-import { saveScrollForRoute, scrollRouteKey } from '../lib/scrollRestoration'
+import { saveScrollForRoute, scrollHistoryKey, scrollRouteKey } from '../lib/scrollRestoration'
 
 export function DrinksPage() {
   const { allDrinks, makeableDrinks, getDrinkSummary, canMake, state } = useApp()
@@ -99,7 +99,9 @@ export function DrinksPage() {
       : (filtered.length ? filtered : allDrinks)
     const drink = pickRandomMakeableDrink(pool)
     if (drink) {
-      saveScrollForRoute(scrollRouteKey(location.pathname, location.search))
+      const routeKey = scrollRouteKey(location.pathname, location.search)
+      saveScrollForRoute(routeKey)
+      saveScrollForRoute(scrollHistoryKey(location))
       navigate(`/drinks/${drink.id}`, { state: { randomPick: Date.now() } })
     }
   }

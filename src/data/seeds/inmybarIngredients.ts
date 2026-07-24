@@ -3632,10 +3632,11 @@ export const INMYBAR_SEED_INGREDIENTS: Ingredient[] = [
   },
   {
     id: 'brand-captain-morgan-parrot-bay-passion',
-    name: 'Captain Morgan Parrot Bay Passion',
-    genericName: 'Rum',
+    name: 'Captain Morgan Parrot Bay Passion Fruit Rum',
+    genericName: 'Passion Fruit Rum',
     company: 'Captain Morgan',
     country: 'Puerto Rico',
+    flavor: 'Passion Fruit',
     type: 'Rum',
     category: 'Spirits',
   },

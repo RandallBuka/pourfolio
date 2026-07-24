@@ -23,7 +23,7 @@ import {
 import { isUsCountry } from '../data/usStates'
 import type { IngredientCategory } from '../types'
 import { useListScrollRestoration } from '../hooks/useListScrollRestoration'
-import { saveScrollForRoute, scrollRouteKey } from '../lib/scrollRestoration'
+import { saveScrollForRoute, scrollHistoryKey, scrollRouteKey } from '../lib/scrollRestoration'
 
 const CATEGORIES: IngredientCategory[] = ['Spirits', 'Liqueurs', 'Mixers', 'Juices', 'Fruits', 'Garnishes', 'Other']
 
@@ -156,7 +156,9 @@ export function AllIngredientsPage() {
     }
     setRandomMsg(null)
     const ing = filtered[Math.floor(Math.random() * filtered.length)]
-    saveScrollForRoute(scrollRouteKey(location.pathname, location.search))
+    const routeKey = scrollRouteKey(location.pathname, location.search)
+    saveScrollForRoute(routeKey)
+    saveScrollForRoute(scrollHistoryKey(location))
     navigate(`/ingredients/${ing.id}`)
   }
 

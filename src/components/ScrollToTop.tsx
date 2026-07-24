@@ -1,20 +1,17 @@
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useLocation, useNavigationType } from 'react-router-dom'
 import {
   clearScrollRestoreTimers,
   getPageScrollContainer,
   isListScrollRoute,
-  restoreScrollForRoute,
-  scrollRouteKey,
 } from '../lib/scrollRestoration'
 
-/** Scroll detail/settings pages to top on forward nav; list pages use useListScrollRestoration. */
+/** Scroll detail/settings pages to top on forward nav; list pages restore via useListScrollRestoration. */
 export function ScrollToTop() {
-  const { pathname, search } = useLocation()
+  const { pathname } = useLocation()
   const navigationType = useNavigationType()
-  const routeKey = scrollRouteKey(pathname, search)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = getPageScrollContainer()
     if (!container) {
       window.scrollTo(0, 0)
@@ -22,14 +19,13 @@ export function ScrollToTop() {
     }
 
     if (isListScrollRoute(pathname)) {
-      restoreScrollForRoute(container, routeKey)
       return
     }
 
     clearScrollRestoreTimers()
     if (navigationType === 'POP') return
     container.scrollTop = 0
-  }, [routeKey, pathname, navigationType])
+  }, [pathname, navigationType])
 
   return null
 }

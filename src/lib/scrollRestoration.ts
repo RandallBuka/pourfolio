@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'pourfolio-scroll-positions-v1'
+const STORAGE_KEY = 'pourfolio-scroll-positions-v2'
 
 const LIST_SCROLL_ROUTES = new Set([
   '/ingredients',
@@ -38,6 +38,10 @@ export function scrollRouteKey(pathname: string, search: string): string {
   return `${pathname}${search}`
 }
 
+export function scrollHistoryKey(location: { key: string; pathname: string; search: string }): string {
+  return `hk:${location.key}:${location.pathname}${location.search}`
+}
+
 export function isListScrollRoute(pathname: string): boolean {
   return LIST_SCROLL_ROUTES.has(pathname)
 }
@@ -51,6 +55,7 @@ export function saveScrollForRoute(routeKey: string, top?: number): void {
   const container = getPageScrollContainer()
   if (!container) return
   const value = top ?? container.scrollTop
+  if (value <= 0) return
   const cache = readCache()
   cache[routeKey] = value
   writeCache(cache)
@@ -73,10 +78,21 @@ export function clearScrollRestoreTimers(): void {
 let activeRestoreTimers: number[] = []
 let activeResizeObserver: ResizeObserver | null = null
 
+function resolveSavedScroll(historyKey: string, routeKey: string): number | undefined {
+  const historySaved = getScrollForRoute(historyKey)
+  if (historySaved != null && historySaved > 0) return historySaved
+  const routeSaved = getScrollForRoute(routeKey)
+  return routeSaved != null && routeSaved > 0 ? routeSaved : undefined
+}
+
 /** Re-apply saved offset until list content is tall enough (images, catalog rows). */
-export function restoreScrollForRoute(container: HTMLElement, routeKey: string): boolean {
-  const saved = getScrollForRoute(routeKey)
-  if (saved == null || saved <= 0) return false
+export function restoreScrollForRoute(
+  container: HTMLElement,
+  historyKey: string,
+  routeKey: string
+): boolean {
+  const saved = resolveSavedScroll(historyKey, routeKey)
+  if (saved == null) return false
 
   clearScrollRestoreTimers()
 
@@ -93,14 +109,14 @@ export function restoreScrollForRoute(container: HTMLElement, routeKey: string):
     activeResizeObserver.observe(list)
   }
 
-  for (const delay of [0, 16, 50, 100, 200, 400, 800, 1200]) {
+  for (const delay of [0, 16, 50, 100, 200, 400, 800, 1200, 2000, 3000, 4000]) {
     activeRestoreTimers.push(window.setTimeout(apply, delay))
   }
 
   activeRestoreTimers.push(
     window.setTimeout(() => {
       clearScrollRestoreTimers()
-    }, 1400)
+    }, 5000)
   )
 
   return true

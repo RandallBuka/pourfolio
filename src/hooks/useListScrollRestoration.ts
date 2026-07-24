@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
   getPageScrollContainer,
   restoreScrollForRoute,
   saveScrollForRoute,
+  scrollHistoryKey,
   scrollRouteKey,
 } from '../lib/scrollRestoration'
 
@@ -12,24 +13,34 @@ import {
  * Re-runs restore when `contentRevision` changes (e.g. catalog rows finish loading).
  */
 export function useListScrollRestoration(contentRevision: number): void {
-  const { pathname, search } = useLocation()
-  const routeKey = scrollRouteKey(pathname, search)
+  const location = useLocation()
+  const routeKey = scrollRouteKey(location.pathname, location.search)
+  const historyKey = scrollHistoryKey(location)
   const routeKeyRef = useRef(routeKey)
+  const historyKeyRef = useRef(historyKey)
+  const lastScrollTopRef = useRef(0)
   routeKeyRef.current = routeKey
+  historyKeyRef.current = historyKey
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = getPageScrollContainer()
     if (!container) return
 
     let raf = 0
+    const persist = (top: number) => {
+      lastScrollTopRef.current = top
+      saveScrollForRoute(routeKeyRef.current, top)
+      saveScrollForRoute(historyKeyRef.current, top)
+    }
+
     const onScroll = () => {
       window.cancelAnimationFrame(raf)
       raf = window.requestAnimationFrame(() => {
-        saveScrollForRoute(routeKeyRef.current)
+        persist(container.scrollTop)
       })
     }
 
-    const saveNow = () => saveScrollForRoute(routeKeyRef.current)
+    const saveNow = () => persist(container.scrollTop)
 
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target
@@ -46,12 +57,14 @@ export function useListScrollRestoration(contentRevision: number): void {
       window.cancelAnimationFrame(raf)
       container.removeEventListener('scroll', onScroll)
       container.removeEventListener('pointerdown', onPointerDown, true)
+      // Use last known scroll — DOM may already be reset when the list unmounts.
+      persist(lastScrollTopRef.current)
     }
   }, [routeKey])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = getPageScrollContainer()
     if (!container) return
-    restoreScrollForRoute(container, routeKey)
-  }, [routeKey, contentRevision])
+    restoreScrollForRoute(container, historyKey, routeKey)
+  }, [historyKey, routeKey, contentRevision])
 }
